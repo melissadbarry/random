@@ -1,0 +1,715 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Révision Paie — Examen ARH</title>
+<style>
+:root{
+  --bg:#EEF2F0; --bg-alt:#E3E9E4; --ink:#16232A; --ink-soft:#48595D;
+  --accent:#C0730D; --accent-soft:#F2DBAE; --teal:#0E6B63; --teal-soft:#CFE7E2;
+  --coral:#B8412F; --coral-soft:#F3D9CE; --card:#FFFFFF; --border:#D3DAD1;
+  --shadow: 0 1px 2px rgba(22,35,42,.06), 0 6px 20px rgba(22,35,42,.06);
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#111A1B; --bg-alt:#182325; --ink:#E9EEEA; --ink-soft:#A6B6B2;
+    --accent:#E3A544; --accent-soft:#3B2C14; --teal:#57C2B4; --teal-soft:#173330;
+    --coral:#E27F67; --coral-soft:#3A241E; --card:#182324; --border:#2A3638;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#111A1B; --bg-alt:#182325; --ink:#E9EEEA; --ink-soft:#A6B6B2;
+  --accent:#E3A544; --accent-soft:#3B2C14; --teal:#57C2B4; --teal-soft:#173330;
+  --coral:#E27F67; --coral-soft:#3A241E; --card:#182324; --border:#2A3638;
+  --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+}
+:root[data-theme="light"]{
+  --bg:#EEF2F0; --bg-alt:#E3E9E4; --ink:#16232A; --ink-soft:#48595D;
+  --accent:#C0730D; --accent-soft:#F2DBAE; --teal:#0E6B63; --teal-soft:#CFE7E2;
+  --coral:#B8412F; --coral-soft:#F3D9CE; --card:#FFFFFF; --border:#D3DAD1;
+  --shadow: 0 1px 2px rgba(22,35,42,.06), 0 6px 20px rgba(22,35,42,.06);
+}
+*{box-sizing:border-box;}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  line-height:1.5;
+}
+.display{font-family:Georgia,"Iowan Old Style","Palatino Linotype",serif;}
+.mono{font-family:"SF Mono","Cascadia Code","Consolas",ui-monospace,monospace; font-variant-numeric:tabular-nums;}
+h1,h2,h3{text-wrap:balance; margin:0;}
+::selection{background:var(--accent-soft);}
+
+/* ---- Top bar ---- */
+.topbar{
+  position:sticky; top:0; z-index:30; background:var(--bg); border-bottom:1px solid var(--border);
+  backdrop-filter:blur(6px);
+}
+.topbar-inner{
+  max-width:1180px; margin:0 auto; padding:14px 20px;
+  display:flex; align-items:center; gap:16px; flex-wrap:wrap;
+}
+.brand{display:flex; align-items:center; gap:10px; flex:1; min-width:220px;}
+.brand-badge{
+  width:38px; height:38px; border-radius:9px; background:var(--ink); color:var(--bg);
+  display:flex; align-items:center; justify-content:center; font-family:Georgia,serif; font-weight:700; font-size:15px;
+}
+.brand-text .title{font-size:16px; font-weight:600; letter-spacing:.2px;}
+.brand-text .sub{font-size:12px; color:var(--ink-soft);}
+.stat-pill{
+  display:flex; align-items:center; gap:7px; background:var(--card); border:1px solid var(--border);
+  border-radius:999px; padding:6px 12px; font-size:12.5px; box-shadow:var(--shadow);
+}
+.stat-pill b{font-family:inherit;}
+#xpbar-wrap{width:110px; height:6px; border-radius:4px; background:var(--bg-alt); overflow:hidden;}
+#xpbar-fill{height:100%; background:var(--accent); width:0%; transition:width .5s ease;}
+.theme-toggle{
+  border:1px solid var(--border); background:var(--card); border-radius:999px; padding:6px 10px;
+  cursor:pointer; font-size:12.5px; color:var(--ink); box-shadow:var(--shadow);
+}
+
+/* ---- Tabs ---- */
+.tabnav{max-width:1180px; margin:0 auto; padding:12px 20px 0; display:flex; gap:8px; flex-wrap:wrap;}
+.tabbtn{
+  border:1px solid var(--border); background:var(--card); color:var(--ink-soft);
+  padding:9px 14px; border-radius:10px; font-size:13.5px; cursor:pointer; display:flex; gap:7px; align-items:center;
+  transition:transform .12s ease, background .15s ease, color .15s ease;
+}
+.tabbtn:hover{transform:translateY(-1px);}
+.tabbtn.active{background:var(--ink); color:var(--bg); border-color:var(--ink);}
+.tabbtn .dot{width:7px;height:7px;border-radius:50%; background:currentColor; opacity:.5;}
+.tabbtn.done::after{content:"✓"; font-size:11px; opacity:.8;}
+.tabbtn.priority{border-color:var(--accent);}
+.tabbtn.priority:not(.active){color:var(--accent);}
+
+main{max-width:1180px; margin:0 auto; padding:22px 20px 70px;}
+.panel{display:none; animation:fade .35s ease;}
+.panel.active{display:block;}
+@keyframes fade{from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:translateY(0);}}
+@media (prefers-reduced-motion: reduce){.panel{animation:none;} .tabbtn{transition:none;}}
+
+/* ---- Hero / Home ---- */
+.hero{
+  display:grid; grid-template-columns:1.3fr 1fr; gap:24px; align-items:stretch; margin-bottom:22px;
+}
+@media (max-width:800px){.hero{grid-template-columns:1fr;}}
+.hero-card{background:var(--card); border:1px solid var(--border); border-radius:16px; padding:26px; box-shadow:var(--shadow);}
+.hero h1{font-size:clamp(24px,3.4vw,32px); margin-bottom:8px;}
+.hero p.lead{color:var(--ink-soft); font-size:15px; max-width:52ch;}
+.priority-banner{
+  margin-top:16px; background:var(--accent-soft); border:1px solid var(--accent); border-radius:12px;
+  padding:14px 16px; font-size:13.5px; display:flex; gap:10px; align-items:flex-start;
+}
+.priority-banner b{color:var(--accent);}
+.checklist{list-style:none; padding:0; margin:16px 0 0; display:grid; gap:8px;}
+.checklist li{display:flex; gap:10px; align-items:center; font-size:14px;}
+.checklist .chk{
+  width:20px;height:20px;border-radius:6px;border:1px solid var(--border); flex:none;
+  display:flex; align-items:center; justify-content:center; font-size:12px; cursor:pointer; background:var(--bg-alt);
+}
+.checklist .chk.on{background:var(--teal); border-color:var(--teal); color:#fff;}
+
+.badge-shelf{display:flex; flex-wrap:wrap; gap:10px; margin-top:14px;}
+.badge{
+  display:flex; flex-direction:column; align-items:center; gap:4px; width:74px; text-align:center;
+  opacity:.35; filter:grayscale(1);
+}
+.badge.unlocked{opacity:1; filter:none;}
+.badge-ic{
+  width:46px;height:46px;border-radius:50%; background:var(--teal-soft); border:1px solid var(--teal);
+  display:flex; align-items:center; justify-content:center; font-size:20px;
+}
+.badge span{font-size:10.5px; color:var(--ink-soft); line-height:1.2;}
+
+/* ---- Theme content ---- */
+.grid2{display:grid; grid-template-columns:1fr 1fr; gap:18px;}
+@media (max-width:820px){.grid2{grid-template-columns:1fr;}}
+.card{background:var(--card); border:1px solid var(--border); border-radius:14px; padding:20px; box-shadow:var(--shadow); margin-bottom:18px;}
+.card h2{font-size:20px; margin-bottom:4px;}
+.card .kicker{font-size:11.5px; text-transform:uppercase; letter-spacing:.08em; color:var(--ink-soft); margin-bottom:6px;}
+.card h3{font-size:14.5px; margin:0 0 10px;}
+.def{font-size:14.5px; color:var(--ink-soft); margin:0 0 14px;}
+
+.formula-box{
+  background:var(--bg-alt); border:1px dashed var(--border); border-radius:10px; padding:14px 16px;
+  font-size:14.5px; margin:10px 0;
+}
+.formula-box .f{font-size:15px; font-weight:600;}
+
+.flow{display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin:14px 0;}
+.flow .step{
+  background:var(--teal-soft); border:1px solid var(--teal); color:var(--ink); border-radius:10px;
+  padding:9px 12px; font-size:12.5px; min-width:100px; text-align:center;
+}
+.flow .arrow{color:var(--ink-soft); font-size:16px;}
+
+.example{
+  background:var(--bg-alt); border-left:3px solid var(--teal); border-radius:0 10px 10px 0;
+  padding:12px 16px; margin:10px 0; font-size:13.8px;
+}
+.example .line{display:flex; justify-content:space-between; gap:12px; padding:3px 0; border-bottom:1px dashed var(--border);}
+.example .line:last-child{border-bottom:none; font-weight:700;}
+
+.pitfall{
+  background:var(--coral-soft); border:1px solid var(--coral); border-radius:10px; padding:12px 14px;
+  font-size:13.5px; display:flex; gap:9px; margin-top:6px;
+}
+.pitfall b{color:var(--coral);}
+
+.keyfacts{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:10px; margin:14px 0 4px;}
+.kf{background:var(--bg-alt); border:1px solid var(--border); border-radius:10px; padding:10px 12px;}
+.kf .v{font-size:15.5px; font-weight:700;}
+.kf .l{font-size:10.5px; color:var(--ink-soft); text-transform:uppercase; letter-spacing:.04em; margin-top:2px;}
+
+.reftable-wrap{overflow-x:auto; margin:10px 0;}
+table.reftable{border-collapse:collapse; width:100%; font-size:12.8px;}
+table.reftable th, table.reftable td{border:1px solid var(--border); padding:7px 10px; text-align:left; white-space:nowrap;}
+table.reftable th{background:var(--bg-alt); font-weight:600;}
+.subhead{font-size:13px; font-weight:700; margin:16px 0 6px; color:var(--ink);}
+
+/* ---- Quiz ---- */
+.quiz-shell{display:grid; grid-template-columns:220px 1fr; gap:20px;}
+@media (max-width:760px){.quiz-shell{grid-template-columns:1fr;}}
+.quiz-side{background:var(--card); border:1px solid var(--border); border-radius:14px; padding:16px; box-shadow:var(--shadow); height:fit-content;}
+.quiz-side h3{font-size:13px; text-transform:uppercase; letter-spacing:.06em; color:var(--ink-soft); margin-bottom:10px;}
+.theme-pick{display:flex; flex-direction:column; gap:6px;}
+.theme-pick button{
+  text-align:left; border:1px solid var(--border); background:var(--bg-alt); color:var(--ink);
+  padding:8px 10px; border-radius:8px; font-size:13px; cursor:pointer;
+}
+.theme-pick button.sel{background:var(--ink); color:var(--bg); border-color:var(--ink);}
+.qcard{background:var(--card); border:1px solid var(--border); border-radius:16px; padding:24px; box-shadow:var(--shadow);}
+.qcard .qmeta{display:flex; justify-content:space-between; font-size:12px; color:var(--ink-soft); margin-bottom:10px;}
+.qcard .qtext{font-size:17px; margin-bottom:16px;}
+.choices{display:grid; gap:9px;}
+.choice{
+  border:1px solid var(--border); background:var(--bg-alt); padding:11px 14px; border-radius:10px;
+  cursor:pointer; font-size:14px; text-align:left;
+}
+.choice:hover{border-color:var(--ink-soft);}
+.choice.correct{background:var(--teal-soft); border-color:var(--teal);}
+.choice.wrong{background:var(--coral-soft); border-color:var(--coral);}
+.qfeedback{margin-top:14px; font-size:13.5px; padding:12px 14px; border-radius:10px; display:none;}
+.qfeedback.show{display:block;}
+.qfeedback.ok{background:var(--teal-soft); border:1px solid var(--teal);}
+.qfeedback.ko{background:var(--coral-soft); border:1px solid var(--coral);}
+.qactions{display:flex; justify-content:flex-end; margin-top:16px;}
+.btn{
+  background:var(--ink); color:var(--bg); border:none; border-radius:9px; padding:10px 18px;
+  font-size:13.5px; cursor:pointer;
+}
+.btn:disabled{opacity:.4; cursor:default;}
+.streak-flame{font-size:13px;}
+.done-screen{text-align:center; padding:30px 10px;}
+.done-screen .score{font-size:44px; font-family:Georgia,serif; margin:8px 0;}
+
+footer{max-width:1180px; margin:0 auto; padding:10px 20px 40px; color:var(--ink-soft); font-size:12px; text-align:center;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <div class="brand-badge">RH</div>
+      <div class="brand-text">
+        <div class="title display">Révision Paie — J-1</div>
+        <div class="sub">IFOCOP · Titre Assistant RH</div>
+      </div>
+    </div>
+    <div class="stat-pill">🔥 <b id="streakCount">0</b> série</div>
+    <div class="stat-pill">⭐ <b id="xpCount">0</b> XP <div id="xpbar-wrap"><div id="xpbar-fill"></div></div></div>
+    <button class="theme-toggle" onclick="toggleTheme()">🌓 Thème</button>
+  </div>
+  <div class="tabnav" id="tabnav"></div>
+</div>
+
+<main id="main"></main>
+<footer>Fiche de révision — vérifie les valeurs légales en vigueur (PMSS, taux) sur ton support de cours officiel avant l'examen.</footer>
+
+<script>
+/* ============ DATA (sourcé sur les cours IFOCOP réels) ============ */
+const THEMES = [
+{
+  id:"home", label:"Plan de révision", icon:"🏁", tab:"Accueil"
+},
+{
+  id:"cotis", label:"Cotisations & base", icon:"📋", tab:"Cotisations",
+  kicker:"Base de cotisation & cotisations sociales — barème 2026",
+  title:"Ce qui est soumis, ce qui ne l'est pas",
+  def:"La <b>rémunération brute totale</b> = salaire de base + tous les accessoires soumis (primes, avantages en nature...). Certaines cotisations portent sur la totalité du brut (<b>déplafonnées</b>), d'autres sur une tranche plafonnée (<b>plafonnées</b>). Formule générale : Assiette × Taux = Montant de cotisation.",
+  keyfacts:[["PMSS 2026","4 005 €"],["PASS 2026","48 060 €"],["Abattement CSG/CRDS","1,75 % (limité à 4 PASS)"],["CSG déductible","6,80 %"],["CSG + CRDS non déductibles","2,90 % (2,40+0,50)"]],
+  flow:["Rémunération brute totale","+ avantages en nature","= Salaire brut soumis","× taux (assiette totale / plafonnée / tranche)","= Montant de la cotisation"],
+  formulas:[
+    {title:"Formule générale", formula:"Montant cotisation = Assiette de cotisation × Taux de cotisation",
+     example:[["Salaire de base","3 000,00 €"],["Prime exceptionnelle","500,00 €"],["Rémunération brute totale (assiette)","3 500,00 €"]]},
+    {title:"CSG / CRDS (avec abattement 1,75 %)", formula:"Base = Brut × 98,25 % (limite 4 PASS) ; au-delà : (4 PASS×98,25%) + (brut−4PASS)",
+     example:[["Brut soumis","3 500,00 €"],["Base CSG/CRDS (×98,25%)","3 438,75 €"],["CSG déductible (6,80%)","233,84 €"],["CSG non déductible (2,40%)","82,53 €"],["CRDS (0,50%)","17,19 €"]]},
+    {title:"Avantage en nature — méthode en 4 étapes", formula:"Brut = Salaire de base + Avantage en nature → Net = Brut − Cotisations − Avantage en nature",
+     example:[["1. Évaluer l'avantage","forfait (logement, repas, véhicule, NTIC) ou valeur réelle"],["2. Intégrer au salaire brut","+ montant de l'avantage"],["3. Cotiser sur le brut","avantage en nature inclus dans l'assiette"],["4. Déduire l'avantage du net","le salarié ne reperçoit pas ce montant en espèces"]]}
+  ],
+  tables:[
+    {title:"Taux de cotisations au 1er janvier 2026 (extraits clés)", headers:["Cotisation","Assiette","Salarié","Employeur"], rows:[
+      ["Maladie, maternité, invalidité, décès","Totalité du brut","–","13,00 %"],
+      ["Vieillesse plafonnée (T1)","Tranche A","6,90 %","8,55 %"],
+      ["Vieillesse déplafonnée","Totalité du brut","0,40 %","2,11 %"],
+      ["Allocations familiales","Totalité du brut","–","5,25 %"],
+      ["Assurance chômage","TA+TB","–","4,00 %"],
+      ["Retraite complémentaire T1","Tranche 1","3,15 %","4,72 %"],
+      ["Retraite complémentaire T2","Tranche 2","8,64 %","12,95 %"],
+      ["CEG T1 / T2","Tranche 1 / 2","0,86 % / 1,08 %","1,29 % / 1,62 %"],
+      ["APEC (cadres)","TA+TB","0,024 %","0,036 %"]
+    ]},
+    {title:"Indemnités : soumises ou non aux cotisations", headers:["Soumises","Non soumises"], rows:[
+      ["Indemnité de congés payés (ICP)","Indemnité légale de licenciement"],
+      ["Indemnité compensatrice de CP (ICCP)","Indemnité de rupture conventionnelle"],
+      ["Indemnité compensatrice de préavis","Indemnités de transport / repas"],
+      ["Indemnité de départ volontaire à la retraite","Frais kilométriques (frais réels)"]
+    ]}
+  ],
+  pitfalls:["Aucune part salariale sur la cotisation Maladie (sauf 1,30 % en Alsace-Moselle) ni sur l'Assurance chômage : ne pas en inventer une.","L'abattement de 1,75 % pour la CSG/CRDS ne s'applique plus au-delà de 4 PASS.","Primes soumises à cotisations sauf intéressement et participation.","La Tranche C de l'AGIRC-ARRCO n'existe plus depuis le 1er janvier 2019 (fusion AGIRC-ARRCO)."]
+},
+{
+  id:"plafond", label:"Plafond & tranches", icon:"📐", tab:"Plafond",
+  kicker:"PMSS/PASS, tranches TA/TB et T1/T2",
+  title:"Le plafond de la Sécurité sociale et sa proratisation",
+  def:"Le <b>plafond</b> (PMSS mensuel / PASS annuel) sert de référence à certaines cotisations. <b>TA = T1</b> = jusqu'à 1 PMSS ; <b>TB</b> va jusqu'à 4 PMSS ; <b>T2</b> va jusqu'à 8 PMSS. Il doit être <b>proratisé</b> en cas de temps partiel, d'entrée/sortie en cours de mois, d'absence non rémunérée <i>sans maintien</i>, ou de salarié multi-employeurs.",
+  keyfacts:[["PMSS (mois)","4 005 €"],["PASS (année)","48 060 €"],["4 PMSS (limite TB)","16 020 €"],["8 PMSS (limite T2)","32 040 €"],["Plafond horaire","30 €"]],
+  flow:["PMSS de référence","× (horaire contrat + heures complém.) / 151,67h [temps partiel]","× jours présence / jours du mois [entrée-sortie, absence]","× salaire versé / total salaires [multi-employeurs]","= Plafond proratisé"],
+  formulas:[
+    {title:"Entrée/sortie en cours de mois ou absence non rémunérée", formula:"Plafond proratisé = PMSS × jours calendaires de présence / jours calendaires du mois",
+     example:[["Entrée le 5 mars (mois de 31j)","présence du 5 au 31 = 27 j"],["Calcul","4 005 × 27/31"],["Plafond proratisé","3 488,22 €"]]},
+    {title:"Temps partiel (heures complémentaires incluses)", formula:"Plafond proratisé = PMSS × horaire mensuel (contrat + HC) / 151,67 h",
+     example:[["Horaire contractuel 104h + 10h complém.","114 h"],["Calcul","4 005 × 114/151,67"],["Plafond proratisé","3 010,29 €"]]},
+    {title:"Salarié multi-employeurs", formula:"Plafond proratisé = PMSS × salaire versé par cet employeur / total des salaires bruts perçus",
+     example:[["Salaire chez cet employeur","1 500,00 €"],["Total tous employeurs","3 900,00 €"],["Plafond proratisé","4 005 × 1500/3900 = 1 540,38 €"]]}
+  ],
+  tables:[
+    {title:"Montants du plafond — 2026", headers:["Périodicité","Montant"], rows:[
+      ["Année (PASS)","48 060 €"],["Trimestre","12 015 €"],["Mois (PMSS)","4 005 €"],["Quinzaine","2 003 €"],["Semaine","924 €"],["Jour","220 €"],["Heure","30 €"]
+    ]},
+    {title:"Tranches : TA/TB vs T1/T2", headers:["Tranche","De","À"], rows:[
+      ["TA / T1","0 €","4 005 € (1 PMSS)"],
+      ["TB (URSSAF, prévoyance, APEC)","4 005 €","16 020 € (4 PMSS)"],
+      ["T2 (AGIRC-ARRCO)","4 005 €","32 040 € (8 PMSS)"]
+    ]}
+  ],
+  pitfalls:["Piège classique : en cas de <b>maintien de salaire</b> (ex. maladie avec complément employeur), on NE proratise PAS le plafond — la proratisation ne s'applique qu'à l'absence non rémunérée SANS maintien.","TA et T1 sont identiques (jusqu'à 1 PMSS) — seule la borne haute diffère entre TB (4 PMSS) et T2 (8 PMSS).","Ne pas oublier d'inclure les heures complémentaires dans l'horaire du temps partiel avant de proratiser."]
+},
+{
+  id:"bulletin", label:"Contrôle bulletin", icon:"🔍", tab:"Contrôle paie",
+  kicker:"Structure du bulletin, SMIC, net à payer",
+  title:"Contrôler un bulletin de paie",
+  def:"Le bulletin est un écrit obligatoire (art. L3243-2) qui fait <b>preuve</b> de la relation de travail. Le contrôler = vérifier les mentions obligatoires/interdites, le respect du SMIC, et la cohérence du calcul du net à payer selon la méthode des 4 zones.",
+  keyfacts:[["SMIC horaire (janv-mai 2026)","12,02 €"],["SMIC mensuel (151,67h, janv-mai 2026)","1 823,03 €"],["SMIC mensuel (depuis juin 2026)","1 867,02 €"],["Horaire mensuel légal","151,67 h"],["Amende bulletin non remis","jusqu'à 450 €/fiche"]],
+  flow:["Vérifier les mentions obligatoires (identité, SIRET, CCN...)","Contrôler le respect du SMIC (base + éléments à inclure)","Décomposer le net : Grand+ / Grand− / Petit+ / Petit−","Vérifier l'absence de mentions interdites (grève, délégation, mise à pied)"],
+  formulas:[
+    {title:"Contrôle du respect du SMIC", formula:"Base de contrôle = Salaire de base + avantages en nature + commissions + prime de rendement — EXCLUT ancienneté, conditions de travail, heures sup",
+     example:[["Salaire de base (151,67h × 9,50€)","1 440,86 €"],["+ Prime de rendement","200,00 €"],["Base de contrôle","1 640,86 €"],["SMIC mensuel de référence (cours)","1 801,80 €"],["Complément de rémunération à ajouter","160,94 €"]]},
+    {title:"Net à payer — méthode des 4 zones", formula:"NET À PAYER = Grand(+) + Grand(−) + Petit(+) + Petit(−)",
+     example:[["Grand +","Salaire de base, majorations, primes diverses"],["Grand −","Cotisations sociales déductibles"],["Petit +","IJSS subrogées, indemnités non soumises"],["Petit −","Acomptes, avances, CSG/CRDS imposable"]]},
+    {title:"Forfait jours (218 jours)", formula:"218 j = 365 − 104 (we) − 8 (fériés) + 1 (solidarité) − 25 (CP) − 11 (RTT) ; coût jour = salaire annuel / (forfait+CP+fériés)",
+     example:[["Jours travaillés + assimilés (218+25+8)","251 j"],["Coût de la journée (48 000/251)","191,24 €"],["Journée majorée à 25%","239,05 €"]]}
+  ],
+  pitfalls:["Mentions interdites : grève, heures de délégation, mise à pied conservatoire ne doivent JAMAIS apparaître explicitement — utiliser « absence non rémunérée ».","Ne pas confondre SMIC et Salaire Minimum Conventionnel (SMC) : toujours comparer aux deux, la grille conventionnelle peut passer sous le SMIC si elle n'est pas réévaluée.","Le bulletin fait foi devant les prud'hommes ; son absence fait présumer qu'aucun paiement n'est intervenu."]
+},
+{
+  id:"heuresup", label:"Heures sup & complém.", icon:"⏱️", tab:"Heures sup", priority:true,
+  kicker:"⭐ Thème signalé par la formatrice",
+  title:"Heures supplémentaires et complémentaires",
+  def:"Les heures sup sont effectuées <b>à la demande de l'employeur</b> au-delà de 35h, décomptées par <b>semaine civile</b> (lundi 0h → dimanche 24h). Majoration : <b>+25%</b> pour les 8 premières heures sup (mini conventionnel 10%), <b>+50%</b> au-delà. Concerne tous les salariés sauf forfait-jours et cadres dirigeants.",
+  keyfacts:[["Contingent annuel (défaut)","220 h/an"],["Majoration 8 premières HS","+25 % (mini 10%)"],["Majoration au-delà de la 8e HS","+50 %"],["Contrepartie repos (≤20 sal.)","50 % des HS hors contingent"],["Contrepartie repos (>20 sal.)","100 % des HS hors contingent"],["Exonération impôt sur le revenu","7 500 €/an"],["Exonération cotisations salariales","11,31 % du salaire (depuis 2019)"]],
+  flow:["Heures travaillées − 35h = heures sup (semaine civile)","8 premières heures sup → +25%","Heures suivantes → +50%","Total = Σ (heures × taux horaire majoré)"],
+  formulas:[
+    {title:"Taux horaire des heures sup", formula:"Taux HS = (salaire de base + avantages nature + commissions + prime assiduité + prime rendement individuel + primes conditions de travail) / horaire mensuel — EXCLUT ancienneté, 13e mois, prime vacances/fin d'année, panier, précarité",
+     example:[["Salaire de base","1 800,00 €"],["Véhicule de fonction","500,00 €"],["Prime de risque","100,00 €"],["Taux horaire HS (÷151,67h)","15,82 €"],["8h à +25% (19,78€/h)","158,24 €"],["5h à +50% (23,73€/h)","118,65 €"],["Total brut heures sup","2 676,89 €"]]},
+    {title:"Heures sup structurelles (contrat > 35h)", formula:"HS mensuelles = horaire mensualisé − 151,67 h",
+     example:[["Contrat 39h/semaine → horaire mensuel (39×52/12)","169 h"],["HS structurelles","169 − 151,67 = 17,33 h/mois"],["Contrat 37h/semaine","8,66 h/mois"]]},
+    {title:"Contingent annuel & contrepartie en repos", formula:"Au-delà de 220h/an : 50% de repos (≤20 salariés) ou 100% (>20 salariés)",
+     example:[["HS annuelles réalisées","235 h (dépassement de 15h)"],["Entreprise de 15 salariés → repos dû","15 × 50% = 7h30"],["Entreprise de 60 salariés → repos dû","15 × 100% = 15h"]]},
+    {title:"Heures complémentaires (temps partiel)", formula:"Seuil légal 10% de la durée contractuelle (extensible à 1/3 par accord) — majoration 10% puis 25%",
+     example:[["Contrat 26h/semaine, HC max (1/3)","8,67 h"],["HC dans la limite de 10% (2,60h)","majorées +10%"],["HC au-delà (jusqu'à 8,67h)","majorées +25%"]]}
+  ],
+  tables:[
+    {title:"Conversion minutes → centièmes d'heure (indispensable pour chiffrer les HS)", headers:["Minutes","Centièmes"], rows:[
+      ["10 min","0,17"],["15 min","0,25"],["30 min","0,50"],["45 min","0,75"],["1h10","1,17"],["1h15","1,25"]
+    ]}
+  ],
+  pitfalls:["Décompte TOUJOURS par <b>semaine civile</b>, jamais par mois — une semaine incomplète en fin de mois ne compte pas tant que 35h ne sont pas dépassées.","Jour férié dans la semaine : si le total hebdo reste sous 35h malgré des heures en plus de l'horaire journalier, il n'y a AUCUNE heure sup (payées à taux normal).","Ne pas confondre <b>repos compensateur de remplacement</b> (remplace le paiement des HS) et <b>contrepartie obligatoire en repos</b> (s'ajoute, uniquement au-delà du contingent).","Les jours de CP et jours fériés chômés ne comptent PAS comme temps de travail effectif pour le décompte des HS.","HC au-delà du seuil légal sans avenant → risque de requalification du contrat à temps partiel en temps complet."]
+},
+{
+  id:"conges", label:"Congés payés", icon:"🌴", tab:"Congés payés", priority:true,
+  kicker:"⭐ Thème signalé par la formatrice — sujet exclusif d'un cours entier",
+  title:"Acquisition, prise et indemnisation des congés payés",
+  def:"<b>2,5 jours ouvrables</b> acquis par mois de travail effectif (30 j/an = 5 semaines), sur une période de référence du <b>1er juin N-1 au 31 mai N</b>. Le temps partiel a les <b>mêmes droits</b> qu'un temps plein (pas de proratisation des jours). L'indemnité versée (ICP) est la plus favorable entre la méthode du 10e et le maintien de salaire.",
+  keyfacts:[["Acquisition mensuelle","2,5 j ouvrables (2,08 j ouvrés)"],["Plafond annuel","30 j ouvrables = 25 j ouvrés"],["Période de référence","1er juin N-1 → 31 mai N (BTP: 1er avril→31 mars)"],["Congé principal","24 j ouvrables, entre le 1er mai et le 31 oct."],["Taux ICP méthode du 10e","10 % de la rémunération brute de référence"],["Acquisition en maladie non pro (depuis 24/04/2024)","2 j ouvrables/mois (24 j/an), base 80%"]],
+  flow:["Méthode du 10e : 10% de la rémunération brute de la période de référence","Méthode du maintien de salaire (salaire du mois précédent le départ)","Comparer les deux montants","= verser le montant le plus favorable au salarié"],
+  formulas:[
+    {title:"ICP — méthode du 10e", formula:"ICP = (Rémunération brute période de référence × 10%) / jours acquis × jours de congés pris",
+     example:[["Rémunération brute annuelle de référence","24 000,00 €"],["10e total (pour les 30j acquis)","2 400,00 €"],["Pour 12 jours ouvrables pris","2400/30 × 12 = 960,00 €"],["Maintien de salaire (comparatif, méthode du 26e : 1820/26×12)","840,00 €"],["Montant retenu (le plus favorable)","960,00 €"]]},
+    {title:"Décompte des jours de congés pris", formula:"1er jour décompté = 1er jour où le salarié aurait dû travailler ; dernier jour = veille de la reprise (samedis comptent, dimanches non)",
+     example:[["Départ jeudi 30 juin soir → reprise mercredi 13 juillet","décompte du 1er au 12 juillet"],["Total décompté","10 jours ouvrables"]]},
+    {title:"Jours de fractionnement", formula:"Condition : 12 j ouvrables consécutifs pris entre le 1er mai et le 31 oct. Reliquat hors période : 3-5j → +1 jour ; 6j ou + → +2 jours",
+     example:[["Reliquat du congé principal pris hors période légale","12 jours"],["Jours de fractionnement obtenus (≥6j)","+2 jours"]]}
+  ],
+  tables:[
+    {title:"Salaire de référence du 10e : inclure / exclure", headers:["Inclure","Exclure"], rows:[
+      ["Salaire de base","ICP de l'année précédente"],
+      ["Heures sup/complém. habituelles","Indemnités de rupture"],
+      ["Primes d'activité, avantages en nature","IJSS, frais professionnels, prime de vacances"]
+    ]},
+    {title:"Impact d'un arrêt maladie sur l'acquisition (réforme du 22/04/2024)", headers:["Situation","Acquisition CP","Valorisation du salaire de référence"], rows:[
+      ["Maladie non professionnelle","2 j ouvrables/mois (24 j/an max)","80 % du brut théorique"],
+      ["AT / maladie professionnelle","2,5 j ouvrables/mois, sans limite","100 % du brut théorique"]
+    ]}
+  ],
+  pitfalls:["Toujours comparer les 2 méthodes (10e / maintien) et retenir la plus favorable — jamais une seule par défaut.","Le salaire de référence du 10e ne doit jamais être le brut réellement versé en cas d'absence AT/maladie pro/maladie non pro : il faut reconstituer un brut théorique (100% ou 80% selon le cas).","Un arrêt maladie AVANT le départ en congés entraîne un report automatique des congés (jamais une perte) ; PENDANT les congés, cela dépend de la convention collective (jurisprudence encore incertaine en droit français).","Ne pas confondre jours ouvrables (6j/semaine) et jours ouvrés (5j/semaine) lors des conversions.","L'ICCP (fin de contrat, versée au solde de tout compte) suit exactement les mêmes règles de calcul que l'ICP."]
+},
+{
+  id:"maladie", label:"Maladie: IJSS & complément", icon:"🩺", tab:"Maladie / IJSS",
+  kicker:"Retenue d'absence, IJSS, complément employeur",
+  title:"Arrêt maladie : retenue, IJSS et complément employeur",
+  def:"En cas d'arrêt, on calcule d'abord la <b>retenue pour absence</b>, puis les <b>IJSS</b> versées par la CPAM selon le motif (maladie non pro / AT-MP / maternité), puis le <b>complément employeur</b> (maintien de salaire) sous conditions d'ancienneté.",
+  keyfacts:[["Diviseur maladie non pro / maternité","91,25 (moyenne 3 mois)"],["Diviseur AT/MP","30,42 (mois précédent seul)"],["Carence IJSS maladie non pro","3 jours calendaires"],["Carence IJSS AT/MP, maternité","0 jour"],["CSG/CRDS sur IJSS","6,70 % → IJSS nette = brute × 93,30%"],["Carence complément employeur légal","7 jours calendaires (0 en AT/MP)"],["Ancienneté minimale complément","1 an"]],
+  flow:["Salaire de référence (3 mois ou mois précédent)","÷ 91,25 ou 30,42","× taux (50% / 60-80% / 79%)","IJSS brute → × 93,30% = IJSS nette","+ Complément employeur = garantie de ressources − IJSS brutes"],
+  formulas:[
+    {title:"IJSS — Maladie non professionnelle", formula:"IJSS brute = (Σ salaires bruts des 3 derniers mois, chacun plafonné à 1,4×SMIC) / 91,25 × 50%",
+     example:[["3 mois plafonnés à 1,4 SMIC (2 522,52€ chacun)","7 567,56 €"],["Salaire journalier de référence","82,93 €"],["IJSS brute (plafond max atteint)","41,47 €/j"],["IJSS nette (×93,30%)","38,69 €/j"]]},
+    {title:"IJSS — AT / Maladie professionnelle", formula:"SJB = brut du mois précédent / 30,42 ; Gain journalier net = SJB − 21% ; IJSS = SJB×60% (28 premiers j) puis ×80% (dès le 29e), plafonnée au gain journalier net",
+     example:[["Salaire journalier de base (5000/30,42)","164,37 €"],["Gain journalier net (−21%)","129,85 €"],["28 premiers jours (×60%)","98,62 €/j"],["Dès le 29e jour (×80%=131,49, plafonné à 129,85)","129,85 €/j"]]},
+    {title:"IJSS — Maternité / Paternité / Adoption", formula:"IJSS brute = (Σ salaires bruts 3 mois, plafonnés au PMSS) × 79% / 91,25 — aucune carence",
+     example:[["3 mois plafonnés au PMSS","11 275,00 €"],["IJSS brute/jour","97,61 €"],["Sur 15 jours indemnisés","1 464,15 € bruts → 1 366,05 € nets"]]},
+    {title:"Complément employeur — garantie de ressources", formula:"Complément dû = Garantie de ressources (ex. 90% du brut) − IJSS brutes versées sur la période",
+     example:[["Ancienneté 1-5 ans → durée de maintien","30j à 90% + 30j à 66,67% = 60 j"],["Ancienneté 11-15 ans","50j à 90% + 50j à 2/3 = 100 j"],["Ancienneté 31 ans et +","90j à 90% + 90j à 2/3 = 180 j"]]}
+  ],
+  tables:[
+    {title:"Les 8 méthodes de calcul de la retenue pour absence", headers:["Méthode","Formule"], rows:[
+      ["Heures réelles","(Salaire mensuel ÷ heures réelles du mois) × heures d'absence"],
+      ["Heures moyennes","(Salaire mensuel ÷ heures mensualisées) × heures d'absence"],
+      ["Jours ouvrés réels","(Salaire mensuel ÷ jours ouvrés réels du mois) × jours d'absence"],
+      ["Jours ouvrés moyens","(Salaire mensuel ÷ 21,67) × jours d'absence"],
+      ["Jours ouvrables réels","(Salaire mensuel ÷ jours ouvrables réels du mois) × jours d'absence"],
+      ["Jours ouvrables moyens","(Salaire mensuel ÷ 26) × jours d'absence"],
+      ["Jours calendaires réels","(Salaire mensuel ÷ jours calendaires réels du mois) × jours d'absence"],
+      ["Jours calendaires moyens","(Salaire mensuel ÷ 30) × jours d'absence"]
+    ]}
+  ],
+  pitfalls:["Ne pas confondre le diviseur 91,25 (maladie non pro/maternité, moyenne 3 mois) et 30,42 (AT/MP, mois précédent seul).","Carence IJSS (3j) ≠ carence complément employeur (7j) : deux notions et durées différentes.","Le jour de l'accident du travail est payé à 100% par l'employeur seul (ni retenue, ni IJSS ce jour précis).","⚠️ Le support de cours contient une incohérence entre 1,4×SMIC (utilisé dans les exemples chiffrés) et 1,8×SMIC (cité dans un tableau de synthèse) pour le plafond du salaire de référence en maladie non pro — à vérifier avec la formatrice, mais reproduire la méthode des exemples chiffrés (1,4×SMIC) en cas de doute.","Le salaire rétabli doit être reconstitué en cas d'absence AUTORISÉE non rémunérée (grève, maladie...), mais PAS en cas d'absence non autorisée (mise à pied disciplinaire)."]
+},
+{
+  id:"outils", label:"Outils de calcul", icon:"🧮", tab:"Outils",
+  kicker:"Références transversales",
+  title:"Conversion minutes/centièmes & méthodes de retenue",
+  def:"Deux outils utilisés dans presque tous les calculs de paie : la conversion minutes ↔ centièmes d'heure (pour chiffrer des heures sup ou une retenue), et le choix cohérent d'une méthode de calcul de retenue pour absence.",
+  flow:["Repérer l'unité de départ (minutes ou jours)","Choisir la méthode adaptée (réelle vs moyenne, heures vs jours)","Appliquer la même méthode à tout le bulletin","Vérifier la cohérence du résultat"],
+  formulas:[
+    {title:"Conversion minutes → centièmes", formula:"Centième = (minutes ÷ 60) × 100, arrondi à l'unité",
+     example:[["30 min","0,50"],["45 min","0,75"],["1h10","1,17"],["2,50 (centièmes)","2h30"]]}
+  ],
+  tables:[
+    {title:"Table de conversion minutes ↔ centièmes", headers:["Minutes","Centièmes"], rows:[
+      ["5 min","0,08"],["10 min","0,17"],["15 min","0,25"],["20 min","0,33"],["25 min","0,42"],["30 min","0,50"],["35 min","0,58"],["40 min","0,67"],["45 min","0,75"],["50 min","0,83"],["55 min","0,92"],["60 min","1,00"]
+    ]}
+  ],
+  pitfalls:["Confondre centièmes (base 100) et minutes (base 60) : 30 min = 0,50 (pas 0,30).","Une seule méthode de retenue doit être appliquée de façon cohérente sur tout le bulletin (ne pas mélanger jours ouvrés/ouvrables selon les cas)."]
+},
+{
+  id:"quiz", label:"Entraînement", icon:"🎮", tab:"Entraînement"
+}
+];
+
+const QUESTIONS = {
+cotis:[
+ {q:"Un avantage en nature (véhicule de fonction) doit-il être intégré à la base de cotisation ?",choices:["Oui, il faut d'abord l'intégrer au brut avant de cotiser dessus","Non, jamais","Oui, mais seulement s'il dépasse 500 €"],a:0,exp:"Méthode en 4 étapes du cours : évaluer l'avantage, l'intégrer au brut, cotiser dessus, puis le déduire du net."},
+ {q:"Salaire de base 3 000 € + prime exceptionnelle 500 €. Quelle est la rémunération brute totale (assiette) ?",choices:["3 000 €","3 500 €","3 050 €"],a:1,exp:"3000+500 = 3 500 € (exemple du cours)."},
+ {q:"Quel est le taux de CSG déductible ?",choices:["1,75 %","6,80 %","2,90 %"],a:1,exp:"CSG déductible = 6,80 % ; CSG+CRDS non déductibles = 2,90 % (2,40+0,50)."},
+ {q:"Sur quelle base calcule-t-on la CSG/CRDS (avec abattement) ?",choices:["Brut × 100 %","Brut × 98,25 % (limite 4 PASS)","Brut × 90 %"],a:1,exp:"Abattement de 1,75% pour frais professionnels, limité à 4 PASS."},
+ {q:"L'indemnité légale de licenciement est-elle soumise à cotisations sociales ?",choices:["Oui, toujours","Non, elle est exclue (dans les limites légales)","Seulement pour les cadres"],a:1,exp:"L'indemnité légale de licenciement fait partie des indemnités non soumises à cotisations."},
+ {q:"Depuis quand la Tranche C de l'AGIRC-ARRCO n'existe-t-elle plus ?",choices:["2015","1er janvier 2019","2022"],a:1,exp:"Suppression au 1er janvier 2019 avec la fusion AGIRC-ARRCO."}
+],
+plafond:[
+ {q:"Quel est le PMSS 2026 ?",choices:["3 925 €","4 005 €","4 500 €"],a:1,exp:"PMSS 2026 = 4 005 € (PASS = 48 060 €)."},
+ {q:"Un salarié entre le 5 mars (mois de 31 jours). Quel est son plafond proratisé ?",choices:["4 005 €","3 488,22 €","3 140,00 €"],a:1,exp:"4005 × 27/31 = 3 488,22 € (présence du 5 au 31 = 27 jours)."},
+ {q:"Quelle est la différence entre TB et T2 ?",choices:["Aucune, c'est la même chose","TB est plafonnée à 4 PMSS, T2 à 8 PMSS (TA=T1 jusqu'à 1 PMSS)","TB concerne les cadres, T2 les non-cadres"],a:1,exp:"TA/T1 = jusqu'à 1 PMSS ; TB va jusqu'à 4 PMSS ; T2 va jusqu'à 8 PMSS."},
+ {q:"Un salarié à temps partiel bénéficie d'un maintien de salaire pendant sa maladie. Faut-il proratiser le plafond ?",choices:["Oui, systématiquement","Non : la proratisation ne s'applique qu'à l'absence non rémunérée sans maintien","Seulement s'il a moins d'un an d'ancienneté"],a:1,exp:"Piège classique du cours : pas de proratisation en cas de maintien de salaire."},
+ {q:"Salarié à 114h/mois (104h contrat + 10h complémentaires). Quel est son plafond proratisé ?",choices:["4 005 €","3 010,29 €","2 800,00 €"],a:1,exp:"4005 × 114/151,67 = 3 010,29 €."}
+],
+bulletin:[
+ {q:"Quel article du Code du travail impose la remise d'un bulletin de paie ?",choices:["L1226-1","L3243-2","L3141-1"],a:1,exp:"Article L3243-2 du Code du travail."},
+ {q:"Une absence pour exercice du droit de grève : comment doit-elle apparaître sur le bulletin ?",choices:["Mention explicite « grève »","« Absence non rémunérée » (jamais explicitement)","Elle ne doit pas apparaître du tout"],a:1,exp:"Mention interdite : le motif grève ne doit jamais apparaître explicitement, sous peine de caractère discriminatoire."},
+ {q:"Quelle est la méthode des 4 zones pour calculer le net à payer ?",choices:["Brut - charges = net","Grand(+) + Grand(−) + Petit(+) + Petit(−)","Net = brut × 0,78"],a:1,exp:"Grand+ (brut social), Grand- (cotisations), Petit+ (IJSS/indemnités non soumises), Petit- (acomptes, CSG/CRDS imposable)."},
+ {q:"Quel est le SMIC mensuel en vigueur depuis juin 2026 (151,67h) ?",choices:["1 823,03 €","1 867,02 €","1 801,80 €"],a:1,exp:"1 867,02 € depuis juin 2026 (1 823,03 € de janvier à mai 2026)."},
+ {q:"Comment se calcule le forfait de 218 jours ?",choices:["365 − 104(we) − 8(fériés) + 1(solidarité) − 25(CP) − 11(RTT)","365 − 52(dimanches)","218 = 12 × 18,17"],a:0,exp:"Formule exacte du cours pour retrouver 218 jours."}
+],
+heuresup:[
+ {q:"Sur quelle base se décomptent les heures supplémentaires ?",choices:["Le mois civil","La semaine civile (lundi 0h à dimanche 24h)","L'année civile"],a:1,exp:"Toujours la semaine civile, jamais le mois."},
+ {q:"Taux horaire 15,82 €, 8h sup à +25% et 5h sup à +50%. Quel est le montant total des heures sup ?",choices:["232,90 €","276,89 €","198,50 €"],a:1,exp:"8×15,82×1,25=158,24€ + 5×15,82×1,50=118,65€ → total 276,89€ (arrondi de l'exemple du cours : 2676,89€ de brut total avec les autres éléments)."},
+ {q:"Quel est le contingent annuel légal d'heures sup à défaut d'accord ?",choices:["130 h/an","220 h/an","350 h/an"],a:1,exp:"220 heures/an à défaut d'accord d'entreprise ou de branche."},
+ {q:"Entreprise de 15 salariés, 235h sup annuelles (dépassement de 15h). Quelle contrepartie en repos ?",choices:["7h30 (50%)","15h (100%)","0h, aucune contrepartie"],a:0,exp:"Effectif ≤20 salariés → 50% des heures au-delà du contingent = 7h30."},
+ {q:"Quels éléments sont EXCLUS du taux horaire de calcul des heures sup ?",choices:["Le salaire de base","La prime d'ancienneté, le 13e mois, la prime de vacances/panier","Les avantages en nature"],a:1,exp:"Exclus : ancienneté, 13e mois, prime de vacances/fin d'année, panier, précarité."},
+ {q:"Contrat de 39h/semaine : combien d'heures sup structurelles par mois ?",choices:["8,66 h","17,33 h","4 h"],a:1,exp:"Horaire mensuel 39×52/12=169h ; 169−151,67=17,33h."},
+ {q:"Une semaine comporte un jour férié chômé ; le total hebdo reste sous 35h malgré des heures en plus de l'horaire journalier habituel. Y a-t-il des heures sup ?",choices:["Oui, automatiquement","Non : aucune heure sup tant que 35h ne sont pas dépassées (payées à taux normal)","Oui, mais seulement à 25%"],a:1,exp:"Piège du cours : sous 35h hebdo, pas d'HS, même avec un dépassement de l'horaire journalier."},
+ {q:"Quel est le plafond d'exonération d'impôt sur le revenu pour les heures sup/complémentaires ?",choices:["3 000 €/an","7 500 €/an","15 000 €/an"],a:1,exp:"7 500 € de net imposable par an."},
+ {q:"Quel est le seuil légal des heures complémentaires pour un temps partiel (à défaut d'accord) ?",choices:["10 % de la durée contractuelle","50 % de la durée contractuelle","Aucun seuil"],a:0,exp:"10% de la durée contractuelle, extensible à 1/3 par accord ou convention collective."},
+ {q:"1h10 en centièmes d'heure, cela vaut :",choices:["1,10","1,17","1,60"],a:1,exp:"10 minutes = 0,17 centième ; donc 1h10 = 1,17."}
+],
+conges:[
+ {q:"Combien de jours ouvrables de congés payés sont acquis par mois de travail effectif ?",choices:["2 jours","2,5 jours","3 jours"],a:1,exp:"2,5 jours ouvrables/mois (2,08 j ouvrés), plafonné à 30j/an."},
+ {q:"Quelle est la période de référence légale d'acquisition des congés payés ?",choices:["Du 1er janvier au 31 décembre","Du 1er juin N-1 au 31 mai N","Du 1er avril au 31 mars"],a:1,exp:"Période légale : 1er juin N-1 au 31 mai N (exception BTP : 1er avril → 31 mars)."},
+ {q:"Comment l'employeur détermine-t-il le montant de l'indemnité de congés payés (ICP) ?",choices:["Toujours le maintien de salaire","Toujours la règle du 10e","Il compare les deux méthodes et verse la plus favorable au salarié"],a:2,exp:"Comparaison systématique 10e vs maintien, on retient le montant le plus élevé."},
+ {q:"Rémunération brute annuelle de référence : 24 000 €. ICP totale (méthode du 10e) pour les 30 jours acquis ?",choices:["1 200 €","2 400 €","3 600 €"],a:1,exp:"24 000 × 10% = 2 400 €."},
+ {q:"Sur ces 2 400 €, quelle indemnité pour 12 jours ouvrables pris (méthode du 10e) ?",choices:["480 €","960 €","1 200 €"],a:1,exp:"2400 ÷ 30 × 12 = 960 €."},
+ {q:"Un salarié à temps partiel a-t-il moins de jours de congés payés qu'un temps plein ?",choices:["Oui, proratisés selon l'horaire","Non, mêmes droits qu'un temps plein","Oui, mais seulement la 1ère année"],a:1,exp:"Le temps partiel a les mêmes droits à congés qu'un temps plein (pas de proratisation des jours)."},
+ {q:"Quelles sont les conditions pour bénéficier de jours de fractionnement, et combien ?",choices:["12 jours ouvrables consécutifs pris entre le 1er mai et le 31 octobre ; +1 jour (3-5j hors période) ou +2 jours (6j ou +)","Aucune condition, automatique chaque année","Il faut avoir posé tous ses congés en une fois"],a:0,exp:"Condition de 12 jours consécutifs en période légale, puis barème selon le reliquat pris hors période."},
+ {q:"Depuis la réforme du 22 avril 2024, comment un arrêt maladie NON professionnelle impacte-t-il l'acquisition de CP ?",choices:["Aucune acquisition possible","2 jours ouvrables/mois (24j/an max), salaire de référence valorisé à 80%","Acquisition complète comme un temps plein"],a:1,exp:"Loi n°2024-364 : 2j ouvrables/mois plafonnés à 24j/an, valorisation à 80% du brut théorique."},
+ {q:"Un salarié tombe malade juste avant son départ en congés prévu. Que deviennent ses congés ?",choices:["Ils sont perdus","Ils sont reportés (l'arrêt maladie a priorité)","Ils sont automatiquement remplacés par une indemnité"],a:1,exp:"L'arrêt maladie suspend et reporte la prise des congés, jamais une perte."},
+ {q:"Qu'est-ce que l'ICCP et quand est-elle versée ?",choices:["Une indemnité pour heures sup, versée chaque mois","L'indemnité compensatrice de congés payés non pris, versée au solde de tout compte à la rupture du contrat","Une prime de fin d'année"],a:1,exp:"ICCP = congés acquis et non pris à la rupture du contrat, mêmes règles de calcul que l'ICP."},
+ {q:"Quels éléments sont EXCLUS du salaire de référence pour le calcul du 10e ?",choices:["Le salaire de base","L'ICP de l'année précédente, les indemnités de rupture, les IJSS, les frais professionnels","Les heures supplémentaires habituelles"],a:1,exp:"Ces éléments ne doivent pas être comptés une seconde fois ou ne relèvent pas de la rémunération d'activité."},
+ {q:"Jours ouvrables et jours ouvrés désignent-ils la même chose ?",choices:["Oui, c'est identique","Non : ouvrables = 6j/semaine (samedi inclus), ouvrés = 5j/semaine","Oui, seule la terminologie change selon les régions"],a:1,exp:"Bien distinguer les deux décomptes lors des conversions."}
+],
+maladie:[
+ {q:"Quel est le délai de carence IJSS en cas de maladie non professionnelle ?",choices:["0 jour","3 jours calendaires","7 jours calendaires"],a:1,exp:"3 jours calendaires (0 jour en AT/MP, maternité, paternité)."},
+ {q:"Quelle est la formule de l'IJSS brute en maladie non professionnelle ?",choices:["(Σ 3 derniers mois plafonnés à 1,4 SMIC) ÷ 91,25 × 50%","Salaire du mois ÷ 30 × 100%","Salaire annuel ÷ 365"],a:0,exp:"Diviseur 91,25 (moyenne trimestrielle), taux 50%, chaque mois plafonné avant la somme."},
+ {q:"Quel diviseur utilise-t-on pour le salaire journalier de base en AT/MP ?",choices:["91,25","30,42","26"],a:1,exp:"30,42 (mois précédent seul), contre 91,25 pour la maladie non pro (moyenne 3 mois)."},
+ {q:"Comment passe-t-on des IJSS brutes aux IJSS nettes ?",choices:["IJSS nette = IJSS brute × 93,30% (CSG/CRDS 6,70%)","IJSS nette = IJSS brute × 79%","Elles sont identiques"],a:0,exp:"Déduction de la CSG/CRDS à taux réduit de 6,70%."},
+ {q:"Quel est le taux d'indemnisation IJSS en AT/MP après le 29e jour d'arrêt ?",choices:["50%","60%","80% (plafonné au gain journalier net)"],a:2,exp:"60% les 28 premiers jours, puis 80% dès le 29e jour, plafonné au gain journalier net (SJB−21%)."},
+ {q:"Quelle est la durée du complément employeur légal pour un salarié ayant entre 11 et 15 ans d'ancienneté ?",choices:["30j à 90% + 30j à 2/3","50j à 90% + 50j à 2/3 (100j au total)","100j à 90%"],a:1,exp:"Barème du cours : 50j+50j = 100 jours pour 11-15 ans d'ancienneté."},
+ {q:"Qu'est-ce que la subrogation ?",choices:["Le salarié renonce à ses IJSS","L'employeur perçoit les IJSS à la place du salarié et les reverse en net sur le bulletin","La CPAM verse directement le complément employeur"],a:1,exp:"Condition : le salaire maintenu doit être au moins égal aux IJSS versées par la CPAM."},
+ {q:"Le jour de l'accident du travail lui-même, qui paie le salarié ?",choices:["La CPAM à 60%","L'employeur seul, à 100%","Personne, carence de 3 jours"],a:1,exp:"Le jour de l'accident est payé à 100% par l'employeur seul, sans IJSS ni retenue ce jour-là."},
+ {q:"Quel est le diviseur pour le calcul des IJSS maternité/paternité ?",choices:["91,25, avec plafonnement au PMSS","30,42","365"],a:0,exp:"Comme la maladie non pro (91,25) mais plafonnement au PMSS (pas 1,4 SMIC) et taux de 79% (100%-21%)."},
+ {q:"Quelles sont les conditions du complément employeur légal ?",choices:["1 an d'ancienneté, transmission de l'arrêt sous 48h, bénéficier des IJSS, soins en France/UE","Aucune condition","Uniquement réservé aux cadres"],a:0,exp:"4 conditions cumulatives du cours (art. L1226-1)."}
+],
+outils:[
+ {q:"Quel diviseur moyen utilise-t-on pour les jours ouvrés dans les 8 méthodes de retenue ?",choices:["21,67","26","30"],a:0,exp:"21,67 pour les jours ouvrés moyens (contre 26 pour les jours ouvrables moyens, 30 pour les jours calendaires moyens)."},
+ {q:"30 minutes en centièmes d'heure, cela vaut :",choices:["0,30","0,50","0,60"],a:1,exp:"30/60×100 = 50 centièmes = 0,50."},
+ {q:"Pourquoi utilise-t-on les centièmes plutôt que les minutes en paie ?",choices:["Pour pouvoir multiplier directement la durée par un taux horaire (base 100)","Par habitude sans raison particulière","Car les minutes sont interdites en paie"],a:0,exp:"Base 100 plus simple à multiplier qu'une base sexagésimale (60)."}
+]
+};
+
+/* ============ STATE ============ */
+const state = JSON.parse(localStorage.getItem("paieRevisionState") || "{}");
+state.xp = state.xp || 0;
+state.streak = state.streak || 0;
+state.badges = state.badges || {};
+state.checklist = state.checklist || {};
+let currentTab = "home";
+let quizTheme = null, quizIdx = 0, quizScore = 0, quizPool = [];
+
+function save(){ localStorage.setItem("paieRevisionState", JSON.stringify(state)); renderTopStats(); }
+
+function toggleTheme(){
+  const root = document.documentElement;
+  const cur = root.getAttribute("data-theme");
+  root.setAttribute("data-theme", cur === "dark" ? "light" : "dark");
+}
+
+/* ============ NAV ============ */
+function renderNav(){
+  const nav = document.getElementById("tabnav");
+  nav.innerHTML = THEMES.map(t => `
+    <button class="tabbtn ${t.id===currentTab?'active':''} ${t.priority?'priority':''} ${state.badges[t.id]?'done':''}"
+      onclick="showTab('${t.id}')">${t.icon} ${t.tab}</button>
+  `).join("");
+}
+
+function showTab(id){
+  currentTab = id;
+  renderNav();
+  const main = document.getElementById("main");
+  const t = THEMES.find(x=>x.id===id);
+  if(id==="home") main.innerHTML = renderHome();
+  else if(id==="quiz") main.innerHTML = renderQuizHome();
+  else main.innerHTML = renderTheme(t);
+}
+
+/* ============ HOME ============ */
+const HEADLINE_FIGURES = [
+  ["PMSS 2026","4 005 €"],["PASS 2026","48 060 €"],["4 PMSS","16 020 €"],
+  ["SMIC mensuel (depuis juin 2026)","1 867,02 €"],["Horaire mensuel légal","151,67 h"],
+  ["IJSS plafond journalier brut","41,47 €"],["IJSS nette","brute × 93,30 %"],["Contingent HS annuel","220 h"]
+];
+function renderHome(){
+  const items = [
+    ["annales","Relire au moins 1 exemple chiffré par thème"],
+    ["priorite","Refaire les calculs Heures sup (majoration 25%/50%, contingent) + Congés payés (10e vs maintien)"],
+    ["quiz","Faire le quiz Entraînement sur chaque thème (viser 100%)"],
+    ["ijss","Revoir la méthode IJSS (91,25 / 30,42) + complément employeur pas à pas"],
+    ["controle","Relire la checklist de contrôle de bulletin (SMIC, mentions, 4 zones)"]
+  ];
+  return `
+  <div class="hero">
+    <div class="hero-card">
+      <div class="kicker">Examen dans 24h — Titre ARH, IFOCOP</div>
+      <h1 class="display">Ta fiche de révision paie</h1>
+      <p class="lead">Contenu construit à partir de tes cours IFOCOP réels. Un thème par onglet : définition, schéma, formules et exemples chiffrés. Termine par l'onglet <b>Entraînement</b> pour valider tes acquis en mode quiz.</p>
+      <div class="priority-banner">🎯 <div><b>Message de la formatrice :</b> concentre-toi en priorité sur <b>les heures supplémentaires</b> (contrôle paie + fiche de révision) et <b>les congés payés</b> (sujet exclusif du cours « rémunération avancée ») — ces deux onglets sont marqués d'une étoile ⭐ dans le menu.</div></div>
+      <div class="subhead">8 chiffres à connaître par cœur</div>
+      <div class="keyfacts">${HEADLINE_FIGURES.map(([l,v])=>`<div class="kf"><div class="v mono">${v}</div><div class="l">${l}</div></div>`).join("")}</div>
+      <ul class="checklist" id="checklist">
+        ${items.map(([k,label])=>`<li><span class="chk ${state.checklist[k]?'on':''}" onclick="toggleCheck('${k}')">${state.checklist[k]?'✓':''}</span> ${label}</li>`).join("")}
+      </ul>
+    </div>
+    <div class="hero-card">
+      <h3 class="display" style="font-size:18px;margin-bottom:10px;">Badges de maîtrise</h3>
+      <div class="def">Débloque un badge par thème en réussissant le quiz correspondant (≥70%).</div>
+      <div class="badge-shelf">
+        ${THEMES.filter(t=>QUESTIONS[t.id]).map(t=>`
+          <div class="badge ${state.badges[t.id]?'unlocked':''}">
+            <div class="badge-ic">${t.icon}</div>
+            <span>${t.tab}</span>
+          </div>`).join("")}
+      </div>
+    </div>
+  </div>`;
+}
+function toggleCheck(k){ state.checklist[k] = !state.checklist[k]; save(); showTab("home"); }
+
+/* ============ THEME PAGE ============ */
+function renderTheme(t){
+  const keyfactsHtml = t.keyfacts ? `<div class="keyfacts">${t.keyfacts.map(([l,v])=>`<div class="kf"><div class="v mono">${v}</div><div class="l">${l}</div></div>`).join("")}</div>` : "";
+  const formulasHtml = (t.formulas||[]).map(f => `
+    <div class="card">
+      <h3>${f.title}</h3>
+      <div class="formula-box mono"><span class="f">${f.formula}</span></div>
+      <div class="example mono">
+        ${f.example.map(([lbl,val])=>`<div class="line"><span>${lbl}</span><span>${val}</span></div>`).join("")}
+      </div>
+    </div>`).join("");
+  const tablesHtml = (t.tables||[]).map(tb => `
+    <div class="card">
+      <h3>${tb.title}</h3>
+      <div class="reftable-wrap"><table class="reftable mono"><thead><tr>${tb.headers.map(h=>`<th>${h}</th>`).join("")}</tr></thead>
+      <tbody>${tb.rows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join("")}</tr>`).join("")}</tbody></table></div>
+    </div>`).join("");
+  return `
+  <div class="card">
+    <div class="kicker">${t.kicker}</div>
+    <h2 class="display">${t.title}</h2>
+    <p class="def">${t.def}</p>
+    ${keyfactsHtml}
+    <h3 style="margin-top:14px;">Schéma du raisonnement</h3>
+    <div class="flow">${t.flow.map((s,i)=>`<span class="step">${s}</span>${i<t.flow.length-1?'<span class="arrow">→</span>':''}`).join("")}</div>
+  </div>
+  <div class="grid2">${formulasHtml}</div>
+  ${tablesHtml ? `<div class="grid2">${tablesHtml}</div>` : ""}
+  <div class="card">
+    <h3>Pièges fréquents</h3>
+    ${t.pitfalls.map(p=>`<div class="pitfall">⚠️ <div>${p}</div></div>`).join("")}
+    ${QUESTIONS[t.id] ? `<div style="margin-top:14px;"><button class="btn" onclick="startQuiz('${t.id}')">🎮 M'entraîner sur ce thème</button></div>` : ""}
+  </div>`;
+}
+
+/* ============ QUIZ ============ */
+function renderQuizHome(){
+  const themesWithQuiz = THEMES.filter(t=>QUESTIONS[t.id]);
+  return `
+  <div class="quiz-shell">
+    <div class="quiz-side">
+      <h3>Choisir un thème</h3>
+      <div class="theme-pick">
+        ${themesWithQuiz.map(t=>`<button class="${quizTheme===t.id?'sel':''}" onclick="startQuiz('${t.id}')">${t.icon} ${t.tab} ${state.badges[t.id]?'✓':''}</button>`).join("")}
+        <button class="${quizTheme==='all'?'sel':''}" onclick="startQuiz('all')">🏆 Tout mélangé</button>
+      </div>
+    </div>
+    <div id="quizArea">
+      <div class="qcard">
+        <p class="def">Choisis un thème à gauche pour démarrer un quiz chronométré par toi-même. Chaque bonne réponse rapporte de l'XP et fait grimper ta série 🔥.</p>
+      </div>
+    </div>
+  </div>`;
+}
+
+function startQuiz(themeId){
+  currentTab = "quiz";
+  quizTheme = themeId;
+  if(themeId==="all"){
+    quizPool = [];
+    Object.keys(QUESTIONS).forEach(k => QUESTIONS[k].forEach(q => quizPool.push({...q, theme:k})));
+    quizPool.sort(()=>Math.random()-0.5);
+  } else {
+    quizPool = QUESTIONS[themeId].map(q=>({...q, theme:themeId}));
+  }
+  quizIdx = 0; quizScore = 0;
+  showTab("quiz");
+  renderQuestion();
+}
+
+function renderQuestion(){
+  const area = document.getElementById("quizArea") || document.getElementById("main");
+  if(quizIdx >= quizPool.length){
+    const pct = Math.round(100*quizScore/quizPool.length);
+    if(pct >= 70 && quizTheme!=="all"){ state.badges[quizTheme] = true; }
+    state.xp += quizScore*10;
+    save();
+    area.innerHTML = `
+      <div class="qcard done-screen">
+        <div class="kicker">Résultat</div>
+        <div class="score display">${quizScore} / ${quizPool.length}</div>
+        <p class="def">${pct>=70 ? "Bravo, thème plutôt maîtrisé 🎉" : "Encore un petit tour pour verrouiller ce thème 💪"}</p>
+        <button class="btn" onclick="renderQuizHomeInline()">Retour aux thèmes</button>
+        <button class="btn" style="margin-left:8px;background:var(--accent);" onclick="startQuiz('${quizTheme}')">Recommencer</button>
+      </div>`;
+    return;
+  }
+  const q = quizPool[quizIdx];
+  const html = `
+    <div class="quiz-shell">
+      <div class="quiz-side">
+        <h3>Choisir un thème</h3>
+        <div class="theme-pick">
+          ${THEMES.filter(t=>QUESTIONS[t.id]).map(t=>`<button class="${quizTheme===t.id?'sel':''}" onclick="startQuiz('${t.id}')">${t.icon} ${t.tab} ${state.badges[t.id]?'✓':''}</button>`).join("")}
+          <button class="${quizTheme==='all'?'sel':''}" onclick="startQuiz('all')">🏆 Tout mélangé</button>
+        </div>
+      </div>
+      <div class="qcard" id="qcard">
+        <div class="qmeta"><span>Question ${quizIdx+1} / ${quizPool.length}</span><span class="streak-flame">🔥 ${state.streak}</span></div>
+        <div class="qtext">${q.q}</div>
+        <div class="choices" id="choices">
+          ${q.choices.map((c,i)=>`<button class="choice" onclick="answer(${i})">${c}</button>`).join("")}
+        </div>
+        <div class="qfeedback" id="feedback"></div>
+        <div class="qactions"><button class="btn" id="nextBtn" disabled onclick="nextQuestion()">Suivant →</button></div>
+      </div>
+    </div>`;
+  document.getElementById("main").innerHTML = html;
+}
+function renderQuizHomeInline(){ quizTheme=null; showTab("quiz"); }
+
+function answer(i){
+  const q = quizPool[quizIdx];
+  const buttons = document.querySelectorAll("#choices .choice");
+  buttons.forEach((b,idx)=>{
+    b.disabled = true;
+    if(idx===q.a) b.classList.add("correct");
+    else if(idx===i) b.classList.add("wrong");
+  });
+  const fb = document.getElementById("feedback");
+  fb.classList.add("show");
+  if(i===q.a){
+    fb.classList.add("ok"); fb.innerHTML = `✅ ${q.exp}`;
+    quizScore++; state.streak++;
+  } else {
+    fb.classList.add("ko"); fb.innerHTML = `❌ ${q.exp}`;
+    state.streak = 0;
+  }
+  save();
+  document.getElementById("nextBtn").disabled = false;
+}
+function nextQuestion(){ quizIdx++; renderQuestion(); }
+
+/* ============ TOP STATS ============ */
+function renderTopStats(){
+  document.getElementById("streakCount").textContent = state.streak;
+  document.getElementById("xpCount").textContent = state.xp;
+  const totalPossible = Object.values(QUESTIONS).reduce((a,b)=>a+b.length,0)*10;
+  document.getElementById("xpbar-fill").style.width = Math.min(100, Math.round(100*state.xp/totalPossible)) + "%";
+}
+
+renderNav();
+showTab("home");
+renderTopStats();
+</script>
+</body>
+</html>
