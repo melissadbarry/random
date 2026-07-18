@@ -4,6 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>🇧🇷 Brazil Starter Kit — Portuguese, Travel &amp; Confidence</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0D8A3E">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="BR Kit">
 <style>
 :root{
   --bg:#F6F5EF; --bg-alt:#EDEBE0; --ink:#1B2420; --ink-soft:#54615A;
@@ -1297,6 +1304,13 @@ function renderPlanner(){
   });
 }
 renderPlanner();
+
+/* ================= Offline install (PWA) ================= */
+if('serviceWorker' in navigator){
+  window.addEventListener('load', function(){
+    navigator.serviceWorker.register('service-worker.js').catch(function(){});
+  });
+}
 </script>
 </body>
 </html>
