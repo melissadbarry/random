@@ -511,6 +511,7 @@ footer{max-width:960px; margin:10px auto 0; padding:0 18px 30px; font-size:12px;
 <section class="panel" id="panel-cheatsheet">
   <div class="section-title">📘 SOS Portuguese Cheat Sheet</div>
   <p style="color:var(--ink-soft); font-size:14px;">Tap a phrase to mark it "learned" (+5 XP). Pronunciation is a rough phonetic guide, not IPA — say it out loud a few times.</p>
+  <p style="color:var(--ink-soft); font-size:12.5px; margin-top:-6px;">💡 The "Ways to Say It" sets below are original exercises in the style popularized by <a href="https://www.instagram.com/brunabrazilianport/" target="_blank" rel="noopener">@brunabrazilianport</a> on Instagram — go follow her for more real Brazilian Portuguese content.</p>
 
   <div class="progress-wrap">
     <div class="progress-bar"><div class="progress-fill" id="cheatProgress"></div></div>
@@ -1086,6 +1087,31 @@ var PHRASES = [
   {cat:"Numbers", pt:"Quatro, cinco, seis", pron:"KWAH-troo, SEEN-koo, says", en:"Four, five, six", fr:"Quatre, cinq, six", es:"Cuatro, cinco, seis", esNote:"🔗 Nearly identical to Spanish"},
   {cat:"Numbers", pt:"Sete, oito, nove, dez", pron:"SEH-chee, OY-too, NOH-vee, dez", en:"Seven, eight, nine, ten", fr:"Sept, huit, neuf, dix", es:"Siete, ocho, nueve, diez", esNote:"🔗 Nearly identical to Spanish"},
   {cat:"Numbers", pt:"Vinte / cinquenta / cem", pron:"VEEN-chee / seen-KWEN-tah / seng", en:"Twenty / fifty / one hundred", fr:"Vingt / cinquante / cent", es:"Veinte / cincuenta / cien", esNote:"🔗 Nearly identical to Spanish"},
+
+  {cat:"💡 Ways to Say Thank You", pt:"Muito obrigado(a)", pron:"MOO-een-too oh-bree-GAH-doo/dah", en:"Thank you so much", fr:"Merci beaucoup", es:"Muchas gracias"},
+  {cat:"💡 Ways to Say Thank You", pt:"Brigadão", pron:"bree-gah-DOWNG", en:"Big thanks (very casual)", fr:"Grand merci (très familier)", es:"Muchísimas gracias (muy informal)"},
+  {cat:"💡 Ways to Say Thank You", pt:"Agradeço", pron:"ah-grah-DEH-soo", en:"I appreciate it", fr:"Je vous remercie", es:"Se lo agradezco"},
+  {cat:"💡 Ways to Say Thank You", pt:"Te agradeço demais", pron:"chee ah-grah-DEH-soo deh-MICE", en:"I really appreciate it (warmer, sincere)", fr:"Je te remercie énormément", es:"Te lo agradezco muchísimo"},
+
+  {cat:"💡 Ways to Say \"I Don't Care\"", pt:"Tanto faz", pron:"TAHN-too fahz", en:"It doesn't matter / whatever", fr:"Peu importe", es:"Da igual / Lo que sea"},
+  {cat:"💡 Ways to Say \"I Don't Care\"", pt:"Não ligo pra isso", pron:"nowng LEE-goo prah EE-soo", en:"I don't care about that", fr:"Je m'en fiche", es:"No me importa eso"},
+  {cat:"💡 Ways to Say \"I Don't Care\"", pt:"Que seja", pron:"kee SEH-zhah", en:"Whatever (dismissive)", fr:"Peu importe / Bref", es:"Lo que sea"},
+  {cat:"💡 Ways to Say \"I Don't Care\"", pt:"Dá no mesmo", pron:"dah noo MEZ-moo", en:"It's all the same to me", fr:"C'est pareil pour moi", es:"Me da lo mismo"},
+
+  {cat:"💡 Ways to Say Cool / Awesome", pt:"Legal", pron:"leh-GAHL", en:"Cool / nice (works everywhere)", fr:"Cool / sympa", es:"Genial / chévere"},
+  {cat:"💡 Ways to Say Cool / Awesome", pt:"Show / Show de bola", pron:"SHOW jee BOH-lah", en:"Awesome! (enthusiastic)", fr:"Génial ! (enthousiaste)", es:"¡Genial! (entusiasta)"},
+  {cat:"💡 Ways to Say Cool / Awesome", pt:"Massa", pron:"MAH-sah", en:"Cool (regional, Northeast Brazil)", fr:"Cool (régional, Nord-Est)", es:"Genial (regional, noreste)"},
+  {cat:"💡 Ways to Say Cool / Awesome", pt:"Irado", pron:"ee-RAH-doo", en:"Cool / wild (younger crowd)", fr:"Trop cool (jeunes)", es:"Genial / brutal (jóvenes)"},
+
+  {cat:"💡 Talking About Your Job", pt:"Eu sou + [profissão]", pron:"eh-oo soh", en:"I am a [profession] — e.g. 'Eu sou professora'", fr:"Je suis [profession]", es:"Soy [profesión]"},
+  {cat:"💡 Talking About Your Job", pt:"Eu trabalho como + [profissão]", pron:"eh-oo trah-BAH-lyoo KOH-moo", en:"I work as a [profession]", fr:"Je travaille comme [profession]", es:"Trabajo como [profesión]"},
+  {cat:"💡 Talking About Your Job", pt:"Eu trabalho na área de...", pron:"eh-oo trah-BAH-lyoo nah AH-reh-ah jee", en:"I work in the field of...", fr:"Je travaille dans le domaine de...", es:"Trabajo en el área de..."},
+  {cat:"💡 Talking About Your Job", pt:"O que você faz da vida?", pron:"oo kee vo-SEH fahz dah VEE-dah", en:"What do you do (for a living)?", fr:"Qu'est-ce que tu fais dans la vie ?", es:"¿A qué te dedicas?"},
+
+  {cat:"💡 Ways to Say Goodbye", pt:"Tchau", pron:"chow", en:"Bye", fr:"Salut / Au revoir", es:"Chau"},
+  {cat:"💡 Ways to Say Goodbye", pt:"Até mais / Até logo", pron:"ah-TEH mice / ah-TEH LOH-goo", en:"See you later", fr:"À plus tard", es:"Hasta luego"},
+  {cat:"💡 Ways to Say Goodbye", pt:"Falou", pron:"fah-LOH", en:"Later (very casual)", fr:"À plus (très familier)", es:"Nos vemos (muy informal)"},
+  {cat:"💡 Ways to Say Goodbye", pt:"Um abraço", pron:"oong ah-BRAH-soo", en:"A hug (warm sign-off, common in messages too)", fr:"Une accolade (formule chaleureuse)", es:"Un abrazo (despedida cálida)"},
 ];
 
 var STORAGE_KEY = 'bsk-phrases-done';
