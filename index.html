@@ -263,6 +263,32 @@ main{max-width:960px; margin:0 auto; padding:20px 18px 40px;}
 .net-card p{font-size:13.8px; margin-bottom:6px;}
 .net-card .howto{font-size:12.8px; color:var(--ink-soft); background:var(--bg-alt); border-radius:8px; padding:8px 10px;}
 
+/* ---- Speaking practice scenarios ---- */
+.scenario-card{
+  background:var(--card); border:1px solid var(--border); border-radius:14px; padding:16px 18px; margin-bottom:12px;
+  box-shadow:var(--shadow);
+}
+.scenario-card.practiced{border-color:var(--green);}
+.scenario-head{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:6px; flex-wrap:wrap;}
+.scenario-head h3{font-size:15.5px; margin:0;}
+.scenario-card p{font-size:13.5px; color:var(--ink-soft); margin-bottom:10px;}
+.scenario-prompt{
+  background:var(--bg-alt); border:1px solid var(--border); border-radius:8px; padding:10px 12px;
+  font-size:12.5px; color:var(--ink-soft); font-family:ui-monospace,"SF Mono",Consolas,monospace;
+  margin-bottom:10px; white-space:pre-wrap;
+}
+.scenario-actions{display:flex; gap:8px; flex-wrap:wrap;}
+.copy-btn{
+  border:none; background:var(--blue); color:#fff; border-radius:9px; padding:8px 13px;
+  font-size:12.5px; font-weight:700; cursor:pointer;
+}
+.copy-btn.copied{background:var(--green);}
+.practiced-btn{
+  border:1px solid var(--border); background:var(--bg-alt); color:var(--ink-soft); border-radius:9px;
+  padding:8px 13px; font-size:12.5px; font-weight:700; cursor:pointer;
+}
+.scenario-card.practiced .practiced-btn{background:var(--green); color:#fff; border-color:var(--green);}
+
 .planner{width:100%; border-collapse:collapse; margin-top:6px;}
 .planner th, .planner td{border:1px solid var(--border); padding:8px 6px; text-align:center; font-size:12.5px;}
 .planner th{background:var(--bg-alt); font-weight:700;}
@@ -376,7 +402,7 @@ footer{max-width:960px; margin:10px auto 0; padding:0 18px 30px; font-size:12px;
       <div class="xp-track-label" id="xpLabel">0 XP</div>
     </div>
     <div class="streak-chip">🔥 <span id="streakText">0-day streak</span></div>
-    <button class="badges-btn" id="badgesBtn">🎖️ Badges (<span id="badgeCount">0</span>/8)</button>
+    <button class="badges-btn" id="badgesBtn">🎖️ Badges (<span id="badgeCount">0</span>/<span id="badgeTotal">9</span>)</button>
   </div>
 
   <nav class="tabs" id="tabs">
@@ -384,6 +410,7 @@ footer{max-width:960px; margin:10px auto 0; padding:0 18px 30px; font-size:12px;
     <button data-tab="cheatsheet">📘 Cheat Sheet</button>
     <button data-tab="travel">🌴 SP Travel Guide</button>
     <button data-tab="crash">⚡ 7-Day Jumpstart</button>
+    <button data-tab="speaking">🎙️ Speaking Practice</button>
     <button data-tab="hangouts">🤝 Hangouts &amp; Events</button>
   </nav>
 </div>
@@ -566,6 +593,21 @@ footer{max-width:960px; margin:10px auto 0; padding:0 18px 30px; font-size:12px;
   <div id="dayList"></div>
 </section>
 
+<!-- SPEAKING PRACTICE -->
+<section class="panel" id="panel-speaking">
+  <div class="section-title">🎙️ Speaking Practice <span class="pill">with ChatGPT Voice</span></div>
+  <div class="card" style="margin-bottom:20px;">
+    <p style="margin-bottom:6px;">This app can't embed ChatGPT's voice mode directly — that needs OpenAI's own app plus a live internet connection, which would break the offline design of the rest of this kit. Here's the practical bridge instead:</p>
+    <ol style="margin:0 0 0 18px; padding:0; font-size:13.8px; color:var(--ink-soft);">
+      <li style="margin-bottom:4px;">Tap <strong>Copy Prompt</strong> on a scenario below.</li>
+      <li style="margin-bottom:4px;">Open the ChatGPT app and start a <strong>voice</strong> conversation.</li>
+      <li style="margin-bottom:4px;">Paste the prompt as your first message, then just talk — it'll play the role, listen, and correct you in real time.</li>
+    </ol>
+  </div>
+
+  <div id="scenarioList"></div>
+</section>
+
 <!-- HANGOUTS -->
 <section class="panel" id="panel-hangouts">
   <div class="section-title">🤝 Hangouts, Social &amp; Events</div>
@@ -696,6 +738,7 @@ footer{max-width:960px; margin:10px auto 0; padding:0 18px 30px; font-size:12px;
     <button data-tab="cheatsheet"><span class="ic">📘</span>Phrases</button>
     <button data-tab="travel"><span class="ic">🌴</span>SP Guide</button>
     <button data-tab="crash"><span class="ic">⚡</span>7-Day</button>
+    <button data-tab="speaking"><span class="ic">🎙️</span>Speak</button>
     <button data-tab="hangouts"><span class="ic">🤝</span>Hangouts</button>
   </div>
 </div>
@@ -787,6 +830,7 @@ var BADGES = [
   {id:"week-warrior", ic:"🏅", name:"Week One Warrior", desc:"Complete all 7 crash course days"},
   {id:"social-pro", ic:"🤝", name:"Social Planner Pro", desc:"Fill the entire weekly planner"},
   {id:"level-5", ic:"⭐", name:"São Paulo Local", desc:"Reach Level 5"},
+  {id:"speaking-pro", ic:"🎙️", name:"Role-Play Ready", desc:"Practice all 6 ChatGPT voice scenarios"},
 ];
 
 function renderXpBar(){
@@ -798,6 +842,7 @@ function renderXpBar(){
   document.getElementById('xpLabel').textContent = game.xp + ' XP' + (lvl < LEVELS.length ? ' · ' + (lvl * 100 - game.xp) + ' to next level' : ' · Max level!');
   document.getElementById('streakText').textContent = game.streak + '-day streak';
   document.getElementById('badgeCount').textContent = game.badges.length;
+  document.getElementById('badgeTotal').textContent = BADGES.length;
 }
 
 function showToast(title, body, isBadge){
@@ -1330,6 +1375,114 @@ function renderDays(){
   document.getElementById('dayProgress').style.width = (100 * completeCount / 7) + '%';
 }
 renderDays();
+
+/* ================= Speaking practice (ChatGPT voice bridge) ================= */
+var SCENARIOS = [
+  {
+    id: "cafe",
+    ic: "☕",
+    title: "Order Coffee & Small Talk",
+    desc: "Practice ordering at a café and making a little small talk with the barista.",
+    prompt: "You are a friendly Brazilian barista in a São Paulo café. From now on, speak to me only in Brazilian Portuguese (pt-BR), using short, simple sentences since I'm a beginner. Play the role naturally: greet me, take my order, and make a little small talk. If I make a mistake, gently correct me in Portuguese first, then add a one-line clarification in English only if I seem stuck. Start by greeting me as the barista would."
+  },
+  {
+    id: "directions",
+    ic: "🧭",
+    title: "Asking for Directions",
+    desc: "Practice asking a stranger for directions on the street.",
+    prompt: "You are a helpful stranger on the street in São Paulo. Speak to me only in Brazilian Portuguese (pt-BR), short and clear sentences. I will ask you for directions to a place — respond naturally as a local would, and gently correct my Portuguese if I make mistakes, followed by a brief English clarification only if needed. Wait for me to greet you and ask for directions first."
+  },
+  {
+    id: "smalltalk",
+    ic: "🗣️",
+    title: "Meeting Someone New",
+    desc: "Practice introducing yourself and making conversation, like at a language exchange meetup.",
+    prompt: "You are a friendly Brazilian person I just met at a language exchange event in São Paulo. Speak only in Brazilian Portuguese (pt-BR), simple sentences for a beginner. Introduce yourself, ask me questions about myself, and keep the conversation going naturally. Correct my mistakes gently in Portuguese, with a short English clarification only if I seem lost. Start by greeting me."
+  },
+  {
+    id: "emergency",
+    ic: "🚨",
+    title: "Emergency & Help",
+    desc: "Practice asking for help or explaining an urgent situation.",
+    prompt: "You are a helpful local in São Paulo. Speak only in Brazilian Portuguese (pt-BR), short clear sentences. I will describe a small emergency or ask for help (like needing a doctor, being lost, or losing something) — respond naturally and helpfully, correcting my Portuguese gently, with a brief English clarification only if needed. Wait for me to start."
+  },
+  {
+    id: "networking",
+    ic: "🤝",
+    title: "Networking Small Talk",
+    desc: "Practice the kind of small talk you'd use at Toastmasters or InterNations events.",
+    prompt: "You are a Brazilian professional I just met at a networking event (like InterNations) in São Paulo. Speak only in Brazilian Portuguese (pt-BR), simple sentences for a beginner. Make natural small talk: ask what I do, where I'm from, and how I like São Paulo so far. Correct my Portuguese gently, with a short English clarification only if I seem stuck. Start by greeting me and introducing yourself."
+  },
+  {
+    id: "freechat",
+    ic: "💬",
+    title: "Free Chat",
+    desc: "No script — just have an open, beginner-friendly conversation.",
+    prompt: "You are a patient, friendly Brazilian conversation partner. Speak with me only in Brazilian Portuguese (pt-BR), using short, simple sentences appropriate for a beginner. Have a natural, open conversation with me about anything — ask me questions, keep it light. Gently correct any mistakes I make in Portuguese, and only add a brief English clarification if I seem completely lost. Start by greeting me warmly."
+  },
+];
+
+var SCENARIO_KEY = 'bsk-scenarios-practiced';
+var scenariosPracticed = new Set(JSON.parse(localStorage.getItem(SCENARIO_KEY) || '[]'));
+function saveScenarios(){ localStorage.setItem(SCENARIO_KEY, JSON.stringify(Array.from(scenariosPracticed))); }
+
+function copyToClipboard(text, btn){
+  function onCopied(){
+    var original = btn.textContent;
+    btn.textContent = '✓ Copied!';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = original; btn.classList.remove('copied'); }, 1800);
+  }
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(onCopied).catch(function(){ fallbackCopy(text, onCopied); });
+  } else {
+    fallbackCopy(text, onCopied);
+  }
+}
+function fallbackCopy(text, onCopied){
+  var ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed';
+  ta.style.opacity = '0';
+  document.body.appendChild(ta);
+  ta.focus();
+  ta.select();
+  try { document.execCommand('copy'); onCopied(); } catch(e){}
+  document.body.removeChild(ta);
+}
+
+function renderScenarios(){
+  var list = document.getElementById('scenarioList');
+  list.innerHTML = '';
+  SCENARIOS.forEach(function(s){
+    var practiced = scenariosPracticed.has(s.id);
+    var card = document.createElement('div');
+    card.className = 'scenario-card' + (practiced ? ' practiced' : '');
+    card.innerHTML =
+      '<div class="scenario-head"><h3>' + s.ic + ' ' + s.title + '</h3></div>' +
+      '<p>' + s.desc + '</p>' +
+      '<div class="scenario-prompt">' + s.prompt + '</div>' +
+      '<div class="scenario-actions">' +
+        '<button type="button" class="copy-btn">📋 Copy Prompt</button>' +
+        '<button type="button" class="practiced-btn">' + (practiced ? '✓ Practiced' : 'Mark Practiced (+15 XP)') + '</button>' +
+      '</div>';
+
+    card.querySelector('.copy-btn').addEventListener('click', function(){
+      copyToClipboard(s.prompt, this);
+    });
+    card.querySelector('.practiced-btn').addEventListener('click', function(){
+      if(!scenariosPracticed.has(s.id)){
+        scenariosPracticed.add(s.id);
+        saveScenarios();
+        addXP(15, s.title + ' practiced');
+        if(SCENARIOS.every(function(x){ return scenariosPracticed.has(x.id); })) unlockBadge('speaking-pro');
+        renderScenarios();
+      }
+    });
+    list.appendChild(card);
+  });
+}
+renderScenarios();
 
 /* ================= Weekly social planner ================= */
 var PLANNER_ROWS = ["Language exchange", "Hobby class (yoga/gym)", "Networking event", "New spot explored"];
