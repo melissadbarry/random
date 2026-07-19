@@ -186,16 +186,35 @@ main{max-width:960px; margin:0 auto; padding:20px 18px 40px;}
 .phrase input{margin-top:4px; width:16px; height:16px; accent-color:var(--green); flex:0 0 auto;}
 .phrase .pt{font-weight:700; font-size:14.5px;}
 .phrase .pron{color:var(--green); font-size:12.5px; font-family:ui-monospace,"SF Mono",Consolas,monospace;}
-.phrase .en{color:var(--ink-soft); font-size:13px; margin-top:2px;}
-.phrase.done .pt, .phrase.done .en{opacity:.45; text-decoration:line-through;}
+.phrase .meanings{margin-top:4px; display:flex; flex-direction:column; gap:1px;}
+.phrase .meanings div{color:var(--ink-soft); font-size:12.5px;}
+.phrase .meanings .flag{margin-right:4px;}
+.phrase.done .pt, .phrase.done .meanings{opacity:.45; text-decoration:line-through;}
+.cognate{
+  margin-top:5px; font-size:11.5px; padding:3px 8px; border-radius:7px; display:inline-block;
+  background:var(--blue-soft); color:var(--blue);
+}
+.cognate.warn{background:var(--coral-soft); color:var(--coral);}
+.speak-btn{
+  flex:0 0 auto; margin-left:auto; width:32px; height:32px; border-radius:50%; border:1px solid var(--border);
+  background:var(--bg-alt); color:var(--green); font-size:14px; cursor:pointer; display:flex; align-items:center;
+  justify-content:center; padding:0;
+}
+.speak-btn:hover{background:var(--green-soft);}
+.speak-btn:disabled{opacity:.3; cursor:not-allowed;}
+.speak-btn.playing{background:var(--green); color:#fff;}
 
 /* ---- Travel guide ---- */
 .tg-block{margin-bottom:22px;}
 .tg-block h3{font-size:15.5px; margin-bottom:10px; display:flex; align-items:center; gap:8px;}
 .slang-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:10px;}
-.slang-item{background:var(--card); border:1px solid var(--border); border-radius:10px; padding:10px 12px; box-shadow:var(--shadow);}
+.slang-item{background:var(--card); border:1px solid var(--border); border-radius:10px; padding:10px 12px; box-shadow:var(--shadow); display:flex; align-items:flex-start; gap:8px;}
 .slang-item .word{font-weight:700; color:var(--blue); font-size:14px;}
-.slang-item .mean{font-size:12.5px; color:var(--ink-soft);}
+.slang-item .pron{color:var(--green); font-size:11.5px; font-family:ui-monospace,"SF Mono",Consolas,monospace; margin:1px 0;}
+.slang-item .meanings{display:flex; flex-direction:column; gap:1px; margin-top:2px;}
+.slang-item .meanings div{font-size:12px; color:var(--ink-soft);}
+.slang-item .meanings .flag{margin-right:4px;}
+.slang-item .speak-btn{width:28px; height:28px; font-size:12px;}
 .tip-list li, .tg-block ul li{margin-bottom:7px; font-size:14px; padding-left:22px; position:relative;}
 .tip-list li::before{content:"💡"; position:absolute; left:0; font-size:12px;}
 .avoid-list li::before{content:"⚠️"; position:absolute; left:0; font-size:12px;}
@@ -925,6 +944,35 @@ function openQuiz(title, questions, onFinish){
   quizOverlay.classList.add('open');
 }
 
+/* ================= Text-to-speech (Listen) ================= */
+var ttsSupported = 'speechSynthesis' in window;
+var ptVoice = null;
+function loadPtVoice(){
+  if(!ttsSupported) return;
+  var voices = window.speechSynthesis.getVoices();
+  ptVoice = voices.find(function(v){ return v.lang === 'pt-BR'; }) ||
+            voices.find(function(v){ return v.lang && v.lang.toLowerCase().indexOf('pt') === 0; }) ||
+            null;
+}
+if(ttsSupported){
+  loadPtVoice();
+  window.speechSynthesis.onvoiceschanged = loadPtVoice;
+}
+function speakPT(text, btn){
+  if(!ttsSupported) return;
+  window.speechSynthesis.cancel();
+  var utter = new SpeechSynthesisUtterance(text);
+  utter.lang = 'pt-BR';
+  utter.rate = 0.85;
+  if(ptVoice) utter.voice = ptVoice;
+  if(btn){
+    btn.classList.add('playing');
+    utter.onend = function(){ btn.classList.remove('playing'); };
+    utter.onerror = function(){ btn.classList.remove('playing'); };
+  }
+  window.speechSynthesis.speak(utter);
+}
+
 function shuffle(arr){
   var a = arr.slice();
   for(var i = a.length - 1; i > 0; i--){
@@ -936,63 +984,63 @@ function shuffle(arr){
 
 /* ================= Cheat sheet data ================= */
 var PHRASES = [
-  {cat:"Greetings & Basics", pt:"Oi / Olá", pron:"oy / oh-LAH", en:"Hi / Hello"},
-  {cat:"Greetings & Basics", pt:"Bom dia", pron:"bohn JEE-ah", en:"Good morning"},
-  {cat:"Greetings & Basics", pt:"Boa tarde", pron:"BOH-ah TAR-jee", en:"Good afternoon"},
-  {cat:"Greetings & Basics", pt:"Boa noite", pron:"BOH-ah NOY-chee", en:"Good evening / night"},
-  {cat:"Greetings & Basics", pt:"Tudo bem?", pron:"TOO-doo beng", en:"How's it going? / All good?"},
-  {cat:"Greetings & Basics", pt:"Tudo bem, e você?", pron:"...ee vo-SEH", en:"Good, and you?"},
-  {cat:"Greetings & Basics", pt:"Por favor", pron:"por fah-VOR", en:"Please"},
-  {cat:"Greetings & Basics", pt:"Obrigado / Obrigada", pron:"oh-bree-GAH-doo/dah", en:"Thank you (male/female speaker)"},
-  {cat:"Greetings & Basics", pt:"De nada", pron:"jee NAH-dah", en:"You're welcome"},
-  {cat:"Greetings & Basics", pt:"Com licença", pron:"kohn lee-SEN-sah", en:"Excuse me"},
-  {cat:"Greetings & Basics", pt:"Desculpa", pron:"dess-KOOL-pah", en:"Sorry"},
-  {cat:"Greetings & Basics", pt:"Não entendi", pron:"nowng en-ten-DEE", en:"I didn't understand"},
-  {cat:"Greetings & Basics", pt:"Você fala inglês?", pron:"vo-SEH FAH-lah een-GLESS", en:"Do you speak English?"},
-  {cat:"Greetings & Basics", pt:"Eu não falo português muito bem", pron:"eh-oo nowng FAH-loo por-too-GESS moo-EEN-too beng", en:"I don't speak Portuguese very well"},
-  {cat:"Greetings & Basics", pt:"Pode repetir?", pron:"PO-jee heh-peh-TEER", en:"Can you repeat that?"},
-  {cat:"Greetings & Basics", pt:"Mais devagar, por favor", pron:"mice deh-vah-GAR por fah-VOR", en:"Slower, please"},
+  {cat:"Greetings & Basics", pt:"Oi / Olá", pron:"oy / oh-LAH", en:"Hi / Hello", fr:"Salut / Bonjour", es:"Hola"},
+  {cat:"Greetings & Basics", pt:"Bom dia", pron:"bohn JEE-ah", en:"Good morning", fr:"Bonjour (le matin)", es:"Buenos días"},
+  {cat:"Greetings & Basics", pt:"Boa tarde", pron:"BOH-ah TAR-jee", en:"Good afternoon", fr:"Bon après-midi", es:"Buenas tardes"},
+  {cat:"Greetings & Basics", pt:"Boa noite", pron:"BOH-ah NOY-chee", en:"Good evening / night", fr:"Bonsoir / Bonne nuit", es:"Buenas noches"},
+  {cat:"Greetings & Basics", pt:"Tudo bem?", pron:"TOO-doo beng", en:"How's it going? / All good?", fr:"Ça va ?", es:"¿Todo bien? / ¿Qué tal?"},
+  {cat:"Greetings & Basics", pt:"Tudo bem, e você?", pron:"...ee vo-SEH", en:"Good, and you?", fr:"Ça va, et toi ?", es:"Bien, ¿y tú?"},
+  {cat:"Greetings & Basics", pt:"Por favor", pron:"por fah-VOR", en:"Please", fr:"S'il te plaît", es:"Por favor", esNote:"🔗 Identical to Spanish"},
+  {cat:"Greetings & Basics", pt:"Obrigado / Obrigada", pron:"oh-bree-GAH-doo/dah", en:"Thank you (male/female speaker)", fr:"Merci (locuteur homme/femme)", es:"Gracias (hablante hombre/mujer)", esNote:"⚠️ False friend — looks like Spanish 'obligado' (obligated), not 'gracias'"},
+  {cat:"Greetings & Basics", pt:"De nada", pron:"jee NAH-dah", en:"You're welcome", fr:"De rien", es:"De nada", esNote:"🔗 Identical to Spanish"},
+  {cat:"Greetings & Basics", pt:"Com licença", pron:"kohn lee-SEN-sah", en:"Excuse me", fr:"Excusez-moi / Pardon", es:"Con permiso / Disculpe", esNote:"🔗 Close to Spanish 'con permiso'"},
+  {cat:"Greetings & Basics", pt:"Desculpa", pron:"dess-KOOL-pah", en:"Sorry", fr:"Désolé(e)", es:"Disculpa / Perdón", esNote:"🔗 Close to Spanish 'disculpa'"},
+  {cat:"Greetings & Basics", pt:"Não entendi", pron:"nowng en-ten-DEE", en:"I didn't understand", fr:"Je n'ai pas compris", es:"No entendí", esNote:"🔗 Nearly identical to Spanish"},
+  {cat:"Greetings & Basics", pt:"Você fala inglês?", pron:"vo-SEH FAH-lah een-GLESS", en:"Do you speak English?", fr:"Parlez-vous anglais ?", es:"¿Habla inglés?"},
+  {cat:"Greetings & Basics", pt:"Eu não falo português muito bem", pron:"eh-oo nowng FAH-loo por-too-GESS moo-EEN-too beng", en:"I don't speak Portuguese very well", fr:"Je ne parle pas très bien portugais", es:"No hablo muy bien portugués"},
+  {cat:"Greetings & Basics", pt:"Pode repetir?", pron:"PO-jee heh-peh-TEER", en:"Can you repeat that?", fr:"Pouvez-vous répéter ?", es:"¿Puede repetir?"},
+  {cat:"Greetings & Basics", pt:"Mais devagar, por favor", pron:"mice deh-vah-GAR por fah-VOR", en:"Slower, please", fr:"Plus lentement, s'il vous plaît", es:"Más despacio, por favor"},
 
-  {cat:"Getting Around", pt:"Onde fica...?", pron:"OHN-jee FEE-kah", en:"Where is...?"},
-  {cat:"Getting Around", pt:"Quanto custa?", pron:"KWAN-too KOOS-tah", en:"How much does it cost?"},
-  {cat:"Getting Around", pt:"Aceita cartão?", pron:"ah-SAY-tah kar-TOWNG", en:"Do you accept card?"},
-  {cat:"Getting Around", pt:"Eu preciso de um táxi", pron:"eh-oo preh-SEE-zoo jee oong TAHK-see", en:"I need a taxi"},
-  {cat:"Getting Around", pt:"Pode me ajudar?", pron:"PO-jee mee ah-joo-DAR", en:"Can you help me?"},
-  {cat:"Getting Around", pt:"Estou perdido / perdida", pron:"es-TOH per-DEE-doo/dah", en:"I'm lost"},
-  {cat:"Getting Around", pt:"Fica perto ou longe?", pron:"FEE-kah PER-too oh LOHN-jee", en:"Is it near or far?"},
-  {cat:"Getting Around", pt:"Vire à direita / esquerda", pron:"VEE-ree ah jee-RAY-tah / es-KER-dah", en:"Turn right / left"},
-  {cat:"Getting Around", pt:"Em frente", pron:"eng FREN-chee", en:"Straight ahead"},
+  {cat:"Getting Around", pt:"Onde fica...?", pron:"OHN-jee FEE-kah", en:"Where is...?", fr:"Où se trouve...?", es:"¿Dónde queda...?", esNote:"🔗 Same idea as Spanish 'dónde queda'"},
+  {cat:"Getting Around", pt:"Quanto custa?", pron:"KWAN-too KOOS-tah", en:"How much does it cost?", fr:"Combien ça coûte ?", es:"¿Cuánto cuesta?", esNote:"🔗 Nearly identical to Spanish"},
+  {cat:"Getting Around", pt:"Aceita cartão?", pron:"ah-SAY-tah kar-TOWNG", en:"Do you accept card?", fr:"Vous acceptez la carte ?", es:"¿Aceptan tarjeta?"},
+  {cat:"Getting Around", pt:"Eu preciso de um táxi", pron:"eh-oo preh-SEE-zoo jee oong TAHK-see", en:"I need a taxi", fr:"J'ai besoin d'un taxi", es:"Necesito un taxi"},
+  {cat:"Getting Around", pt:"Pode me ajudar?", pron:"PO-jee mee ah-joo-DAR", en:"Can you help me?", fr:"Pouvez-vous m'aider ?", es:"¿Puede ayudarme?"},
+  {cat:"Getting Around", pt:"Estou perdido / perdida", pron:"es-TOH per-DEE-doo/dah", en:"I'm lost", fr:"Je suis perdu(e)", es:"Estoy perdido/a", esNote:"🔗 Nearly identical to Spanish"},
+  {cat:"Getting Around", pt:"Fica perto ou longe?", pron:"FEE-kah PER-too oh LOHN-jee", en:"Is it near or far?", fr:"C'est proche ou loin ?", es:"¿Está cerca o lejos?"},
+  {cat:"Getting Around", pt:"Vire à direita / esquerda", pron:"VEE-ree ah jee-RAY-tah / es-KER-dah", en:"Turn right / left", fr:"Tournez à droite / gauche", es:"Gire a la derecha / izquierda"},
+  {cat:"Getting Around", pt:"Em frente", pron:"eng FREN-chee", en:"Straight ahead", fr:"Tout droit", es:"Todo recto / Derecho"},
 
-  {cat:"Food & Drink", pt:"Uma mesa para dois, por favor", pron:"OO-mah MEH-zah PAH-rah doys", en:"A table for two, please"},
-  {cat:"Food & Drink", pt:"O cardápio, por favor", pron:"oo kar-DAH-pyoo", en:"The menu, please"},
-  {cat:"Food & Drink", pt:"Eu queria...", pron:"eh-oo keh-REE-ah", en:"I would like..."},
-  {cat:"Food & Drink", pt:"A conta, por favor", pron:"ah KOHN-tah por fah-VOR", en:"The check, please"},
-  {cat:"Food & Drink", pt:"Está delicioso!", pron:"es-TAH deh-lee-see-OH-zoo", en:"It's delicious!"},
-  {cat:"Food & Drink", pt:"Sou vegetariano / vegetariana", pron:"soh veh-zheh-tah-ree-AH-noo/nah", en:"I'm vegetarian"},
-  {cat:"Food & Drink", pt:"Um café, por favor", pron:"oong kah-FEH", en:"A coffee, please"},
-  {cat:"Food & Drink", pt:"Água com/sem gás", pron:"AH-gwah kohn/seng gahs", en:"Sparkling / still water"},
-  {cat:"Food & Drink", pt:"A gorjeta já está incluída?", pron:"ah gor-ZHEH-tah zhah es-TAH een-kloo-EE-dah", en:"Is the tip already included?"},
+  {cat:"Food & Drink", pt:"Uma mesa para dois, por favor", pron:"OO-mah MEH-zah PAH-rah doys", en:"A table for two, please", fr:"Une table pour deux, s'il vous plaît", es:"Una mesa para dos, por favor", esNote:"🔗 Nearly identical to Spanish"},
+  {cat:"Food & Drink", pt:"O cardápio, por favor", pron:"oo kar-DAH-pyoo", en:"The menu, please", fr:"La carte, s'il vous plaît", es:"El menú, por favor"},
+  {cat:"Food & Drink", pt:"Eu queria...", pron:"eh-oo keh-REE-ah", en:"I would like...", fr:"Je voudrais...", es:"Quisiera..."},
+  {cat:"Food & Drink", pt:"A conta, por favor", pron:"ah KOHN-tah por fah-VOR", en:"The check, please", fr:"L'addition, s'il vous plaît", es:"La cuenta, por favor", esNote:"🔗 Nearly identical to Spanish"},
+  {cat:"Food & Drink", pt:"Está delicioso!", pron:"es-TAH deh-lee-see-OH-zoo", en:"It's delicious!", fr:"C'est délicieux !", es:"¡Está delicioso!", esNote:"🔗 Identical to Spanish"},
+  {cat:"Food & Drink", pt:"Sou vegetariano / vegetariana", pron:"soh veh-zheh-tah-ree-AH-noo/nah", en:"I'm vegetarian", fr:"Je suis végétarien(ne)", es:"Soy vegetariano/a", esNote:"🔗 Nearly identical to Spanish"},
+  {cat:"Food & Drink", pt:"Um café, por favor", pron:"oong kah-FEH", en:"A coffee, please", fr:"Un café, s'il vous plaît", es:"Un café, por favor"},
+  {cat:"Food & Drink", pt:"Água com/sem gás", pron:"AH-gwah kohn/seng gahs", en:"Sparkling / still water", fr:"Eau gazeuse / plate", es:"Agua con/sin gas", esNote:"🔗 Nearly identical to Spanish"},
+  {cat:"Food & Drink", pt:"A gorjeta já está incluída?", pron:"ah gor-ZHEH-tah zhah es-TAH een-kloo-EE-dah", en:"Is the tip already included?", fr:"Le pourboire est-il déjà inclus ?", es:"¿La propina ya está incluida?"},
 
-  {cat:"Emergency & Safety", pt:"Socorro!", pron:"soh-KOH-hoo", en:"Help!"},
-  {cat:"Emergency & Safety", pt:"Chame a polícia", pron:"SHAH-mee ah poh-LEE-see-ah", en:"Call the police"},
-  {cat:"Emergency & Safety", pt:"Preciso de um médico", pron:"preh-SEE-zoo jee oong MEH-jee-koo", en:"I need a doctor"},
-  {cat:"Emergency & Safety", pt:"Onde fica o hospital?", pron:"OHN-jee FEE-kah oo os-pee-TAHL", en:"Where's the hospital?"},
-  {cat:"Emergency & Safety", pt:"Perdi meu passaporte", pron:"per-JEE meh-oo pah-sah-POR-chee", en:"I lost my passport"},
-  {cat:"Emergency & Safety", pt:"Estou bem", pron:"es-TOH beng", en:"I'm okay"},
+  {cat:"Emergency & Safety", pt:"Socorro!", pron:"soh-KOH-hoo", en:"Help!", fr:"Au secours !", es:"¡Socorro!", esNote:"🔗 Identical to Spanish"},
+  {cat:"Emergency & Safety", pt:"Chame a polícia", pron:"SHAH-mee ah poh-LEE-see-ah", en:"Call the police", fr:"Appelez la police", es:"Llame a la policía", esNote:"🔗 Nearly identical to Spanish"},
+  {cat:"Emergency & Safety", pt:"Preciso de um médico", pron:"preh-SEE-zoo jee oong MEH-jee-koo", en:"I need a doctor", fr:"J'ai besoin d'un médecin", es:"Necesito un médico"},
+  {cat:"Emergency & Safety", pt:"Onde fica o hospital?", pron:"OHN-jee FEE-kah oo os-pee-TAHL", en:"Where's the hospital?", fr:"Où se trouve l'hôpital ?", es:"¿Dónde queda el hospital?"},
+  {cat:"Emergency & Safety", pt:"Perdi meu passaporte", pron:"per-JEE meh-oo pah-sah-POR-chee", en:"I lost my passport", fr:"J'ai perdu mon passeport", es:"Perdí mi pasaporte", esNote:"🔗 Nearly identical to Spanish"},
+  {cat:"Emergency & Safety", pt:"Estou bem", pron:"es-TOH beng", en:"I'm okay", fr:"Je vais bien", es:"Estoy bien", esNote:"🔗 Identical to Spanish"},
 
-  {cat:"Small Talk & Connection", pt:"Qual é o seu nome?", pron:"kwahl eh oo seh-oo NOH-mee", en:"What's your name?"},
-  {cat:"Small Talk & Connection", pt:"Muito prazer", pron:"MOO-een-too prah-ZEHR", en:"Nice to meet you"},
-  {cat:"Small Talk & Connection", pt:"De onde você é?", pron:"jee OHN-jee vo-SEH eh", en:"Where are you from?"},
-  {cat:"Small Talk & Connection", pt:"Eu sou dos Estados Unidos", pron:"eh-oo soh dooz es-TAH-dooz oo-NEE-dooz", en:"I'm from the United States"},
-  {cat:"Small Talk & Connection", pt:"Essa é minha primeira vez no Brasil", pron:"EH-sah eh MEE-nyah pree-MAY-rah vez noo brah-ZEEL", en:"This is my first time in Brazil"},
-  {cat:"Small Talk & Connection", pt:"Adorei São Paulo!", pron:"ah-doh-RAY sowng POW-loo", en:"I loved São Paulo!"},
-  {cat:"Small Talk & Connection", pt:"Vamos marcar algo?", pron:"VAH-mooz mar-KAR AHL-goo", en:"Should we plan something?"},
-  {cat:"Small Talk & Connection", pt:"Qual é seu WhatsApp?", pron:"kwahl eh seh-oo WHATS-app", en:"What's your WhatsApp?"},
+  {cat:"Small Talk & Connection", pt:"Qual é o seu nome?", pron:"kwahl eh oo seh-oo NOH-mee", en:"What's your name?", fr:"Quel est votre nom ?", es:"¿Cuál es su nombre?", esNote:"🔗 Nearly identical to Spanish"},
+  {cat:"Small Talk & Connection", pt:"Muito prazer", pron:"MOO-een-too prah-ZEHR", en:"Nice to meet you", fr:"Enchanté(e)", es:"Mucho gusto", esNote:"🔗 Nearly identical to Spanish"},
+  {cat:"Small Talk & Connection", pt:"De onde você é?", pron:"jee OHN-jee vo-SEH eh", en:"Where are you from?", fr:"D'où viens-tu ?", es:"¿De dónde eres?", esNote:"🔗 Nearly identical to Spanish"},
+  {cat:"Small Talk & Connection", pt:"Eu sou dos Estados Unidos", pron:"eh-oo soh dooz es-TAH-dooz oo-NEE-dooz", en:"I'm from the United States", fr:"Je viens des États-Unis", es:"Soy de Estados Unidos"},
+  {cat:"Small Talk & Connection", pt:"Essa é minha primeira vez no Brasil", pron:"EH-sah eh MEE-nyah pree-MAY-rah vez noo brah-ZEEL", en:"This is my first time in Brazil", fr:"C'est ma première fois au Brésil", es:"Esta es mi primera vez en Brasil", esNote:"🔗 Nearly identical to Spanish"},
+  {cat:"Small Talk & Connection", pt:"Adorei São Paulo!", pron:"ah-doh-RAY sowng POW-loo", en:"I loved São Paulo!", fr:"J'ai adoré São Paulo !", es:"¡Me encantó São Paulo!"},
+  {cat:"Small Talk & Connection", pt:"Vamos marcar algo?", pron:"VAH-mooz mar-KAR AHL-goo", en:"Should we plan something?", fr:"On organise quelque chose ?", es:"¿Quedamos para algo?"},
+  {cat:"Small Talk & Connection", pt:"Qual é seu WhatsApp?", pron:"kwahl eh seh-oo WHATS-app", en:"What's your WhatsApp?", fr:"C'est quoi ton WhatsApp ?", es:"¿Cuál es tu WhatsApp?"},
 
-  {cat:"Numbers", pt:"Um, dois, três", pron:"oong, doys, tress", en:"One, two, three"},
-  {cat:"Numbers", pt:"Quatro, cinco, seis", pron:"KWAH-troo, SEEN-koo, says", en:"Four, five, six"},
-  {cat:"Numbers", pt:"Sete, oito, nove, dez", pron:"SEH-chee, OY-too, NOH-vee, dez", en:"Seven, eight, nine, ten"},
-  {cat:"Numbers", pt:"Vinte / cinquenta / cem", pron:"VEEN-chee / seen-KWEN-tah / seng", en:"Twenty / fifty / one hundred"},
+  {cat:"Numbers", pt:"Um, dois, três", pron:"oong, doys, tress", en:"One, two, three", fr:"Un, deux, trois", es:"Uno, dos, tres", esNote:"🔗 Numbers are close to Spanish (um/uno, dois/dos, três/tres)"},
+  {cat:"Numbers", pt:"Quatro, cinco, seis", pron:"KWAH-troo, SEEN-koo, says", en:"Four, five, six", fr:"Quatre, cinq, six", es:"Cuatro, cinco, seis", esNote:"🔗 Nearly identical to Spanish"},
+  {cat:"Numbers", pt:"Sete, oito, nove, dez", pron:"SEH-chee, OY-too, NOH-vee, dez", en:"Seven, eight, nine, ten", fr:"Sept, huit, neuf, dix", es:"Siete, ocho, nueve, diez", esNote:"🔗 Nearly identical to Spanish"},
+  {cat:"Numbers", pt:"Vinte / cinquenta / cem", pron:"VEEN-chee / seen-KWEN-tah / seng", en:"Twenty / fifty / one hundred", fr:"Vingt / cinquante / cent", es:"Veinte / cincuenta / cien", esNote:"🔗 Nearly identical to Spanish"},
 ];
 
 var STORAGE_KEY = 'bsk-phrases-done';
@@ -1027,7 +1075,8 @@ function renderPhrases(){
     var items = PHRASES.filter(function(p){
       if(p.cat !== cat) return false;
       if(!q) return true;
-      return p.pt.toLowerCase().indexOf(q) > -1 || p.en.toLowerCase().indexOf(q) > -1;
+      return p.pt.toLowerCase().indexOf(q) > -1 || p.en.toLowerCase().indexOf(q) > -1 ||
+        p.fr.toLowerCase().indexOf(q) > -1 || p.es.toLowerCase().indexOf(q) > -1;
     });
     if(items.length === 0) return;
 
@@ -1047,9 +1096,19 @@ function renderPhrases(){
       row.className = 'phrase' + (isDone ? ' done' : '');
       row.innerHTML =
         '<input type="checkbox" ' + (isDone ? 'checked' : '') + '>' +
-        '<div><div class="pt">' + p.pt + '</div>' +
+        '<div style="flex:1"><div class="pt">' + p.pt + '</div>' +
         '<div class="pron">' + p.pron + '</div>' +
-        '<div class="en">' + p.en + '</div></div>';
+        '<div class="meanings">' +
+          '<div><span class="flag">🇬🇧</span>' + p.en + '</div>' +
+          '<div><span class="flag">🇫🇷</span>' + p.fr + '</div>' +
+          '<div><span class="flag">🇪🇸</span>' + p.es + '</div>' +
+        '</div>' +
+        (p.esNote ? '<div class="cognate' + (p.esNote.indexOf('⚠️') === 0 ? ' warn' : '') + '">' + p.esNote + '</div>' : '') +
+        '</div>' +
+        '<button type="button" class="speak-btn" aria-label="Listen" ' + (ttsSupported ? '' : 'disabled') + '>🔊</button>';
+
+      var speakBtn = row.querySelector('.speak-btn');
+      speakBtn.addEventListener('click', function(e){ e.stopPropagation(); speakPT(p.pt, speakBtn); });
 
       var cb = row.querySelector('input');
       function toggle(){
@@ -1102,16 +1161,16 @@ document.getElementById('cheatQuizBtn').addEventListener('click', function(){
 
 /* ================= Travel guide: slang ================= */
 var SLANG = [
-  {word:"Beleza", mean:"cool / all good"},
-  {word:"Valeu", mean:"thanks / cheers"},
-  {word:"Mano / Mina", mean:"dude / girl (casual)"},
-  {word:"Tá ligado?", mean:"you know? get it?"},
-  {word:"Nossa!", mean:"wow / oh my"},
-  {word:"Rolê", mean:"a hangout / outing"},
-  {word:"Sextou!", mean:"\"it's Friday!\" — party's on"},
-  {word:"Bora", mean:"let's go"},
-  {word:"Firmeza", mean:"all good / solid"},
-  {word:"Cadê?", mean:"where is it/they?"},
+  {word:"Beleza", pron:"beh-LEH-zah", en:"cool / all good", fr:"cool / tout va bien", es:"genial / todo bien"},
+  {word:"Valeu", pron:"vah-LEH-oo", en:"thanks / cheers", fr:"merci / santé", es:"¡gracias! / ¡vale!", esNote:"🔗 Sounds like Spanish '¡Vale!'"},
+  {word:"Mano / Mina", pron:"MAH-noo / MEE-nah", en:"dude / girl (casual)", fr:"mec / meuf (familier)", es:"tío / tía (informal)"},
+  {word:"Tá ligado?", pron:"tah lee-GAH-doo", en:"you know? get it?", fr:"tu vois ? tu captes ?", es:"¿entiendes? ¿cachas?"},
+  {word:"Nossa!", pron:"NOH-sah", en:"wow / oh my", fr:"waouh / oh là là", es:"¡vaya! / ¡ay!"},
+  {word:"Rolê", pron:"hoh-LEH", en:"a hangout / outing", fr:"une sortie / un plan", es:"una salida / un plan"},
+  {word:"Sextou!", pron:"seks-TOH", en:"\"it's Friday!\" — party's on", fr:"« c'est vendredi ! » — la fête commence", es:"«¡ya es viernes!» — la fiesta empieza"},
+  {word:"Bora", pron:"BOH-rah", en:"let's go", fr:"on y va / allez", es:"¡vamos!", esNote:"🔗 Same energy as Spanish '¡Vamos!'"},
+  {word:"Firmeza", pron:"feer-MEH-zah", en:"all good / solid", fr:"tout est solide / ça va bien", es:"todo firme / todo bien"},
+  {word:"Cadê?", pron:"kah-DEH", en:"where is it/they?", fr:"où est-ce ?", es:"¿dónde está?", esNote:"🔗 Same idea as Spanish '¿dónde está?'"},
 ];
 
 function renderSlang(){
@@ -1120,7 +1179,18 @@ function renderSlang(){
   SLANG.forEach(function(s){
     var el = document.createElement('div');
     el.className = 'slang-item';
-    el.innerHTML = '<div class="word">' + s.word + '</div><div class="mean">' + s.mean + '</div>';
+    el.innerHTML =
+      '<div style="flex:1"><div class="word">' + s.word + '</div>' +
+      '<div class="pron">' + s.pron + '</div>' +
+      '<div class="meanings">' +
+        '<div><span class="flag">🇬🇧</span>' + s.en + '</div>' +
+        '<div><span class="flag">🇫🇷</span>' + s.fr + '</div>' +
+        '<div><span class="flag">🇪🇸</span>' + s.es + '</div>' +
+      '</div>' +
+      (s.esNote ? '<div class="cognate">' + s.esNote + '</div>' : '') +
+      '</div>' +
+      '<button type="button" class="speak-btn" aria-label="Listen" ' + (ttsSupported ? '' : 'disabled') + '>🔊</button>';
+    el.querySelector('.speak-btn').addEventListener('click', function(){ speakPT(s.word, this); });
     grid.appendChild(el);
   });
 }
@@ -1129,11 +1199,11 @@ renderSlang();
 document.getElementById('slangQuizBtn').addEventListener('click', function(){
   var pool = shuffle(SLANG).slice(0, 8);
   var questions = pool.map(function(s){
-    var wrongPool = shuffle(SLANG.filter(function(x){ return x.mean !== s.mean; })).slice(0, 3).map(function(x){ return x.mean; });
+    var wrongPool = shuffle(SLANG.filter(function(x){ return x.en !== s.en; })).slice(0, 3).map(function(x){ return x.en; });
     return {
       q: 'What does "' + s.word + '" mean?',
-      options: shuffle(wrongPool.concat([s.mean])),
-      answer: s.mean
+      options: shuffle(wrongPool.concat([s.en])),
+      answer: s.en
     };
   });
   openQuiz('🧠 São Paulo Slang Quiz', questions, function(score, total){
