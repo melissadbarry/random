@@ -247,6 +247,55 @@ main{max-width:960px; margin:0 auto; padding:20px 18px 40px;}
 .day-card.complete .day-btn.primary{background:var(--green); color:#fff; border-color:var(--green);}
 .day-btn.passed{background:var(--green-soft); color:var(--green); border-color:var(--green);}
 
+/* ---- Sentence Builder (levels) ---- */
+.level-card{
+  background:var(--card); border:1px solid var(--border); border-radius:14px; padding:16px 18px; margin-bottom:14px;
+  box-shadow:var(--shadow); display:flex; gap:14px; align-items:flex-start; flex-wrap:wrap;
+}
+.level-card.locked{opacity:.55;}
+.level-card.complete{border-color:var(--green);}
+.level-num{
+  flex:0 0 auto; width:46px; height:46px; border-radius:50%; background:var(--blue-soft); color:var(--ink);
+  display:flex; align-items:center; justify-content:center; font-weight:800; font-size:12px; border:1px solid var(--border);
+  text-align:center; line-height:1.1;
+}
+.level-card.complete .level-num{background:var(--green); color:#fff; border-color:var(--green);}
+.level-body{flex:1; min-width:220px;}
+.level-body h3{font-size:16px; margin-bottom:3px;}
+.level-body .goal{font-size:13px; color:var(--ink-soft); margin-bottom:12px;}
+.pattern-box{background:var(--bg-alt); border:1px solid var(--border); border-radius:10px; padding:10px 12px; margin-bottom:14px;}
+.pattern-label, .builder-label{
+  font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.03em; color:var(--ink-soft); margin-bottom:7px;
+}
+.pattern-list{list-style:none; margin:0; padding:0;}
+.pattern-list li{display:flex; align-items:baseline; gap:8px; font-size:13.5px; margin-bottom:6px; flex-wrap:wrap;}
+.pattern-list li:last-child{margin-bottom:0;}
+.pattern-pt{font-weight:700; font-family:ui-monospace,"SF Mono",Consolas,monospace; color:var(--ink);}
+.pattern-arrow{color:var(--green);}
+.pattern-en{color:var(--ink-soft);}
+.builder-list{display:flex; flex-direction:column; gap:10px; margin-bottom:14px;}
+.builder-item{background:var(--bg-alt); border:1px solid var(--border); border-radius:10px; padding:10px 12px;}
+.builder-answer{
+  min-height:34px; display:flex; flex-wrap:wrap; gap:6px; margin-bottom:8px; padding-bottom:8px;
+  border-bottom:1px dashed var(--border);
+}
+.builder-placeholder{font-size:12.5px; color:var(--ink-soft); font-style:italic; padding:6px 0;}
+.builder-pool{display:flex; flex-wrap:wrap; gap:6px; margin-bottom:8px;}
+.word-chip{
+  border:1px solid var(--border); background:var(--card); color:var(--ink); border-radius:8px; padding:6px 10px;
+  font-size:13.5px; font-weight:600; cursor:pointer;
+}
+.word-chip:hover{border-color:var(--green);}
+.word-chip.picked{background:var(--green-soft); border-color:var(--green); color:var(--ink);}
+.builder-actions{display:flex; align-items:center; gap:8px;}
+.mini-btn{
+  border:1px solid var(--border); background:var(--card); color:var(--ink-soft); border-radius:8px; padding:5px 10px;
+  font-size:11.5px; font-weight:700; cursor:pointer;
+}
+.builder-feedback{font-size:12.8px; margin-top:6px; min-height:16px;}
+.builder-feedback.ok{color:var(--green); font-weight:700;}
+.builder-feedback.bad{color:var(--coral); font-weight:700;}
+
 /* ---- Hangouts ---- */
 .hobby-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:12px; margin-bottom:20px;}
 .hobby-card{background:var(--card); border:1px solid var(--border); border-radius:14px; padding:14px 16px; box-shadow:var(--shadow);}
@@ -410,6 +459,7 @@ footer{max-width:960px; margin:10px auto 0; padding:0 18px 30px; font-size:12px;
     <button data-tab="cheatsheet">📘 Cheat Sheet</button>
     <button data-tab="travel">🌴 SP Travel Guide</button>
     <button data-tab="crash">⚡ 7-Day Jumpstart</button>
+    <button data-tab="sentences">🧩 Sentence Builder</button>
     <button data-tab="speaking">🎙️ Speaking Practice</button>
     <button data-tab="hangouts">🤝 Hangouts &amp; Events</button>
   </nav>
@@ -433,6 +483,7 @@ footer{max-width:960px; margin:10px auto 0; padding:0 18px 30px; font-size:12px;
   <div class="card struggle" style="max-width:520px;">
     <ul>
       <li>You don't know what phrases actually matter</li>
+      <li>You learn isolated words but freeze when it's time to build a sentence</li>
       <li>You're nervous about speaking to locals</li>
       <li>Apps feel slow, confusing, and disconnected from real life</li>
       <li>You want results now, not someday</li>
@@ -470,6 +521,16 @@ footer{max-width:960px; margin:10px auto 0; padding:0 18px 30px; font-size:12px;
         <li>Built for total beginners</li>
       </ul>
       <button class="jump-btn" data-goto="crash" style="background:var(--yellow); color:#3a2c00;">Open Crash Course →</button>
+    </div>
+    <div class="card kit-card" style="border-top-color:var(--blue);">
+      <h3>🧩 Sentence Builder</h3>
+      <p class="desc">5 levels that teach you to actually build sentences, not just match words.</p>
+      <ul class="win">
+        <li>Real grammar patterns explained simply</li>
+        <li>Build full sentences yourself, word by word</li>
+        <li>Levels unlock as you pass each quiz</li>
+      </ul>
+      <button class="jump-btn" data-goto="sentences" style="background:var(--blue);">Open Sentence Builder →</button>
     </div>
     <div class="card kit-card hangout">
       <h3>🤝 Hangouts, Social &amp; Events</h3>
@@ -592,6 +653,19 @@ footer{max-width:960px; margin:10px auto 0; padding:0 18px 30px; font-size:12px;
   </div>
 
   <div id="dayList"></div>
+</section>
+
+<!-- SENTENCE BUILDER -->
+<section class="panel" id="panel-sentences">
+  <div class="section-title">🧩 Sentence Builder <span class="pill">Levels 1–5</span></div>
+  <p style="color:var(--ink-soft); font-size:14px;">Words alone don't get you through a conversation — sentences do. Each level teaches one real grammar pattern, then has you build full Portuguese sentences from scratch (not just match a word to its translation). Pass a level's quiz (75%+) to unlock the next one.</p>
+
+  <div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill" id="levelProgress"></div></div>
+    <div class="progress-label" id="levelProgressLabel">0 / 5 levels passed</div>
+  </div>
+
+  <div id="levelList"></div>
 </section>
 
 <!-- SPEAKING PRACTICE -->
@@ -739,6 +813,7 @@ footer{max-width:960px; margin:10px auto 0; padding:0 18px 30px; font-size:12px;
     <button data-tab="cheatsheet"><span class="ic">📘</span>Phrases</button>
     <button data-tab="travel"><span class="ic">🌴</span>SP Guide</button>
     <button data-tab="crash"><span class="ic">⚡</span>7-Day</button>
+    <button data-tab="sentences"><span class="ic">🧩</span>Sentences</button>
     <button data-tab="speaking"><span class="ic">🎙️</span>Speak</button>
     <button data-tab="hangouts"><span class="ic">🤝</span>Hangouts</button>
   </div>
@@ -808,7 +883,9 @@ var game = Object.assign({
   badges: [],
   xpPhrases: [],
   xpPlanner: [],
-  dayQuizPassed: []
+  dayQuizPassed: [],
+  sentenceLevelsPassed: [],
+  xpSentenceBuilds: []
 }, JSON.parse(localStorage.getItem(GKEY) || '{}'));
 
 function saveGame(){ localStorage.setItem(GKEY, JSON.stringify(game)); }
@@ -829,6 +906,8 @@ var BADGES = [
   {id:"slang-master", ic:"🗣️", name:"Slang Master", desc:"Perfect score on the slang quiz"},
   {id:"streak-3", ic:"🔥", name:"3-Day Streak", desc:"Show up 3 days in a row"},
   {id:"week-warrior", ic:"🏅", name:"Week One Warrior", desc:"Complete all 7 crash course days"},
+  {id:"sentence-starter", ic:"🧱", name:"Sentence Starter", desc:"Pass Sentence Builder Level 1"},
+  {id:"sentence-master", ic:"🏗️", name:"Sentence Architect", desc:"Pass all 5 Sentence Builder levels"},
   {id:"social-pro", ic:"🤝", name:"Social Planner Pro", desc:"Fill the entire weekly planner"},
   {id:"level-5", ic:"⭐", name:"São Paulo Local", desc:"Reach Level 5"},
   {id:"speaking-pro", ic:"🎙️", name:"Role-Play Ready", desc:"Practice all 6 ChatGPT voice scenarios"},
@@ -1401,6 +1480,312 @@ function renderDays(){
   document.getElementById('dayProgress').style.width = (100 * completeCount / 7) + '%';
 }
 renderDays();
+
+/* ================= Sentence Builder (grammar levels) ================= */
+var GRAMMAR_LEVELS = [
+  {
+    n:1, title:"Introduce Yourself", icon:"👋",
+    blurb:"Learn when to use sou vs. estou, and how to say your name, where you live, and your age in full sentences.",
+    patterns:[
+      {pt:"Eu sou + [nationality/trait/job]", en:"I am ___ (permanent characteristic) — e.g. \"Eu sou americano.\""},
+      {pt:"Eu estou + [feeling/state]", en:"I am ___ (temporary state) — e.g. \"Eu estou bem.\""},
+      {pt:"Meu nome é ___.", en:"My name is ___."},
+      {pt:"Eu moro em ___.", en:"I live in ___."},
+      {pt:"Eu tenho ___ anos.", en:"I am ___ years old (lit. \"I have ___ years\")."}
+    ],
+    sentences:[
+      {pt:"Oi, meu nome é Ana.", pron:"oy, meh-oo NOH-mee eh AH-nah", en:"Hi, my name is Ana."},
+      {pt:"Eu sou dos Estados Unidos.", pron:"eh-oo soh dooz es-TAH-dooz oo-NEE-dooz", en:"I'm from the United States."},
+      {pt:"Eu estou bem, obrigado.", pron:"eh-oo es-TOH beng, oh-bree-GAH-doo", en:"I'm well, thank you."},
+      {pt:"Eu moro em Nova York.", pron:"eh-oo MOH-roo eng NOH-vah YORK", en:"I live in New York."},
+      {pt:"Eu tenho trinta anos.", pron:"eh-oo TEN-yoo TREEN-tah AH-nooz", en:"I am thirty years old."},
+      {pt:"Esta é minha primeira viagem ao Brasil.", pron:"ES-tah eh MEE-nyah pree-MAY-rah vee-AH-zheng ow brah-ZEEL", en:"This is my first trip to Brazil."}
+    ],
+    quiz:[
+      {q:"Eu ___ americano. (a permanent trait)", options:["sou","estou","tenho","moro"], answer:"sou"},
+      {q:"Eu ___ cansado hoje. (a temporary feeling)", options:["sou","estou","tenho","moro"], answer:"estou"},
+      {q:"Eu ___ em São Paulo. (where you live)", options:["sou","moro","tenho","vou"], answer:"moro"},
+      {q:"Eu ___ vinte e cinco anos. (your age)", options:["sou","estou","tenho","moro"], answer:"tenho"}
+    ]
+  },
+  {
+    n:2, title:"Ask Questions", icon:"❓",
+    blurb:"Learn the question words that unlock day-to-day conversations: where, how much, when, and can you...?",
+    patterns:[
+      {pt:"Onde fica + [place]?", en:"Where is ___?"},
+      {pt:"Quanto custa + [thing]?", en:"How much does ___ cost?"},
+      {pt:"Você pode + [infinitive]?", en:"Can you ___?"},
+      {pt:"Você tem + [thing]?", en:"Do you have ___?"},
+      {pt:"Que horas são?", en:"What time is it?"}
+    ],
+    sentences:[
+      {pt:"Onde fica o banheiro?", pron:"OHN-jee FEE-kah oo bah-NYAY-roo", en:"Where's the bathroom?"},
+      {pt:"Quanto custa isso?", pron:"KWAN-too KOOS-tah EE-soo", en:"How much does this cost?"},
+      {pt:"Você pode me ajudar?", pron:"vo-SEH PO-jee mee ah-joo-DAR", en:"Can you help me?"},
+      {pt:"Você tem wifi?", pron:"vo-SEH teng WI-fee", en:"Do you have wifi?"},
+      {pt:"Que horas são?", pron:"kee OH-rahz sowng", en:"What time is it?"},
+      {pt:"Como eu chego lá?", pron:"KOH-moo eh-oo SHEH-goo lah", en:"How do I get there?"}
+    ],
+    quiz:[
+      {q:"___ fica a estação? (asking where)", options:["Onde","Quando","Quanto","Quem"], answer:"Onde"},
+      {q:"___ custa o ingresso? (asking price)", options:["Onde","Quanto","Como","Quando"], answer:"Quanto"},
+      {q:"Você ___ me ajudar? (asking if someone is able to)", options:["pode","tem","é","vai"], answer:"pode"},
+      {q:"Que ___ são? (asking the time)", options:["horas","dias","anos","vezes"], answer:"horas"}
+    ]
+  },
+  {
+    n:3, title:"Say What You Want or Need", icon:"🙋",
+    blurb:"The difference between quero, queria, preciso de, and gostaria de — and how to actually order or ask for things.",
+    patterns:[
+      {pt:"Eu quero + [noun/infinitive]", en:"I want ___ (direct)"},
+      {pt:"Eu queria + [noun]", en:"I would like ___ (polite, softer)"},
+      {pt:"Eu preciso de + [noun]", en:"I need ___"},
+      {pt:"Eu gostaria de + [infinitive]", en:"I would like to ___ (more formal)"},
+      {pt:"Eu vou querer + [noun]", en:"I'll have ___ (common when ordering)"}
+    ],
+    sentences:[
+      {pt:"Eu queria um café, por favor.", pron:"eh-oo keh-REE-ah oong kah-FEH", en:"I would like a coffee, please."},
+      {pt:"Eu preciso de ajuda.", pron:"eh-oo preh-SEE-zoo jee ah-JOO-dah", en:"I need help."},
+      {pt:"Eu quero ir para a praia.", pron:"eh-oo KEH-roo eer PAH-rah ah PRY-ah", en:"I want to go to the beach."},
+      {pt:"Eu gostaria de reservar uma mesa.", pron:"eh-oo gos-tah-REE-ah jee heh-zer-VAR OO-mah MEH-zah", en:"I would like to reserve a table."},
+      {pt:"Eu vou querer a mesma coisa.", pron:"eh-oo voh keh-REHR ah MEZ-mah KOY-zah", en:"I'll have the same thing."},
+      {pt:"Eu preciso de um táxi agora.", pron:"eh-oo preh-SEE-zoo jee oong TAHK-see ah-GOH-rah", en:"I need a taxi now."}
+    ],
+    quiz:[
+      {q:"Eu ___ um café, por favor. (polite way to order)", options:["queria","preciso de","gostaria","vou"], answer:"queria"},
+      {q:"Eu ___ ajuda! (something urgent, not optional)", options:["quero","queria","preciso de","gosto de"], answer:"preciso de"},
+      {q:"Eu ___ reservar uma mesa. (more formal request)", options:["gostaria de","preciso","tenho","sou"], answer:"gostaria de"},
+      {q:"At a restaurant, \"Eu vou querer a mesma coisa\" means:", options:["I'll have the same thing.","I need the bathroom.","I don't want anything.","I already paid."], answer:"I'll have the same thing."}
+    ]
+  },
+  {
+    n:4, title:"Talk About Daily Life", icon:"🗓️",
+    blurb:"Everyday present-tense verbs — work, eat, drink, go, like — so you can describe a normal day.",
+    patterns:[
+      {pt:"Eu trabalho em/na/no ___.", en:"I work at/in ___."},
+      {pt:"Eu como ___ no café da manhã.", en:"I eat ___ for breakfast."},
+      {pt:"Eu vou para ___.", en:"I go to ___."},
+      {pt:"Eu bebo ___ de manhã.", en:"I drink ___ in the morning."},
+      {pt:"Eu gosto de ___. / Eu não gosto de ___.", en:"I like ___. / I don't like ___."}
+    ],
+    sentences:[
+      {pt:"Eu trabalho no centro da cidade.", pron:"eh-oo trah-BAH-lyoo noo SEN-troo dah see-DAH-jee", en:"I work downtown."},
+      {pt:"Eu como pão de queijo no café da manhã.", pron:"eh-oo KOH-moo powng jee KAY-zhoo noo kah-FEH dah mah-NYAH", en:"I eat cheese bread for breakfast."},
+      {pt:"Eu vou para o trabalho de metrô.", pron:"eh-oo voh PAH-rah oo trah-BAH-lyoo jee meh-TROH", en:"I go to work by subway."},
+      {pt:"Eu bebo café todo dia.", pron:"eh-oo BEH-boo kah-FEH TOH-doo JEE-ah", en:"I drink coffee every day."},
+      {pt:"Eu gosto de praia e de música.", pron:"eh-oo GOS-too jee PRY-ah ee jee MOO-zee-kah", en:"I like the beach and music."},
+      {pt:"Eu não gosto de acordar cedo.", pron:"eh-oo nowng GOS-too jee ah-kor-DAR SEH-doo", en:"I don't like waking up early."}
+    ],
+    quiz:[
+      {q:"Eu ___ no centro da cidade. (where you work)", options:["trabalho","como","bebo","gosto"], answer:"trabalho"},
+      {q:"Eu ___ café todo dia. (what you drink)", options:["trabalho","como","bebo","vou"], answer:"bebo"},
+      {q:"Eu ___ para o trabalho de metrô. (how you get there)", options:["vou","sou","tenho","gosto"], answer:"vou"},
+      {q:"Eu ___ de praia. (something you like)", options:["gosto","como","bebo","vou"], answer:"gosto"}
+    ]
+  },
+  {
+    n:5, title:"Connect Ideas Like a Local", icon:"🔗",
+    blurb:"Real conversation is longer than one clause. Learn e, mas, também, porque, and então to link ideas naturally.",
+    patterns:[
+      {pt:"___ e ___", en:"___ and ___ (adding an idea)"},
+      {pt:"___ mas ___", en:"___ but ___ (contrast)"},
+      {pt:"___ também", en:"___ too / also (agreeing or adding)"},
+      {pt:"___ porque ___", en:"___ because ___ (giving a reason)"},
+      {pt:"___, então ___", en:"___, so ___ (result)"}
+    ],
+    sentences:[
+      {pt:"Eu gosto de café, mas prefiro chá de manhã.", pron:"eh-oo GOS-too jee kah-FEH, mice preh-FEE-roo shah jee mah-NYAH", en:"I like coffee, but I prefer tea in the morning."},
+      {pt:"Eu moro em São Paulo e trabalho no centro.", pron:"eh-oo MOH-roo eng sowng POW-loo ee trah-BAH-lyoo noo SEN-troo", en:"I live in São Paulo and work downtown."},
+      {pt:"Eu também adorei a comida brasileira.", pron:"eh-oo tahm-BENG ah-doh-RAY ah koh-MEE-dah brah-zee-LAY-rah", en:"I also loved Brazilian food."},
+      {pt:"Eu não falo bem português porque estou aprendendo.", pron:"eh-oo nowng FAH-loo beng por-too-GESS por-KEH es-TOH ah-pren-DEN-doo", en:"I don't speak Portuguese well because I'm learning."},
+      {pt:"Está chovendo, então vou pegar um táxi.", pron:"es-TAH shoh-VEN-doo, en-TOWNG voh peh-GAR oong TAHK-see", en:"It's raining, so I'm going to take a taxi."},
+      {pt:"Eu sou dos Estados Unidos, mas moro no Brasil agora.", pron:"eh-oo soh dooz es-TAH-dooz oo-NEE-dooz, mice MOH-roo noo brah-ZEEL ah-GOH-rah", en:"I'm from the United States, but I live in Brazil now."}
+    ],
+    quiz:[
+      {q:"Eu gosto de café, ___ prefiro chá. (contrast)", options:["e","mas","porque","também"], answer:"mas"},
+      {q:"Eu moro em São Paulo ___ trabalho no centro. (adding an idea)", options:["e","mas","então","porque"], answer:"e"},
+      {q:"Não falo bem português ___ estou aprendendo. (giving a reason)", options:["e","mas","porque","também"], answer:"porque"},
+      {q:"Está chovendo, ___ vou pegar um táxi. (result)", options:["então","mas","porque","também"], answer:"então"}
+    ]
+  }
+];
+
+var xpSentenceSet = game.xpSentenceBuilds.slice();
+
+function renderSentenceBuilder(container, s, onComplete){
+  var words = s.pt.split(' ');
+  var indices = words.map(function(_, i){ return i; });
+  var pool = shuffle(indices);
+  if(words.length > 1){
+    var tries = 0;
+    while(pool.every(function(v, i){ return v === i; }) && tries < 10){ pool = shuffle(indices); tries++; }
+  }
+  var answer = [];
+  var checked = false;
+
+  function checkAnswer(){
+    checked = true;
+    var feedback = container.querySelector('.builder-feedback');
+    var correct = answer.length === words.length && answer.every(function(v, i){ return v === i; });
+    if(correct){
+      feedback.className = 'builder-feedback ok';
+      feedback.textContent = '✅ ' + s.pt + ' — "' + s.en + '"';
+      if(onComplete) onComplete();
+    } else {
+      feedback.className = 'builder-feedback bad';
+      feedback.textContent = '❌ Not quite — try again.';
+      setTimeout(function(){ answer = []; checked = false; render(); }, 900);
+    }
+  }
+
+  function render(){
+    container.innerHTML = '';
+
+    var answerRow = document.createElement('div');
+    answerRow.className = 'builder-answer';
+    if(answer.length === 0){
+      var ph = document.createElement('span');
+      ph.className = 'builder-placeholder';
+      ph.textContent = 'Tap the words below in order to build the sentence…';
+      answerRow.appendChild(ph);
+    }
+    answer.forEach(function(i){
+      var chip = document.createElement('button');
+      chip.type = 'button';
+      chip.className = 'word-chip picked';
+      chip.textContent = words[i];
+      chip.addEventListener('click', function(){
+        if(checked) return;
+        answer = answer.filter(function(x){ return x !== i; });
+        render();
+      });
+      answerRow.appendChild(chip);
+    });
+
+    var poolRow = document.createElement('div');
+    poolRow.className = 'builder-pool';
+    pool.forEach(function(i){
+      if(answer.indexOf(i) > -1) return;
+      var chip = document.createElement('button');
+      chip.type = 'button';
+      chip.className = 'word-chip';
+      chip.textContent = words[i];
+      chip.addEventListener('click', function(){
+        if(checked) return;
+        answer.push(i);
+        if(answer.length === words.length){
+          render();
+          checkAnswer();
+        } else {
+          render();
+        }
+      });
+      poolRow.appendChild(chip);
+    });
+
+    var actions = document.createElement('div');
+    actions.className = 'builder-actions';
+    var resetBtn = document.createElement('button');
+    resetBtn.type = 'button';
+    resetBtn.className = 'mini-btn';
+    resetBtn.textContent = '↺ Reset';
+    resetBtn.addEventListener('click', function(){
+      answer = []; checked = false; render();
+    });
+    actions.appendChild(resetBtn);
+    var speakBtn = document.createElement('button');
+    speakBtn.type = 'button';
+    speakBtn.className = 'speak-btn';
+    speakBtn.textContent = '🔊';
+    speakBtn.setAttribute('aria-label', 'Listen');
+    if(!ttsSupported) speakBtn.disabled = true;
+    speakBtn.addEventListener('click', function(){ speakPT(s.pt, speakBtn); });
+    actions.appendChild(speakBtn);
+    container.appendChild(answerRow);
+    container.appendChild(poolRow);
+    container.appendChild(actions);
+
+    var feedback = document.createElement('div');
+    feedback.className = 'builder-feedback';
+    container.appendChild(feedback);
+  }
+  render();
+}
+
+function renderSentenceLevels(){
+  var wrap = document.getElementById('levelList');
+  wrap.innerHTML = '';
+  GRAMMAR_LEVELS.forEach(function(lvl, li){
+    var unlocked = li === 0 || game.sentenceLevelsPassed.indexOf(GRAMMAR_LEVELS[li - 1].n) > -1;
+    var passed = game.sentenceLevelsPassed.indexOf(lvl.n) > -1;
+    var card = document.createElement('div');
+    card.className = 'level-card' + (passed ? ' complete' : '') + (!unlocked ? ' locked' : '');
+
+    if(!unlocked){
+      card.innerHTML =
+        '<div class="level-num">🔒</div>' +
+        '<div class="level-body"><h3>Level ' + lvl.n + ': ' + lvl.title + '</h3>' +
+        '<div class="goal">Pass Level ' + (lvl.n - 1) + '\'s quiz to unlock this level.</div></div>';
+      wrap.appendChild(card);
+      return;
+    }
+
+    var patternsHtml = '<ul class="pattern-list">' + lvl.patterns.map(function(p){
+      return '<li><span class="pattern-pt">' + p.pt + '</span><span class="pattern-arrow">→</span><span class="pattern-en">' + p.en + '</span></li>';
+    }).join('') + '</ul>';
+
+    card.innerHTML =
+      '<div class="level-num">' + (passed ? '✓' : lvl.icon) + '</div>' +
+      '<div class="level-body">' +
+        '<h3>Level ' + lvl.n + ': ' + lvl.title + '</h3>' +
+        '<div class="goal">' + lvl.blurb + '</div>' +
+        '<div class="pattern-box"><div class="pattern-label">🧩 Pattern</div>' + patternsHtml + '</div>' +
+        '<div class="builder-label">✍️ Build These Sentences</div>' +
+        '<div class="builder-list" id="builders-' + lvl.n + '"></div>' +
+        '<button class="day-btn primary" data-role="quiz">' + (passed ? '✓ Level Quiz Passed' : '🧠 Take Level ' + lvl.n + ' Quiz') + '</button>' +
+      '</div>';
+    wrap.appendChild(card);
+
+    var builderList = card.querySelector('#builders-' + lvl.n);
+    lvl.sentences.forEach(function(s, si){
+      var item = document.createElement('div');
+      item.className = 'builder-item';
+      builderList.appendChild(item);
+      var key = 'L' + lvl.n + '-' + si;
+      renderSentenceBuilder(item, s, function(){
+        if(xpSentenceSet.indexOf(key) === -1){
+          xpSentenceSet.push(key);
+          game.xpSentenceBuilds = xpSentenceSet;
+          saveGame();
+          addXP(2, 'built a sentence');
+        }
+      });
+    });
+
+    card.querySelector('[data-role="quiz"]').addEventListener('click', function(){
+      openQuiz('Level ' + lvl.n + ' Quiz', lvl.quiz, function(score, total){
+        var pass = score >= Math.ceil(total * 0.75);
+        if(pass){
+          if(game.sentenceLevelsPassed.indexOf(lvl.n) === -1){
+            game.sentenceLevelsPassed.push(lvl.n);
+            saveGame();
+            addXP(25, 'Level ' + lvl.n + ' passed');
+            if(lvl.n === 1) unlockBadge('sentence-starter');
+            if(game.sentenceLevelsPassed.length === GRAMMAR_LEVELS.length) unlockBadge('sentence-master');
+          }
+        } else {
+          showToast('Almost!', 'Score at least ' + Math.ceil(total * 0.75) + '/' + total + ' to pass Level ' + lvl.n + '.');
+        }
+        renderSentenceLevels();
+      });
+    });
+  });
+
+  var passedCount = game.sentenceLevelsPassed.length;
+  document.getElementById('levelProgressLabel').textContent = passedCount + ' / ' + GRAMMAR_LEVELS.length + ' levels passed';
+  document.getElementById('levelProgress').style.width = (100 * passedCount / GRAMMAR_LEVELS.length) + '%';
+}
+renderSentenceLevels();
 
 /* ================= Speaking practice (ChatGPT voice bridge) ================= */
 var SCENARIOS = [
