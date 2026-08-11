@@ -288,6 +288,11 @@ main{max-width:960px; margin:0 auto; padding:20px 18px 40px;}
 .ref-chip .pt{font-weight:700; font-size:12.8px; color:var(--ink);}
 .ref-chip .pron{font-size:10.8px; color:var(--green); font-family:ui-monospace,"SF Mono",Consolas,monospace;}
 .ref-chip .en{font-size:11.3px; color:var(--ink-soft);}
+.ref-chip .fr{font-size:11.3px; color:var(--blue);}
+.lesson-meta{font-size:12px; color:var(--ink-soft); margin-bottom:2px;}
+.lesson-tip{
+  background:var(--yellow-soft); border-radius:8px; padding:9px 11px; font-size:12.8px; margin-top:12px; color:var(--ink);
+}
 .ref-chip .speak-btn{width:26px; height:26px; font-size:11px;}
 .builder-list{display:flex; flex-direction:column; gap:10px; margin-bottom:14px;}
 .builder-item{background:var(--bg-alt); border:1px solid var(--border); border-radius:10px; padding:10px 12px;}
@@ -476,6 +481,7 @@ footer{max-width:960px; margin:10px auto 0; padding:0 18px 30px; font-size:12px;
     <button data-tab="travel">🌴 SP Travel Guide</button>
     <button data-tab="crash">⚡ 7-Day Jumpstart</button>
     <button data-tab="sentences">🧩 Sentence Builder</button>
+    <button data-tab="classnotes">📓 My Class Notes</button>
     <button data-tab="speaking">🎙️ Speaking Practice</button>
     <button data-tab="hangouts">🤝 Hangouts &amp; Events</button>
   </nav>
@@ -540,13 +546,23 @@ footer{max-width:960px; margin:10px auto 0; padding:0 18px 30px; font-size:12px;
     </div>
     <div class="card kit-card" style="border-top-color:var(--blue);">
       <h3>🧩 Sentence Builder</h3>
-      <p class="desc">5 levels that teach you to actually build sentences, not just match words.</p>
+      <p class="desc">8 levels that teach you to actually build sentences, not just match words.</p>
       <ul class="win">
         <li>Real grammar patterns explained simply</li>
         <li>Build full sentences yourself, word by word</li>
         <li>Levels unlock as you pass each quiz</li>
       </ul>
       <button class="jump-btn" data-goto="sentences" style="background:var(--blue);">Open Sentence Builder →</button>
+    </div>
+    <div class="card kit-card" style="border-top-color:var(--yellow);">
+      <h3>📓 My Class Notes</h3>
+      <p class="desc">Your actual lessons, turned into audio + quizzes so nothing fades between classes.</p>
+      <ul class="win">
+        <li>Real vocab straight from your notebook</li>
+        <li>Audio + phonetics for every word</li>
+        <li>Quiz yourself before you forget it</li>
+      </ul>
+      <button class="jump-btn" data-goto="classnotes" style="background:var(--yellow); color:#3a2c00;">Open Class Notes →</button>
     </div>
     <div class="card kit-card hangout">
       <h3>🤝 Hangouts, Social &amp; Events</h3>
@@ -558,6 +574,45 @@ footer{max-width:960px; margin:10px auto 0; padding:0 18px 30px; font-size:12px;
       </ul>
       <button class="jump-btn" data-goto="hangouts" style="background:var(--coral);">Open Hangouts →</button>
     </div>
+  </div>
+
+  <div class="section-title">🚀 6-Week Fast Track <span class="pill">15 min/day</span></div>
+  <p style="color:var(--ink-soft); font-size:14px;">Class moves slowly because a group has to move slowly. This doesn't. 15 focused minutes a day, on top of class (not instead of it), is enough to actually move — daily reps beat weekly ones every time. A simple loop for each day:</p>
+  <div class="card" style="margin-bottom:16px;">
+    <ul class="win">
+      <li><strong>~5 min — Hear it:</strong> Cheat Sheet, Class Notes, or a Sentence Builder reference grid. Tap every 🔊, say it back out loud.</li>
+      <li><strong>~5 min — Use it:</strong> one Sentence Builder drill, Crash Course day, or Class Notes quiz.</li>
+      <li><strong>~5 min — Live it:</strong> say it to a real person or screen — your Uber driver, a barista, or shadow a line from Portuguese TV.</li>
+    </ul>
+  </div>
+  <div class="grid">
+    <div class="card">
+      <h3>Week 1 — Foundations</h3>
+      <p class="desc">Crash Course Days 1–2 · Sentence Builder Levels 1–2 · Class Notes Aula #1</p>
+    </div>
+    <div class="card">
+      <h3>Week 2 — Getting Around &amp; Asking</h3>
+      <p class="desc">Crash Course Days 3–4 · Sentence Builder Level 3 · Class Notes Aula #2</p>
+    </div>
+    <div class="card">
+      <h3>Week 3 — Numbers &amp; Daily Life</h3>
+      <p class="desc">Sentence Builder Levels 4, 6 &amp; 7 · Crash Course Day 5 · Class Notes kitchen vocab</p>
+    </div>
+    <div class="card">
+      <h3>Week 4 — Real Conversation</h3>
+      <p class="desc">Sentence Builder Level 5 · Crash Course Day 6 · start Speaking Practice with ChatGPT voice</p>
+    </div>
+    <div class="card">
+      <h3>Week 5 — Plans &amp; Real Situations</h3>
+      <p class="desc">Sentence Builder Level 8 · Crash Course Day 7 · Travel Guide + Slang · book something on the Hangouts planner</p>
+    </div>
+    <div class="card">
+      <h3>Week 6 — Immersion &amp; Confidence</h3>
+      <p class="desc">Re-take any quiz under 90% · full mock chats in Speaking Practice · real talk with Uber drivers, friends, class</p>
+    </div>
+  </div>
+  <div class="goal-banner">
+    🎯 Keep going to class every week — it's still where you get corrected by a real teacher. This app is what happens on the other 6 days.
   </div>
 
   <div class="section-title">✨ My Transformation</div>
@@ -704,6 +759,19 @@ footer{max-width:960px; margin:10px auto 0; padding:0 18px 30px; font-size:12px;
   </div>
 
   <div id="levelList"></div>
+</section>
+
+<!-- CLASS NOTES -->
+<section class="panel" id="panel-classnotes">
+  <div class="section-title">📓 My Class Notes <span class="pill">From Your Lessons</span></div>
+  <p style="color:var(--ink-soft); font-size:14px;">Your actual class notes, turned into audio + quizzes so what you learn in class doesn't fade by next week. Add new lessons here as you go.</p>
+
+  <div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill" id="lessonProgress"></div></div>
+    <div class="progress-label" id="lessonProgressLabel">0 / 4 lesson quizzes passed</div>
+  </div>
+
+  <div id="lessonList"></div>
 </section>
 
 <!-- SPEAKING PRACTICE -->
@@ -861,6 +929,7 @@ footer{max-width:960px; margin:10px auto 0; padding:0 18px 30px; font-size:12px;
     <button data-tab="travel"><span class="ic">🌴</span>SP Guide</button>
     <button data-tab="crash"><span class="ic">⚡</span>7-Day</button>
     <button data-tab="sentences"><span class="ic">🧩</span>Sentences</button>
+    <button data-tab="classnotes"><span class="ic">📓</span>Class</button>
     <button data-tab="speaking"><span class="ic">🎙️</span>Speak</button>
     <button data-tab="hangouts"><span class="ic">🤝</span>Hangouts</button>
   </div>
@@ -932,7 +1001,8 @@ var game = Object.assign({
   xpPlanner: [],
   dayQuizPassed: [],
   sentenceLevelsPassed: [],
-  xpSentenceBuilds: []
+  xpSentenceBuilds: [],
+  classQuizPassed: []
 }, JSON.parse(localStorage.getItem(GKEY) || '{}'));
 
 function saveGame(){ localStorage.setItem(GKEY, JSON.stringify(game)); }
@@ -955,6 +1025,7 @@ var BADGES = [
   {id:"week-warrior", ic:"🏅", name:"Week One Warrior", desc:"Complete all 7 crash course days"},
   {id:"sentence-starter", ic:"🧱", name:"Sentence Starter", desc:"Pass Sentence Builder Level 1"},
   {id:"sentence-master", ic:"🏗️", name:"Sentence Architect", desc:"Pass all 8 Sentence Builder levels"},
+  {id:"class-star", ic:"🎓", name:"Class Star", desc:"Pass every Class Notes quiz"},
   {id:"social-pro", ic:"🤝", name:"Social Planner Pro", desc:"Fill the entire weekly planner"},
   {id:"level-5", ic:"⭐", name:"São Paulo Local", desc:"Reach Level 5"},
   {id:"speaking-pro", ic:"🎙️", name:"Role-Play Ready", desc:"Practice all 6 ChatGPT voice scenarios"},
@@ -2051,6 +2122,198 @@ function renderSentenceLevels(){
   document.getElementById('levelProgress').style.width = (100 * passedCount / GRAMMAR_LEVELS.length) + '%';
 }
 renderSentenceLevels();
+
+/* ================= Class Notes (from your actual lessons) ================= */
+var CLASS_LESSONS = [
+  {
+    id:1, date:"Aug 4, 2026", title:"Aula #1 — Alphabet, Sounds & Introducing Yourself",
+    vocab:[
+      {pt:"Caderno", pron:"kah-DER-noo", en:"Notebook", fr:"Cahier"},
+      {pt:"Meu / Minha", pron:"meh-oo / MEE-nyah", en:"My (masc. / fem.)", fr:"Mon / Ma"},
+      {pt:"Manhã", pron:"mah-NYAH", en:"Morning", fr:"Matin"},
+      {pt:"Bandeira", pron:"bahn-DAY-rah", en:"Flag", fr:"Drapeau"},
+      {pt:"Cedilha (ç)", pron:"seh-DEE-lyah", en:"Cedilla — never used before e or i", fr:"Cédille — jamais devant e/i"},
+      {pt:"Sobrenome", pron:"soh-breh-NOH-mee", en:"Surname / last name", fr:"Nom de famille"},
+      {pt:"Como se chama?", pron:"KOH-moo see SHAH-mah", en:"What's your name? (formal)", fr:"Comment vous appelez-vous ?"},
+      {pt:"Eu me chamo", pron:"eh-oo mee SHAH-moo", en:"My name is / I call myself", fr:"Je m'appelle"},
+      {pt:"h", pron:"ah-GAH", en:"the letter H", fr:"la lettre H"},
+      {pt:"j", pron:"JOH-tah", en:"the letter J", fr:"la lettre J"},
+      {pt:"r", pron:"EH-hee", en:"the letter R", fr:"la lettre R"},
+      {pt:"w", pron:"DAH-blyoo", en:"the letter W", fr:"la lettre W"},
+      {pt:"x", pron:"SHEESS", en:"the letter X", fr:"la lettre X"},
+      {pt:"y", pron:"EEP-see-lohn", en:"the letter Y", fr:"la lettre Y"}
+    ],
+    sentences:[
+      {pt:"Meu nome é Melissa.", pron:"meh-oo NOH-mee eh meh-LEE-sah", en:"My name is Melissa.", fr:"Je m'appelle Melissa."},
+      {pt:"Meu sobrenome é Diallo-Barry.", pron:"meh-oo soh-breh-NOH-mee eh jee-AH-loo BAH-hee", en:"My last name is Diallo-Barry.", fr:"Mon nom de famille est Diallo-Barry."},
+      {pt:"Sou da França.", pron:"soh dah FRAHN-sah", en:"I'm from France.", fr:"Je suis de France."},
+      {pt:"Minha trajetória foi Madrid, Medellín, São Paulo.", pron:"MEE-nyah trah-zheh-TOH-ree-ah foy mah-DREE meh-deh-YEEN sowng POW-loo", en:"My path was Madrid, Medellín, São Paulo.", fr:"Mon parcours a été Madrid, Medellín, São Paulo."}
+    ],
+    tip:"💡 From your notes: a single \"s\" between two vowels sounds like \"z\" — casa is pronounced \"caza,\" not \"cassa.\"",
+    quiz:[
+      {q:"Which word means \"notebook\"?", options:["Caderno","Sobrenome","Cedilha","Bandeira"], answer:"Caderno"},
+      {q:"The cedilha (ç) is never used before which letters?", options:["e and i","a and o","m and n","s and z"], answer:"e and i"},
+      {q:"How do you ask \"What's your name?\" formally?", options:["Como se chama?","Como vai?","O que é isso?","Quem é você?"], answer:"Como se chama?"},
+      {q:"\"Sou da França\" means:", options:["I'm from France","I live in France","I speak French","I'm going to France"], answer:"I'm from France"}
+    ]
+  },
+  {
+    id:2, date:"Aug 4, 2026 (cont'd)", title:"Pronouns & Everyday Words",
+    vocab:[
+      {pt:"Eu", pron:"eh-oo", en:"I", fr:"Je"},
+      {pt:"Tu / Você", pron:"too / vo-SEH", en:"You (informal)", fr:"Tu / Vous (informel)"},
+      {pt:"Ele / Ela", pron:"EH-lee / EH-lah", en:"He / She", fr:"Il / Elle"},
+      {pt:"Nós / A gente", pron:"nohz / ah ZHEN-chee", en:"We (formal / casual)", fr:"Nous"},
+      {pt:"Vocês", pron:"vo-SEHZ", en:"You all (plural)", fr:"Vous (pluriel)"},
+      {pt:"Eles / Elas", pron:"EH-leez / EH-lahz", en:"They (masc. / fem.)", fr:"Ils / Elles"},
+      {pt:"Calça", pron:"KAHL-sah", en:"Pants", fr:"Pantalon"},
+      {pt:"Coisa", pron:"KOY-zah", en:"Thing", fr:"Chose"},
+      {pt:"Carro", pron:"KAH-hoo", en:"Car", fr:"Voiture"},
+      {pt:"Gosto de", pron:"GOS-too jee", en:"I like", fr:"J'aime"},
+      {pt:"Dinheiro", pron:"jee-NYAY-roo", en:"Money", fr:"Argent"},
+      {pt:"Sapato", pron:"sah-PAH-too", en:"Shoe", fr:"Chaussure"},
+      {pt:"Forte / Fraco", pron:"FOR-chee / FRAH-koo", en:"Strong / Weak", fr:"Fort / Faible"},
+      {pt:"Costas", pron:"KOS-tahz", en:"Back (body part)", fr:"Le dos"}
+    ],
+    quiz:[
+      {q:"\"A gente\" is a casual way to say:", options:["We","You","They","I"], answer:"We"},
+      {q:"Which word means \"thing\"?", options:["Coisa","Costas","Carro","Certo"], answer:"Coisa"},
+      {q:"\"Gosto de\" means:", options:["I like","I want","I need","I have"], answer:"I like"},
+      {q:"Which pair means \"strong / weak\"?", options:["Forte / Fraco","Certo / Errado","Duro / Mole","Perto / Longe"], answer:"Forte / Fraco"}
+    ]
+  },
+  {
+    id:3, date:"Aug 6, 2026", title:"Aula #2 — Health, Belongings & Body",
+    vocab:[
+      {pt:"Doente", pron:"doo-EN-chee", en:"Sick", fr:"Malade"},
+      {pt:"Enfermo", pron:"en-FEHR-moo", en:"Ill (more formal)", fr:"Malade (plus formel)"},
+      {pt:"Doenças", pron:"doo-EN-sahz", en:"Illnesses", fr:"Maladies"},
+      {pt:"Casaco", pron:"kah-ZAH-koo", en:"Jacket / coat", fr:"Veste / Manteau"},
+      {pt:"Mochila", pron:"moh-SHEE-lah", en:"Backpack", fr:"Sac à dos"},
+      {pt:"Vergonha", pron:"ver-GOH-nyah", en:"Shame / embarrassment", fr:"Honte"},
+      {pt:"Unhas", pron:"OO-nyahz", en:"Nails", fr:"Ongles"},
+      {pt:"Cinto", pron:"SEEN-too", en:"Belt", fr:"Ceinture"},
+      {pt:"Joelho", pron:"zhoo-EH-lyoo", en:"Knee", fr:"Genou"},
+      {pt:"Telhado", pron:"teh-LYAH-doo", en:"Roof", fr:"Toit"},
+      {pt:"Sobrancelha", pron:"soh-brahn-SEH-lyah", en:"Eyebrow", fr:"Sourcil"},
+      {pt:"Carteira", pron:"kar-TAY-rah", en:"Wallet", fr:"Portefeuille"}
+    ],
+    sentences:[
+      {pt:"Meu nome é Melissa, eu sou da França.", pron:"meh-oo NOH-mee eh meh-LEE-sah, eh-oo soh dah FRAHN-sah", en:"My name is Melissa, I'm from France.", fr:"Je m'appelle Melissa, je suis de France."},
+      {pt:"Eu tenho trinta e cinco anos e estou no Brasil há duas semanas.", pron:"eh-oo TEN-yoo TREEN-tah ee SEEN-koo AH-nooz ee es-TOH noo brah-ZEEL ah DOO-ahz seh-MAH-nahz", en:"I am thirty-five years old and I've been in Brazil for two weeks.", fr:"J'ai trente-cinq ans et je suis au Brésil depuis deux semaines."},
+      {pt:"Eu moro no Brasil, em São Paulo.", pron:"eh-oo MOH-roo noo brah-ZEEL, eng sowng POW-loo", en:"I live in Brazil, in São Paulo.", fr:"J'habite au Brésil, à São Paulo."}
+    ],
+    quiz:[
+      {q:"Which word means \"sick\"?", options:["Doente","Doenças","Casaco","Cinto"], answer:"Doente"},
+      {q:"\"Mochila\" means:", options:["Backpack","Wallet","Jacket","Belt"], answer:"Backpack"},
+      {q:"\"Há duas semanas\" means:", options:["For two weeks","Two weeks ago","In two weeks","Every two weeks"], answer:"For two weeks"},
+      {q:"Which word means \"knee\"?", options:["Joelho","Costas","Unhas","Telhado"], answer:"Joelho"}
+    ]
+  },
+  {
+    id:4, date:"Kitchen vocab", title:"Cooking & Kitchen Vocabulary",
+    vocab:[
+      {pt:"Ovo / Ovos", pron:"OH-voo / OH-vooz", en:"Egg / Eggs", fr:"Œuf / Œufs"},
+      {pt:"Ovos mexidos", pron:"OH-vooz meh-SHEE-dooz", en:"Scrambled eggs", fr:"Œufs brouillés"},
+      {pt:"Ovos fritos", pron:"OH-vooz FREE-tooz", en:"Fried eggs", fr:"Œufs frits"},
+      {pt:"Omelete", pron:"oh-meh-LEH-chee", en:"Omelet", fr:"Omelette"},
+      {pt:"Ovo cozido", pron:"OH-voo koh-ZEE-doo", en:"Hard-boiled egg", fr:"Œuf dur"},
+      {pt:"Panela", pron:"pah-NEH-lah", en:"Pot", fr:"Casserole"},
+      {pt:"Frigideira", pron:"free-zhee-DAY-rah", en:"Frying pan", fr:"Poêle"},
+      {pt:"Cebola", pron:"seh-BOH-lah", en:"Onion", fr:"Oignon"},
+      {pt:"Duro / Mole", pron:"DOO-roo / MOH-lee", en:"Hard / Soft", fr:"Dur / Mou"},
+      {pt:"Manteiga", pron:"mahn-TAY-gah", en:"Butter", fr:"Beurre"},
+      {pt:"Cozinhar", pron:"koh-zee-NYAR", en:"To cook", fr:"Cuisiner"},
+      {pt:"Azeite de oliva", pron:"ah-ZAY-chee jee oh-LEE-vah", en:"Olive oil", fr:"Huile d'olive"},
+      {pt:"Amêndoa", pron:"ah-MEN-doo-ah", en:"Almond", fr:"Amande"},
+      {pt:"Churrasco", pron:"shoo-HAHS-koo", en:"BBQ", fr:"Barbecue"},
+      {pt:"Forno", pron:"FOR-noo", en:"Oven", fr:"Four"},
+      {pt:"Coração", pron:"koh-rah-SOWNG", en:"Heart", fr:"Cœur"},
+      {pt:"Fazer", pron:"fah-ZEHR", en:"To do / make", fr:"Faire"},
+      {pt:"Tomar", pron:"too-MAR", en:"To take / have", fr:"Prendre"},
+      {pt:"Preparar", pron:"preh-pah-RAR", en:"To prepare", fr:"Préparer"}
+    ],
+    quiz:[
+      {q:"Which word means \"scrambled eggs\"?", options:["Ovos mexidos","Ovos fritos","Ovo cozido","Omelete"], answer:"Ovos mexidos"},
+      {q:"\"Frigideira\" means:", options:["Frying pan","Pot","Oven","Plate"], answer:"Frying pan"},
+      {q:"Which word means \"to cook\"?", options:["Cozinhar","Fazer","Tomar","Preparar"], answer:"Cozinhar"},
+      {q:"\"Azeite de oliva\" means:", options:["Olive oil","Butter","Vinegar","Salt"], answer:"Olive oil"}
+    ]
+  }
+];
+
+function renderClassLessons(){
+  var list = document.getElementById('lessonList');
+  list.innerHTML = '';
+  CLASS_LESSONS.forEach(function(lesson){
+    var passed = game.classQuizPassed.indexOf(lesson.id) > -1;
+    var card = document.createElement('div');
+    card.className = 'day-card' + (passed ? ' complete' : '');
+
+    var vocabHtml = '<div class="vocab-label">🔊 Vocabulary</div><div class="ref-grid">' +
+      lesson.vocab.map(function(v){
+        return '<div class="ref-chip"><div class="info"><div class="pt">' + v.pt + '</div>' +
+          '<div class="pron">' + v.pron + '</div>' +
+          '<div class="en">🇬🇧 ' + v.en + '</div>' +
+          '<div class="fr">🇫🇷 ' + v.fr + '</div></div>' +
+          '<button type="button" class="speak-btn" data-word="' + v.pt.replace(/"/g, '&quot;') + '" aria-label="Listen" ' + (ttsSupported ? '' : 'disabled') + '>🔊</button></div>';
+      }).join('') +
+    '</div>';
+
+    var sentencesHtml = '';
+    if(lesson.sentences){
+      sentencesHtml = '<div class="vocab-label" style="margin-top:14px;">🗣️ From Your Notes</div><div class="ref-grid">' +
+        lesson.sentences.map(function(s){
+          return '<div class="ref-chip"><div class="info"><div class="pt">' + s.pt + '</div>' +
+            '<div class="pron">' + s.pron + '</div>' +
+            '<div class="en">🇬🇧 ' + s.en + '</div>' +
+            '<div class="fr">🇫🇷 ' + s.fr + '</div></div>' +
+            '<button type="button" class="speak-btn" data-word="' + s.pt.replace(/"/g, '&quot;') + '" aria-label="Listen" ' + (ttsSupported ? '' : 'disabled') + '>🔊</button></div>';
+        }).join('') +
+      '</div>';
+    }
+
+    var tipHtml = lesson.tip ? '<div class="lesson-tip">' + lesson.tip + '</div>' : '';
+
+    card.innerHTML =
+      '<div class="day-num">' + (passed ? '✓' : '🎓') + '</div>' +
+      '<div class="day-body">' +
+        '<div class="lesson-meta">' + lesson.date + '</div>' +
+        '<h3>' + lesson.title + '</h3>' +
+        vocabHtml + sentencesHtml + tipHtml +
+      '</div>' +
+      '<div class="day-actions">' +
+        '<button class="day-btn' + (passed ? ' passed' : '') + '" data-role="quiz">' + (passed ? '✓ Quiz Passed' : '🧠 Quiz Me') + '</button>' +
+      '</div>';
+    list.appendChild(card);
+
+    card.querySelectorAll('.ref-chip .speak-btn').forEach(function(btn){
+      btn.addEventListener('click', function(){ speakPT(btn.getAttribute('data-word'), btn); });
+    });
+
+    card.querySelector('[data-role="quiz"]').addEventListener('click', function(){
+      openQuiz(lesson.title + ' Quiz', lesson.quiz, function(score, total){
+        var pass = score >= Math.ceil(total * 0.75);
+        if(pass){
+          if(game.classQuizPassed.indexOf(lesson.id) === -1){
+            game.classQuizPassed.push(lesson.id);
+            saveGame();
+            addXP(15, lesson.title + ' quiz passed');
+            if(game.classQuizPassed.length === CLASS_LESSONS.length) unlockBadge('class-star');
+          }
+        } else {
+          showToast('Almost!', 'Score at least ' + Math.ceil(total * 0.75) + '/' + total + ' to pass this lesson.');
+        }
+        renderClassLessons();
+      });
+    });
+  });
+
+  var passedCount = game.classQuizPassed.length;
+  document.getElementById('lessonProgressLabel').textContent = passedCount + ' / ' + CLASS_LESSONS.length + ' lesson quizzes passed';
+  document.getElementById('lessonProgress').style.width = (100 * passedCount / CLASS_LESSONS.length) + '%';
+}
+renderClassLessons();
 
 /* ================= Speaking practice (ChatGPT voice bridge) ================= */
 var SCENARIOS = [
