@@ -1,4 +1,9 @@
-var CACHE_NAME = 'bsk-cache-v3';
+var CACHE_NAME = 'bsk-cache-v4';
+
+// Let the page tell a waiting worker to take over immediately.
+self.addEventListener('message', function(event){
+  if(event.data && event.data.type === 'SKIP_WAITING') self.skipWaiting();
+});
 var ASSETS = [
   './',
   './index.html',

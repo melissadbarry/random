@@ -1137,7 +1137,7 @@ footer{max-width:960px; margin:10px auto 0; padding:0 18px 30px; font-size:12px;
 
 </main>
 
-<footer>Made for the 🇧🇷 Brazil Starter Kit journey — confidence over perfection.</footer>
+<footer>Made for the 🇧🇷 Brazil Starter Kit journey — confidence over perfection.<br><span id="buildStamp" style="opacity:.7; font-size:11px;"></span> · <button type="button" id="forceUpdateBtn" class="mini-btn" style="margin-top:6px;">↻ Check for updates</button></footer>
 
 <div class="bottom-nav">
   <div class="row" id="bottomTabs">
@@ -3784,10 +3784,68 @@ function importProgress(file){
   });
 })();
 
-/* ================= Offline install (PWA) ================= */
+/* ================= Offline install (PWA) + self-update ================= */
+var APP_BUILD = '2026-08-11 · build 8';
+
+(function stampBuild(){
+  var el = document.getElementById('buildStamp');
+  if(el) el.textContent = 'Version ' + APP_BUILD;
+})();
+
+function showUpdateBanner(reg){
+  if(document.getElementById('updateBanner')) return;
+  var bar = document.createElement('div');
+  bar.id = 'updateBanner';
+  bar.style.cssText = 'position:fixed; left:12px; right:12px; bottom:84px; z-index:400; background:var(--green);' +
+    'color:#fff; border-radius:12px; padding:12px 14px; box-shadow:0 6px 20px rgba(0,0,0,.3);' +
+    'display:flex; align-items:center; gap:10px; font-size:13.5px; font-weight:600;';
+  bar.innerHTML = '<span style="flex:1">A newer version is ready.</span>' +
+    '<button type="button" style="border:none; background:#fff; color:var(--green); font-weight:700;' +
+    'border-radius:8px; padding:7px 12px; font-size:13px; cursor:pointer;">Update now</button>';
+  bar.querySelector('button').addEventListener('click', function(){
+    if(reg && reg.waiting) reg.waiting.postMessage({type:'SKIP_WAITING'});
+    setTimeout(function(){ window.location.reload(); }, 300);
+  });
+  document.body.appendChild(bar);
+}
+
 if('serviceWorker' in navigator){
   window.addEventListener('load', function(){
-    navigator.serviceWorker.register('service-worker.js').catch(function(){});
+    var hadController = !!navigator.serviceWorker.controller;
+
+    navigator.serviceWorker.register('service-worker.js').then(function(reg){
+      reg.update();
+      // re-check whenever the app comes back to the foreground
+      document.addEventListener('visibilitychange', function(){
+        if(!document.hidden) reg.update();
+      });
+      if(reg.waiting && hadController) showUpdateBanner(reg);
+      reg.addEventListener('updatefound', function(){
+        var nw = reg.installing;
+        if(!nw) return;
+        nw.addEventListener('statechange', function(){
+          if(nw.state === 'installed' && hadController) showUpdateBanner(reg);
+        });
+      });
+      var force = document.getElementById('forceUpdateBtn');
+      if(force) force.addEventListener('click', function(){
+        force.textContent = 'Checking…';
+        reg.update().then(function(){
+          setTimeout(function(){
+            force.textContent = reg.waiting ? '↻ Update ready — tap' : '✓ You are up to date';
+            if(reg.waiting) showUpdateBanner(reg);
+            setTimeout(function(){ force.textContent = '↻ Check for updates'; }, 4000);
+          }, 600);
+        }).catch(function(){ force.textContent = '↻ Check for updates'; });
+      });
+    }).catch(function(){});
+
+    var reloading = false;
+    navigator.serviceWorker.addEventListener('controllerchange', function(){
+      if(reloading || !hadController) return;
+      reloading = true;
+      window.location.reload();
+    });
   });
 }
 </script>
