@@ -1,0 +1,14 @@
+{
+  "name": "Brazil Starter Kit",
+  "short_name": "BR Kit",
+  "description": "Portuguese phrases, São Paulo travel guide, 7-day crash course, and social planner — with XP, streaks, and quizzes.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#F6F5EF",
+  "theme_color": "#0D8A3E",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
