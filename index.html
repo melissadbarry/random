@@ -268,11 +268,17 @@ main{max-width:960px; margin:0 auto; padding:20px 18px 40px;}
   font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.03em; color:var(--ink-soft); margin-bottom:7px;
 }
 .pattern-list{list-style:none; margin:0; padding:0;}
-.pattern-list li{display:flex; align-items:baseline; gap:8px; font-size:13.5px; margin-bottom:6px; flex-wrap:wrap;}
+.pattern-list li{display:flex; align-items:center; gap:7px; font-size:13.5px; margin-bottom:8px; flex-wrap:wrap;}
 .pattern-list li:last-child{margin-bottom:0;}
 .pattern-pt{font-weight:700; font-family:ui-monospace,"SF Mono",Consolas,monospace; color:var(--ink);}
+.pattern-pron{color:var(--green); font-size:12px; font-family:ui-monospace,"SF Mono",Consolas,monospace;}
 .pattern-arrow{color:var(--green);}
 .pattern-en{color:var(--ink-soft);}
+.mini-speak{width:24px; height:24px; font-size:11px; flex:0 0 auto;}
+.vocab-label{
+  font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.03em; color:var(--ink-soft);
+  margin:14px 0 7px;
+}
 .ref-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:8px; margin-top:2px;}
 .ref-chip{
   background:var(--card); border:1px solid var(--border); border-radius:8px; padding:7px 9px;
@@ -610,6 +616,18 @@ footer{max-width:960px; margin:10px auto 0; padding:0 18px 30px; font-size:12px;
       <li><strong>Trânsito</strong> (traffic) is heavy most of the day — always build in extra time.</li>
       <li>Neighborhoods worth knowing: <strong>Jardins</strong> (upscale), <strong>Vila Madalena</strong> (bohemian nightlife), <strong>Pinheiros</strong> (trendy cafés &amp; bars), <strong>Itaim Bibi</strong> (business), <strong>Vila Mariana</strong> (quiet, residential, right by Ibirapuera Park), <strong>Av. Paulista</strong> (museums, closed to cars on Sundays for walking/biking).</li>
     </ul>
+    <div class="vocab-label">🔊 How to Say These</div>
+    <div class="ref-grid" id="travelVocabGetting">
+      <div class="ref-chip"><div class="info"><div class="pt">Metrô</div><div class="pron">meh-TROH</div><div class="en">Subway / metro</div></div><button type="button" class="speak-btn" data-word="Metrô" aria-label="Listen">🔊</button></div>
+      <div class="ref-chip"><div class="info"><div class="pt">Trânsito</div><div class="pron">TRAHN-zee-too</div><div class="en">Traffic</div></div><button type="button" class="speak-btn" data-word="Trânsito" aria-label="Listen">🔊</button></div>
+      <div class="ref-chip"><div class="info"><div class="pt">Bilhete Único</div><div class="pron">bee-LYEH-chee OO-nee-koo</div><div class="en">Unified transit card</div></div><button type="button" class="speak-btn" data-word="Bilhete Único" aria-label="Listen">🔊</button></div>
+      <div class="ref-chip"><div class="info"><div class="pt">Jardins</div><div class="pron">zhar-DEENGZ</div><div class="en">Jardins (neighborhood)</div></div><button type="button" class="speak-btn" data-word="Jardins" aria-label="Listen">🔊</button></div>
+      <div class="ref-chip"><div class="info"><div class="pt">Vila Madalena</div><div class="pron">VEE-lah mah-dah-LEH-nah</div><div class="en">Vila Madalena (neighborhood)</div></div><button type="button" class="speak-btn" data-word="Vila Madalena" aria-label="Listen">🔊</button></div>
+      <div class="ref-chip"><div class="info"><div class="pt">Pinheiros</div><div class="pron">peen-YAY-rooz</div><div class="en">Pinheiros (neighborhood)</div></div><button type="button" class="speak-btn" data-word="Pinheiros" aria-label="Listen">🔊</button></div>
+      <div class="ref-chip"><div class="info"><div class="pt">Itaim Bibi</div><div class="pron">ee-tah-EENG bee-BEE</div><div class="en">Itaim Bibi (neighborhood)</div></div><button type="button" class="speak-btn" data-word="Itaim Bibi" aria-label="Listen">🔊</button></div>
+      <div class="ref-chip"><div class="info"><div class="pt">Vila Mariana</div><div class="pron">VEE-lah mah-ree-AH-nah</div><div class="en">Vila Mariana (neighborhood)</div></div><button type="button" class="speak-btn" data-word="Vila Mariana" aria-label="Listen">🔊</button></div>
+      <div class="ref-chip"><div class="info"><div class="pt">Avenida Paulista</div><div class="pron">ah-veh-NEE-dah pow-LEES-tah</div><div class="en">Paulista Avenue</div></div><button type="button" class="speak-btn" data-word="Avenida Paulista" aria-label="Listen">🔊</button></div>
+    </div>
   </div>
 
   <div class="tg-block">
@@ -621,6 +639,16 @@ footer{max-width:960px; margin:10px auto 0; padding:0 18px 30px; font-size:12px;
       <li>For an affordable local lunch, look for "<strong>prato feito</strong>" or "<strong>comida a kilo</strong>" (pay-by-weight buffets).</li>
       <li>A 10% service charge is often already included — check before adding extra.</li>
     </ul>
+    <div class="vocab-label">🔊 How to Say These</div>
+    <div class="ref-grid" id="travelVocabFood">
+      <div class="ref-chip"><div class="info"><div class="pt">Cafézinho</div><div class="pron">kah-feh-ZEEN-yoo</div><div class="en">Small strong coffee</div></div><button type="button" class="speak-btn" data-word="Cafézinho" aria-label="Listen">🔊</button></div>
+      <div class="ref-chip"><div class="info"><div class="pt">Padaria</div><div class="pron">pah-dah-REE-ah</div><div class="en">Bakery</div></div><button type="button" class="speak-btn" data-word="Padaria" aria-label="Listen">🔊</button></div>
+      <div class="ref-chip"><div class="info"><div class="pt">Pão de queijo</div><div class="pron">powng jee KAY-zhoo</div><div class="en">Cheese bread</div></div><button type="button" class="speak-btn" data-word="Pão de queijo" aria-label="Listen">🔊</button></div>
+      <div class="ref-chip"><div class="info"><div class="pt">Coxinha</div><div class="pron">koh-SHEEN-yah</div><div class="en">Fried chicken snack</div></div><button type="button" class="speak-btn" data-word="Coxinha" aria-label="Listen">🔊</button></div>
+      <div class="ref-chip"><div class="info"><div class="pt">Rodízio</div><div class="pron">hoh-JEE-zee-oo</div><div class="en">All-you-can-eat</div></div><button type="button" class="speak-btn" data-word="Rodízio" aria-label="Listen">🔊</button></div>
+      <div class="ref-chip"><div class="info"><div class="pt">Prato feito</div><div class="pron">PRAH-too FAY-too</div><div class="en">Set daily plate</div></div><button type="button" class="speak-btn" data-word="Prato feito" aria-label="Listen">🔊</button></div>
+      <div class="ref-chip"><div class="info"><div class="pt">Comida a kilo</div><div class="pron">koh-MEE-dah ah KEE-loo</div><div class="en">Pay-by-weight buffet</div></div><button type="button" class="speak-btn" data-word="Comida a kilo" aria-label="Listen">🔊</button></div>
+    </div>
   </div>
 
   <div class="tg-block">
@@ -672,7 +700,7 @@ footer{max-width:960px; margin:10px auto 0; padding:0 18px 30px; font-size:12px;
 
   <div class="progress-wrap">
     <div class="progress-bar"><div class="progress-fill" id="levelProgress"></div></div>
-    <div class="progress-label" id="levelProgressLabel">0 / 5 levels passed</div>
+    <div class="progress-label" id="levelProgressLabel">0 / 8 levels passed</div>
   </div>
 
   <div id="levelList"></div>
@@ -700,6 +728,15 @@ footer{max-width:960px; margin:10px auto 0; padding:0 18px 30px; font-size:12px;
 
   <div class="goal-banner">
     🚀 Aim for a rhythm in the first few weeks: <strong>1 language exchange or social meetup</strong>, <strong>1 hobby class</strong>, and <strong>1 networking event</strong> per week. Each checkbox below earns +3 XP.
+  </div>
+
+  <div class="vocab-label">🔊 Key Words for This Section</div>
+  <div class="ref-grid" id="hangoutsVocab" style="margin-bottom:20px;">
+    <div class="ref-chip"><div class="info"><div class="pt">Intercâmbio</div><div class="pron">een-ter-KAHM-byoo</div><div class="en">Language exchange</div></div><button type="button" class="speak-btn" data-word="Intercâmbio" aria-label="Listen">🔊</button></div>
+    <div class="ref-chip"><div class="info"><div class="pt">Rolê</div><div class="pron">hoh-LEH</div><div class="en">A hangout / outing</div></div><button type="button" class="speak-btn" data-word="Rolê" aria-label="Listen">🔊</button></div>
+    <div class="ref-chip"><div class="info"><div class="pt">Aula experimental</div><div class="pron">OW-lah es-peh-ree-men-TAHL</div><div class="en">Trial class (drop-in)</div></div><button type="button" class="speak-btn" data-word="Aula experimental" aria-label="Listen">🔊</button></div>
+    <div class="ref-chip"><div class="info"><div class="pt">Feira livre</div><div class="pron">FAY-rah LEE-vree</div><div class="en">Open-air street market</div></div><button type="button" class="speak-btn" data-word="Feira livre" aria-label="Listen">🔊</button></div>
+    <div class="ref-chip"><div class="info"><div class="pt">Vamos marcar algo?</div><div class="pron">VAH-mooz mar-KAR AHL-goo</div><div class="en">Should we plan something?</div></div><button type="button" class="speak-btn" data-word="Vamos marcar algo?" aria-label="Listen">🔊</button></div>
   </div>
 
   <div class="section-title" style="margin-top:22px;">🗣️ Language Exchange &amp; Social</div>
@@ -1117,6 +1154,16 @@ function shuffle(arr){
   return a;
 }
 
+/* ================= Static reference speak buttons (Travel Guide / Hangouts) ================= */
+['#travelVocabGetting', '#travelVocabFood', '#hangoutsVocab'].forEach(function(sel){
+  var root = document.querySelector(sel);
+  if(!root) return;
+  root.querySelectorAll('.speak-btn').forEach(function(btn){
+    if(!ttsSupported){ btn.disabled = true; return; }
+    btn.addEventListener('click', function(){ speakPT(btn.getAttribute('data-word'), btn); });
+  });
+});
+
 /* ================= Cheat sheet data ================= */
 var PHRASES = [
   {cat:"Greetings & Basics", pt:"Oi / Olá", pron:"oy / oh-LAH", en:"Hi / Hello", fr:"Salut / Bonjour", es:"Hola"},
@@ -1377,14 +1424,30 @@ var DAYS = [
   {n:1, title:"Sounds & Greetings", goal:"Get comfortable with Portuguese pronunciation and greet anyone confidently.",
    points:["Nasal vowels & tricky sounds: ão, nh, lh", "Hi / good morning / good afternoon / good evening", "Introduce yourself: name + where you're from"],
    challenge:"Say 'Oi, tudo bem?' out loud 5 times, then greet one real person with it today.",
+   vocab:[
+     {pt:"Oi / Olá", pron:"oy / oh-LAH", en:"Hi / Hello"},
+     {pt:"Bom dia", pron:"bohn JEE-ah", en:"Good morning"},
+     {pt:"Boa tarde", pron:"BOH-ah TAR-jee", en:"Good afternoon"},
+     {pt:"Boa noite", pron:"BOH-ah NOY-chee", en:"Good evening / night"},
+     {pt:"Tudo bem?", pron:"TOO-doo beng", en:"How's it going?"},
+     {pt:"Obrigado / Obrigada", pron:"oh-bree-GAH-doo/dah", en:"Thank you (m/f speaker)"}
+   ],
    quiz:[
      {q:"How do you say \"Good morning\"?", options:["Bom dia","Boa noite","Tudo bem","Com licença"], answer:"Bom dia"},
      {q:"What does \"Tudo bem?\" mean?", options:["How's it going? / All good?","Where is it?","Thank you","Excuse me"], answer:"How's it going? / All good?"},
      {q:"Which word means \"Thank you\" from a male speaker?", options:["Obrigado","Obrigada","De nada","Desculpa"], answer:"Obrigado"}
    ]},
   {n:2, title:"Everyday Essentials", goal:"Build your survival toolkit: yes, no, please, thanks, and numbers.",
-   points:["Sim / não, por favor / obrigado(a)", "Numbers 0–20", "Question words: o que, onde, quando, quanto"],
+   points:["Sim / não, por favor / obrigado(a)", "Numbers 0–20 (full list + audio in Sentence Builder Level 7)", "Question words: o que, onde, quando, quanto"],
    challenge:"Count to 20 out loud without looking, three times in a row.",
+   vocab:[
+     {pt:"Sim / Não", pron:"seeng / nowng", en:"Yes / No"},
+     {pt:"Por favor", pron:"por fah-VOR", en:"Please"},
+     {pt:"O que", pron:"oo kee", en:"What"},
+     {pt:"Onde", pron:"OHN-jee", en:"Where"},
+     {pt:"Quando", pron:"KWAN-doo", en:"When"},
+     {pt:"Quanto", pron:"KWAN-too", en:"How much"}
+   ],
    quiz:[
      {q:"What does \"por favor\" mean?", options:["Please","Sorry","Goodbye","Maybe"], answer:"Please"},
      {q:"How do you say \"seven\"?", options:["Sete","Sesenta","Seis","Cinco"], answer:"Sete"},
@@ -1393,6 +1456,14 @@ var DAYS = [
   {n:3, title:"Getting Around", goal:"Navigate the city and ask for help without panic.",
    points:["Onde fica...? / Fica perto ou longe?", "Directions: direita, esquerda, em frente", "Asking a stranger for help politely"],
    challenge:"Ask a stranger (or the mirror) 'Onde fica o metrô?' three times.",
+   vocab:[
+     {pt:"Onde fica...?", pron:"OHN-jee FEE-kah", en:"Where is...?"},
+     {pt:"Perto / Longe", pron:"PER-too / LOHN-jee", en:"Near / Far"},
+     {pt:"Direita", pron:"jee-RAY-tah", en:"Right"},
+     {pt:"Esquerda", pron:"es-KER-dah", en:"Left"},
+     {pt:"Em frente", pron:"eng FREN-chee", en:"Straight ahead"},
+     {pt:"Pode me ajudar?", pron:"PO-jee mee ah-joo-DAR", en:"Can you help me?"}
+   ],
    quiz:[
      {q:"\"Onde fica...?\" means:", options:["Where is...?","How much is...?","What is...?","Who is...?"], answer:"Where is...?"},
      {q:"Which word means \"left\"?", options:["Esquerda","Direita","Frente","Perto"], answer:"Esquerda"},
@@ -1401,6 +1472,13 @@ var DAYS = [
   {n:4, title:"Food & Café Culture", goal:"Order confidently and handle a café or restaurant from start to finish.",
    points:["Ordering: 'Eu queria...' + menu items", "Dietary needs: vegetariano(a), sem carne", "Small talk with a waiter or barista"],
    challenge:"Order a coffee (real or imagined) entirely in Portuguese, including 'a conta, por favor.'",
+   vocab:[
+     {pt:"Eu queria...", pron:"eh-oo keh-REE-ah", en:"I would like..."},
+     {pt:"O cardápio", pron:"oo kar-DAH-pyoo", en:"The menu"},
+     {pt:"Vegetariano(a)", pron:"veh-zheh-tah-ree-AH-noo/nah", en:"Vegetarian"},
+     {pt:"Sem carne", pron:"seng KAR-nee", en:"Without meat"},
+     {pt:"A conta, por favor", pron:"ah KOHN-tah por fah-VOR", en:"The check, please"}
+   ],
    quiz:[
      {q:"\"A conta, por favor\" means:", options:["The check, please","The menu, please","A table, please","More water, please"], answer:"The check, please"},
      {q:"Which phrase politely starts an order?", options:["Eu queria...","Eu sou...","Eu vou...","Eu fico..."], answer:"Eu queria..."},
@@ -1409,6 +1487,12 @@ var DAYS = [
   {n:5, title:"Making Conversation", goal:"Hold a short, real conversation with a new person.",
    points:["Qual é o seu nome? / De onde você é?", "Talking about yourself in 2–3 sentences", "Asking a follow-up question back"],
    challenge:"Write and say out loud a 4-sentence self-introduction, then use it on someone today.",
+   vocab:[
+     {pt:"Qual é o seu nome?", pron:"kwahl eh oo seh-oo NOH-mee", en:"What's your name?"},
+     {pt:"De onde você é?", pron:"jee OHN-jee vo-SEH eh", en:"Where are you from?"},
+     {pt:"Muito prazer", pron:"MOO-een-too prah-ZEHR", en:"Nice to meet you"},
+     {pt:"Vamos marcar algo?", pron:"VAH-mooz mar-KAR AHL-goo", en:"Should we plan something?"}
+   ],
    quiz:[
      {q:"\"Qual é o seu nome?\" means:", options:["What's your name?","How old are you?","Where do you live?","What do you do?"], answer:"What's your name?"},
      {q:"\"De onde você é?\" means:", options:["Where are you from?","Where are you going?","How are you?","Who are you with?"], answer:"Where are you from?"},
@@ -1417,6 +1501,13 @@ var DAYS = [
   {n:6, title:"Real-Life Scenarios", goal:"Handle the situations that actually come up while traveling.",
    points:["Shopping: quanto custa, aceita cartão", "Emergencies: socorro, preciso de ajuda", "Wifi / phone: qual é a senha do wifi?"],
    challenge:"Role-play buying something and asking for the wifi password, out loud, twice.",
+   vocab:[
+     {pt:"Quanto custa?", pron:"KWAN-too KOOS-tah", en:"How much does it cost?"},
+     {pt:"Aceita cartão?", pron:"ah-SAY-tah kar-TOWNG", en:"Do you accept card?"},
+     {pt:"Socorro!", pron:"soh-KOH-hoo", en:"Help!"},
+     {pt:"Preciso de ajuda", pron:"preh-SEE-zoo jee ah-JOO-dah", en:"I need help"},
+     {pt:"Qual é a senha do wifi?", pron:"kwahl eh ah SEN-yah doo wi-fee", en:"What's the wifi password?"}
+   ],
    quiz:[
      {q:"\"Quanto custa?\" means:", options:["How much does it cost?","Where is it?","Is it open?","What time is it?"], answer:"How much does it cost?"},
      {q:"\"Socorro!\" means:", options:["Help!","Sorry!","Careful!","Wait!"], answer:"Help!"},
@@ -1425,6 +1516,13 @@ var DAYS = [
   {n:7, title:"Confidence Practice", goal:"Put it all together and check your progress.",
    points:["Mock conversation: greeting → small talk → ordering → goodbye", "Review your hardest phrases from Days 1–6", "Self-check: can I introduce myself, order food, ask directions, and make small talk?"],
    challenge:"Run one full mock conversation out loud, start to finish, without stopping to look things up.",
+   vocab:[
+     {pt:"Muito prazer", pron:"MOO-een-too prah-ZEHR", en:"Nice to meet you"},
+     {pt:"Onde fica...?", pron:"OHN-jee FEE-kah", en:"Where is...?"},
+     {pt:"A conta, por favor", pron:"ah KOHN-tah por fah-VOR", en:"The check, please"},
+     {pt:"Valeu", pron:"vah-LEH-oo", en:"Thanks (casual)"},
+     {pt:"Tchau", pron:"chow", en:"Bye"}
+   ],
    quiz:[
      {q:"Which greeting fits a first meeting?", options:["Muito prazer","A conta, por favor","Socorro!","Quanto custa?"], answer:"Muito prazer"},
      {q:"Which phrase asks for directions?", options:["Onde fica...?","Eu queria...","Tudo bem?","De nada"], answer:"Onde fica...?"},
@@ -1442,18 +1540,34 @@ function renderDays(){
     var passed = game.dayQuizPassed.indexOf(d.n) > -1;
     var card = document.createElement('div');
     card.className = 'day-card' + (complete ? ' complete' : '');
+    var vocabHtml = '';
+    if(d.vocab){
+      vocabHtml = '<div class="vocab-label">🔊 Key Vocabulary</div><div class="ref-grid">' +
+        d.vocab.map(function(v){
+          return '<div class="ref-chip"><div class="info"><div class="pt">' + v.pt + '</div>' +
+            '<div class="pron">' + v.pron + '</div>' +
+            '<div class="en">' + v.en + '</div></div>' +
+            '<button type="button" class="speak-btn" data-word="' + v.pt.replace(/"/g, '&quot;') + '" aria-label="Listen" ' + (ttsSupported ? '' : 'disabled') + '>🔊</button></div>';
+        }).join('') +
+      '</div>';
+    }
     card.innerHTML =
       '<div class="day-num">' + (complete ? '✓' : 'Day ' + d.n) + '</div>' +
       '<div class="day-body">' +
         '<h3>Day ' + d.n + ': ' + d.title + '</h3>' +
         '<div class="goal">' + d.goal + '</div>' +
         '<ul>' + d.points.map(function(p){ return '<li>' + p + '</li>'; }).join('') + '</ul>' +
+        vocabHtml +
         '<div class="challenge">🗣️ Speaking challenge: ' + d.challenge + '</div>' +
       '</div>' +
       '<div class="day-actions">' +
         '<button class="day-btn' + (passed ? ' passed' : '') + '" data-role="quiz">' + (passed ? '✓ Quiz Passed' : '🧠 Take Quiz') + '</button>' +
         '<button class="day-btn primary" data-role="complete" ' + (!passed ? 'disabled' : '') + '>' + (complete ? 'Completed ✓' : 'Mark Day Complete') + '</button>' +
       '</div>';
+
+    card.querySelectorAll('.ref-chip .speak-btn').forEach(function(btn){
+      btn.addEventListener('click', function(){ speakPT(btn.getAttribute('data-word'), btn); });
+    });
 
     card.querySelector('[data-role="quiz"]').addEventListener('click', function(){
       openQuiz('Day ' + d.n + ' Quiz', d.quiz, function(score, total){
@@ -1497,11 +1611,11 @@ var GRAMMAR_LEVELS = [
     n:1, title:"Introduce Yourself", icon:"👋",
     blurb:"Learn when to use sou vs. estou, and how to say your name, where you live, and your age in full sentences.",
     patterns:[
-      {pt:"Eu sou + [nationality/trait/job]", en:"I am ___ (permanent characteristic) — e.g. \"Eu sou americano.\""},
-      {pt:"Eu estou + [feeling/state]", en:"I am ___ (temporary state) — e.g. \"Eu estou bem.\""},
-      {pt:"Meu nome é ___.", en:"My name is ___."},
-      {pt:"Eu moro em ___.", en:"I live in ___."},
-      {pt:"Eu tenho ___ anos.", en:"I am ___ years old (lit. \"I have ___ years\")."}
+      {pt:"Eu sou", pron:"eh-oo soh", en:"+ [nationality/trait/job] = I am ___ (permanent characteristic) — e.g. \"Eu sou americano.\""},
+      {pt:"Eu estou", pron:"eh-oo es-TOH", en:"+ [feeling/state] = I am ___ (temporary state) — e.g. \"Eu estou bem.\""},
+      {pt:"Meu nome é", pron:"meh-oo NOH-mee eh", en:"___ = My name is ___."},
+      {pt:"Eu moro em", pron:"eh-oo MOH-roo eng", en:"___ = I live in ___."},
+      {pt:"Eu tenho", pron:"eh-oo TEN-yoo", en:"___ anos = I am ___ years old (lit. \"I have ___ years\")."}
     ],
     sentences:[
       {pt:"Oi, meu nome é Ana.", pron:"oy, meh-oo NOH-mee eh AH-nah", en:"Hi, my name is Ana."},
@@ -1522,11 +1636,11 @@ var GRAMMAR_LEVELS = [
     n:2, title:"Ask Questions", icon:"❓",
     blurb:"Learn the question words that unlock day-to-day conversations: where, how much, when, and can you...?",
     patterns:[
-      {pt:"Onde fica + [place]?", en:"Where is ___?"},
-      {pt:"Quanto custa + [thing]?", en:"How much does ___ cost?"},
-      {pt:"Você pode + [infinitive]?", en:"Can you ___?"},
-      {pt:"Você tem + [thing]?", en:"Do you have ___?"},
-      {pt:"Que horas são?", en:"What time is it?"}
+      {pt:"Onde fica", pron:"OHN-jee FEE-kah", en:"+ [place]? = Where is ___?"},
+      {pt:"Quanto custa", pron:"KWAN-too KOOS-tah", en:"+ [thing]? = How much does ___ cost?"},
+      {pt:"Você pode", pron:"vo-SEH PO-jee", en:"+ [infinitive]? = Can you ___?"},
+      {pt:"Você tem", pron:"vo-SEH teng", en:"+ [thing]? = Do you have ___?"},
+      {pt:"Que horas são?", pron:"kee OH-rahz sowng", en:"What time is it?"}
     ],
     sentences:[
       {pt:"Onde fica o banheiro?", pron:"OHN-jee FEE-kah oo bah-NYAY-roo", en:"Where's the bathroom?"},
@@ -1547,11 +1661,11 @@ var GRAMMAR_LEVELS = [
     n:3, title:"Say What You Want or Need", icon:"🙋",
     blurb:"The difference between quero, queria, preciso de, and gostaria de — and how to actually order or ask for things.",
     patterns:[
-      {pt:"Eu quero + [noun/infinitive]", en:"I want ___ (direct)"},
-      {pt:"Eu queria + [noun]", en:"I would like ___ (polite, softer)"},
-      {pt:"Eu preciso de + [noun]", en:"I need ___"},
-      {pt:"Eu gostaria de + [infinitive]", en:"I would like to ___ (more formal)"},
-      {pt:"Eu vou querer + [noun]", en:"I'll have ___ (common when ordering)"}
+      {pt:"Eu quero", pron:"eh-oo KEH-roo", en:"+ [noun/infinitive] = I want ___ (direct)"},
+      {pt:"Eu queria", pron:"eh-oo keh-REE-ah", en:"+ [noun] = I would like ___ (polite, softer)"},
+      {pt:"Eu preciso de", pron:"eh-oo preh-SEE-zoo jee", en:"+ [noun] = I need ___"},
+      {pt:"Eu gostaria de", pron:"eh-oo gos-tah-REE-ah jee", en:"+ [infinitive] = I would like to ___ (more formal)"},
+      {pt:"Eu vou querer", pron:"eh-oo voh keh-REHR", en:"+ [noun] = I'll have ___ (common when ordering)"}
     ],
     sentences:[
       {pt:"Eu queria um café, por favor.", pron:"eh-oo keh-REE-ah oong kah-FEH", en:"I would like a coffee, please."},
@@ -1572,11 +1686,11 @@ var GRAMMAR_LEVELS = [
     n:4, title:"Talk About Daily Life", icon:"🗓️",
     blurb:"Everyday present-tense verbs — work, eat, drink, go, like — so you can describe a normal day.",
     patterns:[
-      {pt:"Eu trabalho em/na/no ___.", en:"I work at/in ___."},
-      {pt:"Eu como ___ no café da manhã.", en:"I eat ___ for breakfast."},
-      {pt:"Eu vou para ___.", en:"I go to ___."},
-      {pt:"Eu bebo ___ de manhã.", en:"I drink ___ in the morning."},
-      {pt:"Eu gosto de ___. / Eu não gosto de ___.", en:"I like ___. / I don't like ___."}
+      {pt:"Eu trabalho em/na/no", pron:"eh-oo trah-BAH-lyoo eng/nah/noo", en:"___ = I work at/in ___."},
+      {pt:"Eu como", pron:"eh-oo KOH-moo", en:"___ no café da manhã = I eat ___ for breakfast."},
+      {pt:"Eu vou para", pron:"eh-oo voh PAH-rah", en:"___ = I go to ___."},
+      {pt:"Eu bebo", pron:"eh-oo BEH-boo", en:"___ de manhã = I drink ___ in the morning."},
+      {pt:"Eu gosto de / Eu não gosto de", pron:"eh-oo GOS-too jee / eh-oo nowng GOS-too jee", en:"___ = I like ___. / I don't like ___."}
     ],
     sentences:[
       {pt:"Eu trabalho no centro da cidade.", pron:"eh-oo trah-BAH-lyoo noo SEN-troo dah see-DAH-jee", en:"I work downtown."},
@@ -1597,11 +1711,11 @@ var GRAMMAR_LEVELS = [
     n:5, title:"Connect Ideas Like a Local", icon:"🔗",
     blurb:"Real conversation is longer than one clause. Learn e, mas, também, porque, and então to link ideas naturally.",
     patterns:[
-      {pt:"___ e ___", en:"___ and ___ (adding an idea)"},
-      {pt:"___ mas ___", en:"___ but ___ (contrast)"},
-      {pt:"___ também", en:"___ too / also (agreeing or adding)"},
-      {pt:"___ porque ___", en:"___ because ___ (giving a reason)"},
-      {pt:"___, então ___", en:"___, so ___ (result)"}
+      {pt:"e", pron:"ee", en:"___ e ___ = ___ and ___ (adding an idea)"},
+      {pt:"mas", pron:"mice", en:"___ mas ___ = ___ but ___ (contrast)"},
+      {pt:"também", pron:"tahm-BENG", en:"___ também = ___ too / also (agreeing or adding)"},
+      {pt:"porque", pron:"por-KEH", en:"___ porque ___ = ___ because ___ (giving a reason)"},
+      {pt:"então", pron:"en-TOWNG", en:"___, então ___ = ___, so ___ (result)"}
     ],
     sentences:[
       {pt:"Eu gosto de café, mas prefiro chá de manhã.", pron:"eh-oo GOS-too jee kah-FEH, mice preh-FEE-roo shah jee mah-NYAH", en:"I like coffee, but I prefer tea in the morning."},
@@ -1622,11 +1736,11 @@ var GRAMMAR_LEVELS = [
     n:6, title:"Prepositions & Contractions", icon:"🔌",
     blurb:"Prepositions are the glue of every sentence — and in Portuguese they fuse with articles (em + o = no). Learn the fusions that show up constantly.",
     patterns:[
-      {pt:"em + o/a = no/na", en:"in/at/on the ___ — e.g. \"no Brasil,\" \"na praia\""},
-      {pt:"de + o/a = do/da", en:"of/from the ___ — e.g. \"do parque,\" \"da Bahia\""},
-      {pt:"a + o/a = ao/à", en:"to the ___ — e.g. \"ao cinema,\" \"à noite\""},
-      {pt:"com / sem + [noun]", en:"with / without ___ — e.g. \"com açúcar,\" \"sem pressa\""},
-      {pt:"para + [person/place]", en:"for / to ___ — e.g. \"para você,\" \"para o hotel\""}
+      {pt:"no / na", pron:"noo / nah", en:"em + o/a = in/at/on the ___ — e.g. \"no Brasil,\" \"na praia\""},
+      {pt:"do / da", pron:"doo / dah", en:"de + o/a = of/from the ___ — e.g. \"do parque,\" \"da Bahia\""},
+      {pt:"ao / à", pron:"ow / ah", en:"a + o/a = to the ___ — e.g. \"ao cinema,\" \"à noite\""},
+      {pt:"com / sem", pron:"kohn / seng", en:"+ [noun] = with / without ___ — e.g. \"com açúcar,\" \"sem pressa\""},
+      {pt:"para", pron:"PAH-rah", en:"+ [person/place] = for / to ___ — e.g. \"para você,\" \"para o hotel\""}
     ],
     reference:{
       label:"🔤 Good to Know: Contractions",
@@ -1658,9 +1772,9 @@ var GRAMMAR_LEVELS = [
     n:7, title:"Counting & Numbers", icon:"🔢",
     blurb:"Numbers show up everywhere — prices, ages, table sizes, room numbers. Learn zero through twenty and use them in real sentences, not just a countdown.",
     patterns:[
-      {pt:"Quanto custa? — Custa ___ reais.", en:"How much does it cost? — It costs ___ reais."},
-      {pt:"Eu tenho ___ anos.", en:"I am ___ years old."},
-      {pt:"Mesa para ___ pessoas.", en:"A table for ___ people."}
+      {pt:"Quanto custa? Custa", pron:"KWAN-too KOOS-tah? KOOS-tah", en:"___ reais = How much does it cost? — It costs ___ reais."},
+      {pt:"Eu tenho", pron:"eh-oo TEN-yoo", en:"___ anos = I am ___ years old."},
+      {pt:"Mesa para", pron:"MEH-zah PAH-rah", en:"___ pessoas = A table for ___ people."}
     ],
     reference:{
       label:"🔢 Numbers 0–20",
@@ -1707,11 +1821,11 @@ var GRAMMAR_LEVELS = [
     n:8, title:"Days, Time & Making Plans", icon:"📅",
     blurb:"Put a day and a time on a plan — the exact skill that turns 'we should hang out' into an actual meetup.",
     patterns:[
-      {pt:"Hoje é ___. / Amanhã é ___.", en:"Today is ___. / Tomorrow is ___."},
-      {pt:"São ___ horas. / É meio-dia / meia-noite.", en:"It's ___ o'clock. / It's noon / midnight."},
-      {pt:"às ___ horas", en:"at ___ o'clock"},
-      {pt:"Vamos nos ver + [day/time]?", en:"Shall we meet ___?"},
-      {pt:"na segunda / na terça / no sábado", en:"on Monday / on Tuesday / on Saturday"}
+      {pt:"Hoje é / Amanhã é", pron:"OH-zhee eh / ah-mah-NYAH eh", en:"___ = Today is ___. / Tomorrow is ___."},
+      {pt:"São horas", pron:"sowng OH-rahz", en:"___ / É meio-dia / meia-noite = It's ___ o'clock. / It's noon / midnight."},
+      {pt:"às", pron:"ahz", en:"___ horas = at ___ o'clock"},
+      {pt:"Vamos nos ver", pron:"VAH-mooz nooz vehr", en:"+ [day/time]? = Shall we meet ___?"},
+      {pt:"na / no", pron:"nah / noo", en:"+ [day] = on Monday / on Tuesday / on Saturday (e.g. na segunda, no sábado)"}
     ],
     reference:{
       label:"🗓️ Days of the Week",
@@ -1863,7 +1977,9 @@ function renderSentenceLevels(){
     }
 
     var patternsHtml = '<ul class="pattern-list">' + lvl.patterns.map(function(p){
-      return '<li><span class="pattern-pt">' + p.pt + '</span><span class="pattern-arrow">→</span><span class="pattern-en">' + p.en + '</span></li>';
+      return '<li><button type="button" class="speak-btn mini-speak" data-word="' + p.pt.replace(/"/g, '&quot;') + '" aria-label="Listen" ' + (ttsSupported ? '' : 'disabled') + '>🔊</button>' +
+        '<span class="pattern-pt">' + p.pt + '</span><span class="pattern-pron">' + p.pron + '</span>' +
+        '<span class="pattern-arrow">→</span><span class="pattern-en">' + p.en + '</span></li>';
     }).join('') + '</ul>';
 
     var referenceHtml = '';
@@ -1891,7 +2007,7 @@ function renderSentenceLevels(){
       '</div>';
     wrap.appendChild(card);
 
-    card.querySelectorAll('.ref-chip .speak-btn').forEach(function(btn){
+    card.querySelectorAll('.ref-chip .speak-btn, .mini-speak').forEach(function(btn){
       btn.addEventListener('click', function(){ speakPT(btn.getAttribute('data-word'), btn); });
     });
 
