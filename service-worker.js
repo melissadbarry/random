@@ -1,4 +1,4 @@
-var CACHE_NAME = 'bsk-cache-v2';
+var CACHE_NAME = 'bsk-cache-v3';
 var ASSETS = [
   './',
   './index.html',
@@ -25,6 +25,12 @@ self.addEventListener('activate', function(event){
 
 self.addEventListener('fetch', function(event){
   if(event.request.method !== 'GET') return;
+
+  // Never touch cross-origin requests (e.g. the translation API) — they must always
+  // go straight to the network and must never be cached or served stale.
+  try {
+    if(new URL(event.request.url).origin !== self.location.origin) return;
+  } catch(e){ return; }
 
   var isHTML = event.request.mode === 'navigate' ||
     (event.request.headers.get('accept') || '').indexOf('text/html') !== -1;

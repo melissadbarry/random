@@ -153,6 +153,99 @@ main{max-width:960px; margin:0 auto; padding:20px 18px 40px;}
 .ft-view{display:none;}
 .ft-view.active{display:block; animation:fade .2s ease;}
 
+/* ---- Translator ---- */
+.tr-box{
+  background:var(--card); border:1px solid var(--border); border-radius:14px; padding:14px;
+  box-shadow:var(--shadow); margin-bottom:18px;
+}
+.tr-input{
+  width:100%; border:1px solid var(--border); background:var(--bg-alt); color:var(--ink);
+  border-radius:10px; padding:12px 13px; font-size:16px; font-family:inherit; resize:vertical; line-height:1.4;
+}
+.tr-input:focus{outline:2px solid var(--green); outline-offset:1px;}
+.tr-controls{display:flex; align-items:center; gap:10px; margin-top:10px; flex-wrap:wrap;}
+.tr-go{
+  margin-left:auto; border:none; background:var(--green); color:#fff; border-radius:10px;
+  padding:10px 18px; font-size:14px; font-weight:700; cursor:pointer;
+}
+.tr-go:disabled{opacity:.5; cursor:default;}
+.tr-section-label{
+  font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:.04em;
+  color:var(--ink-soft); margin:18px 0 8px; display:flex; align-items:center; gap:7px; flex-wrap:wrap;
+}
+.tr-badge{
+  font-size:9.5px; font-weight:700; padding:2px 7px; border-radius:10px; letter-spacing:.02em;
+  background:var(--green-soft); color:var(--green); border:1px solid var(--green);
+}
+.tr-badge.approx{background:var(--yellow-soft); color:var(--yellow); border-color:var(--yellow);}
+.tr-card{
+  background:var(--card); border:1px solid var(--border); border-left:4px solid var(--green);
+  border-radius:12px; padding:14px 16px; margin-bottom:10px; box-shadow:var(--shadow);
+  display:flex; gap:12px; align-items:flex-start;
+}
+.tr-card.online{border-left-color:var(--blue);}
+.tr-card .body{flex:1; min-width:0;}
+.tr-card .tr-pt{font-size:17px; font-weight:700; color:var(--ink); word-wrap:break-word;}
+.tr-card .tr-pron{
+  font-size:13px; color:var(--green); font-family:ui-monospace,"SF Mono",Consolas,monospace; margin-top:3px; word-wrap:break-word;
+}
+.tr-card .tr-tr{font-size:13.4px; color:var(--ink-soft); margin-top:5px;}
+.tr-card .tr-src{font-size:10.5px; color:var(--ink-soft); margin-top:7px; opacity:.85;}
+.tr-card .speak-btn{width:38px; height:38px; font-size:16px;}
+.tr-note{
+  font-size:12.3px; color:var(--ink-soft); background:var(--bg-alt); border:1px solid var(--border);
+  border-radius:9px; padding:9px 11px; margin-bottom:10px;
+}
+.tr-empty{font-size:13.5px; color:var(--ink-soft); padding:6px 0;}
+.tr-spinner{font-size:13.5px; color:var(--ink-soft); padding:8px 0;}
+.tr-recent-chip{cursor:pointer;}
+.tr-recent-chip:hover{border-color:var(--green);}
+
+/* ---- Places (Hangouts) ---- */
+.place-cat{
+  background:var(--card); border:1px solid var(--border); border-radius:14px;
+  margin-bottom:10px; box-shadow:var(--shadow); overflow:hidden;
+}
+.place-head{
+  display:flex; align-items:center; gap:12px; padding:14px 16px; cursor:pointer; width:100%;
+  background:none; border:none; text-align:left; color:var(--ink);
+}
+.place-head:hover{background:var(--bg-alt);}
+.place-head .emoji{font-size:22px; flex:0 0 auto;}
+.place-head .ph-body{flex:1; min-width:0;}
+.place-head h4{font-size:14.8px; margin:0 0 2px;}
+.place-head .ph-sub{font-size:12.4px; color:var(--ink-soft);}
+.place-head .ph-arrow{flex:0 0 auto; color:var(--ink-soft); font-size:13px; transition:transform .2s;}
+.place-cat.open .ph-arrow{transform:rotate(90deg);}
+.place-body{display:none; padding:0 16px 14px;}
+.place-cat.open .place-body{display:block; animation:fade .2s ease;}
+.place-phrase{
+  background:var(--green-soft); border-radius:9px; padding:9px 11px; margin-bottom:12px;
+  display:flex; align-items:center; gap:9px;
+}
+.place-phrase .pp-body{flex:1; min-width:0;}
+.place-phrase .pp-pt{font-weight:700; font-size:13.4px;}
+.place-phrase .pp-pron{font-size:11.6px; color:var(--green); font-family:ui-monospace,"SF Mono",Consolas,monospace;}
+.place-phrase .pp-en{font-size:11.8px; color:var(--ink-soft);}
+.place-phrase .speak-btn{width:30px; height:30px; font-size:13px;}
+.place-item{
+  display:flex; align-items:flex-start; gap:10px; padding:9px 0;
+  border-top:1px solid var(--border);
+}
+.place-item .pi-body{flex:1; min-width:0;}
+.place-item .pi-name{font-weight:700; font-size:13.6px;}
+.place-item .pi-area{
+  font-size:10.5px; font-weight:700; text-transform:uppercase; letter-spacing:.03em;
+  color:var(--blue); margin-top:1px;
+}
+.place-item .pi-note{font-size:12.4px; color:var(--ink-soft); margin-top:3px;}
+.maps-link{
+  flex:0 0 auto; text-decoration:none; background:var(--blue); color:#fff; border-radius:8px;
+  padding:6px 11px; font-size:11.5px; font-weight:700; white-space:nowrap;
+}
+.maps-link:hover{opacity:.9;}
+.place-foot{font-size:11.3px; color:var(--ink-soft); margin-top:10px;}
+
 .section-title{display:flex; align-items:center; gap:8px; font-size:18px; margin:26px 0 12px;}
 .section-title:first-child{margin-top:0;}
 .pill{
@@ -489,6 +582,7 @@ footer{max-width:960px; margin:10px auto 0; padding:0 18px 30px; font-size:12px;
       </div>
     </div>
     <div class="top-actions">
+      <button class="theme-btn" id="quickTranslateBtn" title="Quick translate">🔤 Translate</button>
       <button class="theme-btn" id="themeBtn">🌓 Theme</button>
     </div>
   </div>
@@ -507,6 +601,7 @@ footer{max-width:960px; margin:10px auto 0; padding:0 18px 30px; font-size:12px;
 
   <nav class="tabs" id="tabs">
     <button data-tab="overview" class="active">✨ Overview</button>
+    <button data-tab="translator">🔤 Translator</button>
     <button data-tab="cheatsheet">📘 Cheat Sheet</button>
     <button data-tab="travel">🌴 SP Travel Guide</button>
     <button data-tab="crash">⚡ 7-Day Jumpstart</button>
@@ -677,6 +772,27 @@ footer{max-width:960px; margin:10px auto 0; padding:0 18px 30px; font-size:12px;
 
   <div class="goal-banner">
     🚀 <strong>The goal:</strong> step into the first few weeks of this trip (or Portuguese journey) confident, prepared, and excited. Earn XP, unlock badges, and beat quizzes along the way.
+  </div>
+</section>
+
+<!-- TRANSLATOR -->
+<section class="panel" id="panel-translator">
+  <div class="section-title">🔤 Translator <span class="pill">with pronunciation</span></div>
+  <p style="color:var(--ink-soft); font-size:14px;">Quick lookup so you don't have to leave the app. Searches everything you've already learned first (instant + offline), then translates anything else online.</p>
+
+  <div class="tr-box">
+    <textarea class="tr-input" id="trInput" rows="2" placeholder="Type a word or sentence — English, French, or Portuguese…"></textarea>
+    <div class="tr-controls">
+      <div class="chip-row" id="trDirChips"></div>
+      <button type="button" class="tr-go" id="trGoBtn">Translate →</button>
+    </div>
+  </div>
+
+  <div id="trResults"></div>
+
+  <div id="trRecentWrap" style="display:none;">
+    <div class="vocab-label" style="margin-top:22px;">🕘 Recent Lookups <button type="button" class="mini-btn" id="trClearRecent" style="margin-left:8px;">Clear</button></div>
+    <div class="ref-grid" id="trRecent"></div>
   </div>
 </section>
 
@@ -875,39 +991,9 @@ footer{max-width:960px; margin:10px auto 0; padding:0 18px 30px; font-size:12px;
     <div class="howto">How to find one: check internations.org for upcoming São Paulo events (membership may be required to RSVP).</div>
   </div>
 
-  <div class="section-title">🧘 Spots Matched to My Hobbies</div>
-  <div class="hobby-grid">
-    <div class="hobby-card">
-      <div class="emoji">🧘‍♀️</div>
-      <h4>Yoga &amp; Mindfulness</h4>
-      <p>Studios in Vila Madalena, Pinheiros &amp; Jardins often welcome drop-ins ("aula experimental") — a calm, low-pressure way to meet locals.</p>
-    </div>
-    <div class="hobby-card">
-      <div class="emoji">💪</div>
-      <h4>Gym &amp; Fitness — Smart Fit</h4>
-      <p>Smart Fit has locations all over São Paulo, including Vila Mariana — affordable, no-commitment plans make it easy to keep a routine and strike up conversations with regulars.</p>
-    </div>
-    <div class="hobby-card">
-      <div class="emoji">☕</div>
-      <h4>Cozy Cafés</h4>
-      <p>Pinheiros and Vila Madalena are café hubs — great for solo work, people-watching, and quietly practicing Portuguese with staff.</p>
-    </div>
-    <div class="hobby-card">
-      <div class="emoji">🌳</div>
-      <h4>Parks</h4>
-      <p>Ibirapuera Park has free weekend fitness classes, picnics, and easygoing crowds — one of the easiest places to strike up a casual chat.</p>
-    </div>
-    <div class="hobby-card">
-      <div class="emoji">🌇</div>
-      <h4>Rooftops</h4>
-      <p>Jardins and Itaim Bibi have rooftop bars with sunset views — a relaxed setting for evening socializing and networking.</p>
-    </div>
-    <div class="hobby-card">
-      <div class="emoji">🗺️</div>
-      <h4>New Spot Challenge</h4>
-      <p>Try one new café, park corner, or rooftop each week and log it in the planner below.</p>
-    </div>
-  </div>
+  <div class="section-title">📍 Where to Actually Go <span class="pill">tap to open</span></div>
+  <p style="color:var(--ink-soft); font-size:13.5px;">Real São Paulo spots, grouped by what you're in the mood for. Every place opens in Google Maps, and each category comes with the Portuguese you'd actually use there.</p>
+  <div id="placesList"></div>
 
   <div class="section-title">📍 Vila Mariana Neighborhood Spotlight</div>
   <p style="color:var(--ink-soft); font-size:13.5px;">A quiet, walkable, residential pocket of SP right next to Ibirapuera Park — good home base energy.</p>
@@ -966,6 +1052,7 @@ footer{max-width:960px; margin:10px auto 0; padding:0 18px 30px; font-size:12px;
 <div class="bottom-nav">
   <div class="row" id="bottomTabs">
     <button data-tab="overview" class="active"><span class="ic">✨</span>Overview</button>
+    <button data-tab="translator"><span class="ic">🔤</span>Translate</button>
     <button data-tab="cheatsheet"><span class="ic">📘</span>Phrases</button>
     <button data-tab="travel"><span class="ic">🌴</span>SP Guide</button>
     <button data-tab="crash"><span class="ic">⚡</span>7-Day</button>
@@ -2615,6 +2702,644 @@ document.querySelectorAll('.ft-toggle-btn').forEach(function(btn){
     document.getElementById(targetId).classList.add('active');
   });
 });
+
+
+/* ================= Translator (offline dictionary + online fallback) ================= */
+var TRANSLATOR = (function(){
+  // Brazilian Portuguese -> simplified English-reader phonetics.
+  // Approximate by design. Exact matches hit the curated dictionary first;
+  // this only runs for words the app doesn't already know.
+
+  var VOWELS = 'aeiouáéíóúâêôàãõ';
+  function isV(c){ return !!c && VOWELS.indexOf(c) > -1; }
+
+  var DIGRAPH = ['nh','lh','ch','rr','ss','qu','gu','tch'];
+  var CLUSTER = ['bl','br','cl','cr','dr','fl','fr','gl','gr','pl','pr','tr','vl','vr','tl','ph','pn'];
+
+  // High-frequency irregulars / clitics that rules alone get wrong.
+  var EXCEPT = {
+    'o':'oo','os':'oos','no':'noo','na':'nah','nos':'noos','nas':'nahs',
+    'do':'doo','da':'dah','dos':'doos','das':'dahs','ao':'ow','aos':'ows',
+    'e':'ee','é':'eh','ou':'oh','eu':'eh-oo','meu':'meh-oo','seu':'seh-oo',
+    'porque':'por-KEH','porquê':'por-KEH','você':'vo-SEH','vocês':'vo-SEHS',
+    'mas':'mice','mais':'mice','muito':'MOO-een-too','muita':'MOO-een-tah',
+    'não':'nowng','bem':'beng','tem':'teng','sem':'seng','com':'kohn',
+    'um':'oong','uma':'OO-mah','dez':'dez','três':'tress','mês':'mess',
+    'que':'kee','de':'jee','se':'see','me':'mee','te':'chee','lhe':'lyee'
+  };
+
+  function units(w){
+    var u = [], i = 0;
+    while(i < w.length){
+      var three = w.substr(i,3), two = w.substr(i,2);
+      if(DIGRAPH.indexOf(three) > -1){ u.push({t:three, v:false}); i += 3; continue; }
+      if(DIGRAPH.indexOf(two) > -1){ u.push({t:two, v:false}); i += 2; continue; }
+      u.push({t:w[i], v:isV(w[i])}); i++;
+    }
+    // merge vowel sequences into single nuclei (diphthongs), splitting true hiatus
+    var m = [];
+    for(var k=0;k<u.length;k++){
+      var c = u[k];
+      if(c.v && m.length && m[m.length-1].v){
+        var prev = m[m.length-1], comb = prev.t + c.t;
+        var glideOff = /[iu]$/.test(c.t);                 // ai, ei, oi, au, eu, ou...
+        var glideOn  = /^[iu]/.test(prev.t) && prev.t.length === 1; // ia, io, ua...
+        var nasalDip = /^(ão|ãe|õe|ãi)$/.test(comb);
+        if(nasalDip || glideOff || glideOn){ prev.t = comb; prev.v = true; continue; }
+      }
+      m.push({t:c.t, v:c.v});
+    }
+    return m;
+  }
+
+  function syllabify(w){
+    var u = units(w);
+    var nuclei = [];
+    for(var i=0;i<u.length;i++) if(u[i].v) nuclei.push(i);
+    if(!nuclei.length) return [w];
+
+    var syl = [], start = 0;
+    for(var n=0;n<nuclei.length;n++){
+      var pos = nuclei[n];
+      var end; // exclusive index where this syllable stops
+      if(n === nuclei.length - 1){
+        end = u.length;
+      } else {
+        var nextPos = nuclei[n+1];
+        var consCount = nextPos - pos - 1;
+        if(consCount <= 0){ end = pos + 1; }
+        else if(consCount === 1){ end = pos + 1; }          // single C -> next onset
+        else {
+          // 2+ consonants: give next syllable a valid cluster if it forms one
+          var lastTwo = (u[nextPos-2].t + u[nextPos-1].t);
+          var takesTwo = CLUSTER.indexOf(lastTwo) > -1;
+          end = takesTwo ? nextPos - 2 : nextPos - 1;
+        }
+      }
+      syl.push(u.slice(start, end).map(function(x){ return x.t; }).join(''));
+      start = end;
+    }
+    if(start < u.length && syl.length){
+      syl[syl.length-1] += u.slice(start).map(function(x){ return x.t; }).join('');
+    }
+    return syl.filter(function(s){ return s.length; });
+  }
+
+  function stressIndex(sylls, w){
+    for(var i=sylls.length-1;i>=0;i--) if(/[áéíóúâêô]/.test(sylls[i])) return i;
+    for(var i=sylls.length-1;i>=0;i--) if(/[ãõ]/.test(sylls[i])) return i;
+    if(sylls.length === 1) return 0;
+    if(/[iou]m$/.test(w)) return sylls.length - 1;
+    if(/(i[ns]?|u[ns]?|[rlz])$/.test(w)) return sylls.length - 1;
+    return sylls.length - 2;
+  }
+
+  function mapSyl(s, isLast, isStressed, nextSyl, isFirst){
+    var out = '', i = 0;
+    while(i < s.length){
+      var c = s[i], two = s.substr(i,2), three = s.substr(i,3), rest = s.substr(i), nxt = s[i+1] || '';
+      var atOnset = (out === '');
+
+      if(three === 'tch'){ out += 'ch'; i+=3; continue; }
+      if(two === 'nh'){ out += 'ny'; i+=2; continue; }
+      if(two === 'lh'){ out += 'ly'; i+=2; continue; }
+      if(two === 'ch'){ out += 'sh'; i+=2; continue; }
+      if(two === 'rr'){ out += 'h';  i+=2; continue; }
+      if(two === 'ss'){ out += 's';  i+=2; continue; }
+      if(two === 'qu'){ out += /^[eiéê]/.test(s[i+2]||'') ? 'k' : 'kw'; i+=2; continue; }
+      if(two === 'gu'){ out += /^[eiéê]/.test(s[i+2]||'') ? 'g' : 'gw'; i+=2; continue; }
+
+      // nasal diphthongs
+      if(/^ão/.test(rest)){ out += 'owng'; i+=2; continue; }
+      if(/^ãe/.test(rest)){ out += 'aing'; i+=2; continue; }
+      if(/^õe/.test(rest)){ out += 'oyng'; i+=2; continue; }
+      if(c === 'ã'){ out += 'ah'; i++; continue; }   // standalone final ã: "manhã" -> mah-NYAH
+      if(c === 'õ'){ out += 'ohng'; i++; continue; }
+
+      // vowel + m/n closing the syllable
+      var nas = rest.match(/^([aeiouáéíóúâêô])([mn])(?![aeiouáéíóúâêôãõ])/);
+      if(nas){
+        var v = nas[1], mn = nas[2];
+        var base = {a:'ah',e:'e',i:'ee',o:'oh',u:'oo','á':'ah','é':'e','í':'ee','ó':'oh','ú':'oo','â':'ah','ê':'e','ô':'oh'}[v];
+        if(isLast && !nextSyl){
+          // word-final -> full nasal
+          var fin = {a:'owng',e:'eng',i:'eeng',o:'ohng',u:'oong','á':'owng','é':'eng','í':'eeng','ó':'ohng','ú':'oong','â':'owng','ê':'eng','ô':'ohng'}[v];
+          out += fin;
+        } else {
+          // internal -> light nasal; keep m before b/p
+          var keepM = (mn === 'm' && /^[bp]/.test(nextSyl || ''));
+          out += base + (keepM ? 'm' : 'n');
+        }
+        i += 2; continue;
+      }
+
+      // oral diphthongs
+      var dip = {'ei':'ay','ai':'eye','oi':'oy','ui':'oo-ee','au':'ow','eu':'eh-oo','ou':'oh','iu':'ee-oo','ao':'ow',
+                 'ia':'ee-ah','io':'ee-oo','ie':'ee-eh','ua':'oo-ah','uo':'oo-oh','ue':'oo-eh'};
+      if(dip[two]){ out += dip[two]; i+=2; continue; }
+
+      if(c === 'ç'){ out += 's'; i++; continue; }
+      if(c === 'c'){ out += /^[eiéêí]/.test(nxt) ? 's' : 'k'; i++; continue; }
+      if(c === 'g'){ out += /^[eiéêí]/.test(nxt) ? 'zh' : 'g'; i++; continue; }
+      if(c === 'j'){ out += 'zh'; i++; continue; }
+      if(c === 'x'){ out += 'sh'; i++; continue; }
+      if(c === 'h'){ i++; continue; }
+      if(c === 'r'){ out += (isFirst && atOnset) ? 'h' : 'r'; i++; continue; }
+      if(c === 's'){ out += 's'; i++; continue; }
+      if(c === 'z'){ out += 'z'; i++; continue; }
+      if(c === 'l'){ out += 'l'; i++; continue; }
+      // d/t palatalize before /i/: always before i, and before a final unstressed e
+      if(c === 'd'){ out += (/^i/.test(nxt) || (nxt === 'e' && isLast && !isStressed)) ? 'j'  : 'd'; i++; continue; }
+      if(c === 't'){ out += (/^i/.test(nxt) || (nxt === 'e' && isLast && !isStressed)) ? 'ch' : 't'; i++; continue; }
+
+      var codaNext = /^[rlsz]/.test(nxt) && !isV(s[i+2]);
+      var vm;
+      if(c === 'o'){
+        if(isLast && !isStressed && !codaNext) vm = 'oo';
+        else if(!isStressed && (isV(nxt) || (!nxt && /^[aeiouáéíóúâêô]/.test(nextSyl)))) vm = 'oo';  // hiatus
+        else if(codaNext) vm = 'o';
+        else vm = 'oh';
+      }
+      else if(c === 'e') vm = (isLast && !isStressed && !codaNext) ? 'ee' : (codaNext ? 'e' : 'eh');
+      else if(c === 'a') vm = 'ah';
+      else if(c === 'i') vm = 'ee';
+      else if(c === 'u') vm = 'oo';
+      else vm = {'á':'ah','à':'ah','â':'ah','é':'eh','ê':'eh','í':'ee','ó':'oh','ô':'oh','ú':'oo'}[c];
+      if(vm !== undefined){ out += vm; i++; continue; }
+      out += c; i++;
+    }
+    return out;
+  }
+
+  function ptPhonetic(word){
+    var raw = String(word).trim();
+    var w = raw.toLowerCase();
+    if(!w) return '';
+    if(EXCEPT[w]) return EXCEPT[w];
+    if(!/[a-zà-ÿ]/i.test(w)) return raw;
+    if(w.length === 1) return {a:'ah',e:'eh',i:'ee',o:'oh',u:'oo'}[w] || w;
+
+    var sylls = syllabify(w);
+    if(!sylls.length) return raw;
+    var st = stressIndex(sylls, w);
+    if(st < 0 || st >= sylls.length) st = sylls.length - 1;
+
+    var parts = sylls.map(function(s, idx){
+      var m = mapSyl(s, idx === sylls.length - 1, idx === st, sylls[idx+1] || '', idx === 0);
+      return idx === st ? m.toUpperCase() : m;
+    });
+    // intervocalic s -> z
+    for(var i=1;i<parts.length;i++){
+      if(/^s(?!s)/.test(sylls[i]) && new RegExp('[' + VOWELS + ']$').test(sylls[i-1]) && /^s/i.test(parts[i])){
+        parts[i] = (parts[i][0] === 'S' ? 'Z' : 'z') + parts[i].slice(1);
+      }
+    }
+    // word-final plural -s after a vowel sounds like z
+    var lastI = parts.length - 1;
+    if(/[aeoáéóâêô]s$/.test(w) && /s$/i.test(parts[lastI]) && !/ss$/.test(w)){
+      parts[lastI] = parts[lastI].replace(/s$/i, function(ch){ return ch === 'S' ? 'Z' : 'z'; });
+    }
+    return parts.filter(function(p){ return p.length; }).join('-');
+  }
+
+  function phrasePhonetic(text){
+    return String(text).split(/(\s+)/).map(function(tok){
+      if(/^\s*$/.test(tok)) return tok;
+      var m = tok.match(/^([^0-9A-Za-zÀ-ÿ]*)([0-9A-Za-zÀ-ÿ'’-]*)([^0-9A-Za-zÀ-ÿ]*)$/);
+      if(!m) return tok;
+      return m[1] + (m[2] ? ptPhonetic(m[2]) : '') + m[3];
+    }).join('');
+  }
+
+  return { word: ptPhonetic, phrase: phrasePhonetic };
+})();
+
+/* Build a searchable index over everything already in the app. */
+var TR_INDEX = (function(){
+  var idx = [];
+  function add(pt, pron, en, fr, es, src){
+    if(!pt) return;
+    idx.push({pt:pt, pron:pron || '', en:en || '', fr:fr || '', es:es || '', src:src});
+  }
+  try {
+    PHRASES.forEach(function(p){ add(p.pt, p.pron, p.en, p.fr, p.es, 'Cheat Sheet · ' + p.cat); });
+    SLANG.forEach(function(s){ add(s.word, s.pron, s.en, s.fr, s.es, 'SP Slang'); });
+    DAYS.forEach(function(d){
+      (d.vocab || []).forEach(function(v){ add(v.pt, v.pron, v.en, '', '', 'Crash Course · Day ' + d.n); });
+    });
+    GRAMMAR_LEVELS.forEach(function(l){
+      (l.sentences || []).forEach(function(s){ add(s.pt, s.pron, s.en, '', '', 'Sentence Builder · Level ' + l.n); });
+      if(l.reference) (l.reference.items || []).forEach(function(r){ add(r.pt, r.pron, r.en, '', '', 'Sentence Builder · Level ' + l.n); });
+      (l.patterns || []).forEach(function(p){ add(p.pt, p.pron, p.en, '', '', 'Sentence Builder · Level ' + l.n + ' pattern'); });
+    });
+    CLASS_LESSONS.forEach(function(c){
+      (c.vocab || []).forEach(function(v){ add(v.pt, v.pron, v.en, v.fr, '', 'Class Notes · ' + c.title); });
+      (c.sentences || []).forEach(function(s){ add(s.pt, s.pron, s.en, s.fr, '', 'Class Notes · ' + c.title); });
+    });
+  } catch(e){ /* if any dataset is missing, index just stays partial */ }
+  return idx;
+})();
+
+var TR_KEY = 'bsk-translator-recent';
+var trDebounce = null;
+var trRecent = JSON.parse(localStorage.getItem(TR_KEY) || '[]');
+var trDir = 'auto';
+
+function trNorm(s){
+  return String(s).toLowerCase()
+    .normalize ? String(s).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9 ]/g,' ').replace(/\s+/g,' ').trim()
+              : String(s).toLowerCase().trim();
+}
+
+function trSearchLocal(q){
+  var nq = trNorm(q);
+  if(!nq) return [];
+  var scored = [];
+  TR_INDEX.forEach(function(e){
+    var fields = [e.pt, e.en, e.fr, e.es];
+    var best = 0;
+    for(var i=0;i<fields.length;i++){
+      if(!fields[i]) continue;
+      var nf = trNorm(fields[i]);
+      if(!nf) continue;
+      var score = 0;
+      if(nf === nq) score = 100;
+      else if(nq.length >= 3 && nf.indexOf(nq) === 0) score = 80;
+      else if(nq.length >= 3 && (' ' + nf + ' ').indexOf(' ' + nq + ' ') > -1) score = 70;
+      else if(nq.length >= 4 && nf.indexOf(nq) > -1) score = 50;
+      else if(nf.length >= 4 && (' ' + nq + ' ').indexOf(' ' + nf + ' ') > -1) score = 40;
+      if(score > 0 && i === 0) score += 5;   // prefer matches on the Portuguese field
+      if(score > best) best = score;
+    }
+    if(best > 0) scored.push({e:e, s:best});
+  });
+  scored.sort(function(a,b){ return b.s - a.s; });
+  var seen = {}, out = [];
+  scored.forEach(function(x){
+    var k = x.e.pt + '|' + x.e.en;
+    if(seen[k]) return;
+    seen[k] = 1; out.push(x.e);
+  });
+  return out.slice(0, 8);
+}
+
+function looksPortuguese(t){
+  var raw = String(t).toLowerCase();
+  var s = ' ' + trNorm(t) + ' ';
+  // Letters/!clusters that basically only occur in Portuguese
+  if(/[ãõ]/.test(raw)) return true;
+  if(/ç[aou]/.test(raw)) return true;
+  if(/(nh|lh)/.test(raw)) return true;
+  // Characteristic Portuguese endings
+  if(/(cao|coes|inho|inha|eiro|eira|agem|dade|mente|ando|endo|indo|ismo|issimo)\b/.test(trNorm(t))) return true;
+  // French-only accents argue against Portuguese
+  if(/[èëùûœî]/.test(raw)) return false;
+  // Function-word evidence
+  var hits = 0;
+  [' o ',' a ',' os ',' as ',' de ',' do ',' da ',' em ',' no ',' na ',' que ',' com ',' um ',' uma ',
+   ' eu ',' voce ',' nao ',' para ',' por ',' onde ',' quanto ',' quero ',' esta ',' sou ',' meu ',' minha ',
+   ' fica ',' tem ',' ser ',' esta ',' muito ',' bem ',' aqui ',' hoje ']
+    .forEach(function(w){ if(s.indexOf(w) > -1) hits++; });
+  if(hits >= 2) return true;
+  // Exact match against something already in the app
+  if(trSearchLocal(t).some(function(r){ return trNorm(r.pt) === trNorm(t); })) return true;
+  // Obvious English/French markers
+  if(/\b(the|is|are|what|where|how|my|you|and|to|of|do|does|can|want|need|please|thank)\b/.test(trNorm(t))) return false;
+  if(/\b(le|la|les|je|tu|il|elle|nous|vous|est|une|des|pour|avec|comment|ou|quoi|merci)\b/.test(trNorm(t))) return false;
+  return false;
+}
+
+function trEscape(s){
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function trCard(pt, pron, translations, srcLabel, isOnline, approx){
+  var el = document.createElement('div');
+  el.className = 'tr-card' + (isOnline ? ' online' : '');
+  el.innerHTML =
+    '<div class="body">' +
+      '<div class="tr-pt">' + trEscape(pt) + '</div>' +
+      (pron ? '<div class="tr-pron">' + trEscape(pron) + (approx ? '  · approximate' : '') + '</div>' : '') +
+      translations.map(function(t){ return '<div class="tr-tr">' + t + '</div>'; }).join('') +
+      (srcLabel ? '<div class="tr-src">' + trEscape(srcLabel) + '</div>' : '') +
+    '</div>' +
+    '<button type="button" class="speak-btn" aria-label="Listen"' + (ttsSupported ? '' : ' disabled') + '>🔊</button>';
+  var btn = el.querySelector('.speak-btn');
+  btn.addEventListener('click', function(){ speakPT(pt, btn); });
+  return el;
+}
+
+function trSaveRecent(pt, pron){
+  if(!pt) return;
+  trRecent = trRecent.filter(function(r){ return r.pt !== pt; });
+  trRecent.unshift({pt:pt, pron:pron || ''});
+  trRecent = trRecent.slice(0, 12);
+  localStorage.setItem(TR_KEY, JSON.stringify(trRecent));
+  renderTrRecent();
+}
+
+function renderTrRecent(){
+  var wrap = document.getElementById('trRecentWrap');
+  var grid = document.getElementById('trRecent');
+  if(!wrap || !grid) return;
+  if(!trRecent.length){ wrap.style.display = 'none'; return; }
+  wrap.style.display = 'block';
+  grid.innerHTML = '';
+  trRecent.forEach(function(r){
+    var el = document.createElement('div');
+    el.className = 'ref-chip tr-recent-chip';
+    el.innerHTML =
+      '<div class="info"><div class="pt">' + trEscape(r.pt) + '</div>' +
+      (r.pron ? '<div class="pron">' + trEscape(r.pron) + '</div>' : '') + '</div>' +
+      '<button type="button" class="speak-btn" aria-label="Listen"' + (ttsSupported ? '' : ' disabled') + '>🔊</button>';
+    el.querySelector('.speak-btn').addEventListener('click', function(e){
+      e.stopPropagation(); speakPT(r.pt, this);
+    });
+    el.addEventListener('click', function(){
+      document.getElementById('trInput').value = r.pt;
+      doTranslate();
+    });
+    grid.appendChild(el);
+  });
+}
+
+function trRenderDirChips(){
+  var wrap = document.getElementById('trDirChips');
+  if(!wrap) return;
+  wrap.innerHTML = '';
+  [['auto','Auto'],['en','EN → PT'],['fr','FR → PT'],['pt','PT → EN/FR']].forEach(function(d){
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'chip' + (trDir === d[0] ? ' on' : '');
+    b.textContent = d[1];
+    b.addEventListener('click', function(){ trDir = d[0]; trRenderDirChips(); doTranslate(); });
+    wrap.appendChild(b);
+  });
+}
+
+function doTranslate(){
+  clearTimeout(trDebounce);   // a full translate wins over any pending live search
+  var input = document.getElementById('trInput');
+  var box = document.getElementById('trResults');
+  if(!input || !box) return;
+  var q = input.value.trim();
+  box.innerHTML = '';
+  if(!q) return;
+
+  /* 1. Everything you've already learned — instant, offline, human-checked. */
+  var local = trSearchLocal(q);
+  if(local.length){
+    var lab = document.createElement('div');
+    lab.className = 'tr-section-label';
+    lab.innerHTML = '📚 From your app <span class="tr-badge">verified · offline</span>';
+    box.appendChild(lab);
+    local.forEach(function(e){
+      var tr = [];
+      if(e.fr) tr.push('🇫🇷 ' + trEscape(e.fr));
+      if(e.es) tr.push('🇪🇸 ' + trEscape(e.es));
+      if(e.en) tr.push('🇬🇧 ' + trEscape(e.en));
+      box.appendChild(trCard(e.pt, e.pron, tr, e.src, false, false));
+    });
+    trSaveRecent(local[0].pt, local[0].pron);
+  }
+
+  /* 2. If it's already Portuguese, we can always pronounce it offline. */
+  var isPT = (trDir === 'pt') || (trDir === 'auto' && looksPortuguese(q));
+  var exactLocal = local.some(function(e){ return trNorm(e.pt) === trNorm(q); });
+  if(isPT && !exactLocal){
+    var lab2 = document.createElement('div');
+    lab2.className = 'tr-section-label';
+    lab2.innerHTML = '🔊 How to say it <span class="tr-badge approx">auto · offline</span>';
+    box.appendChild(lab2);
+    box.appendChild(trCard(q, TRANSLATOR.phrase(q), [], 'Generated from spelling rules — tap 🔊 for the real pronunciation', false, true));
+    trSaveRecent(q, TRANSLATOR.phrase(q));
+  }
+
+  /* 3. Anything else needs the network. */
+  if(!exactLocal){
+    var pair = isPT ? 'pt-BR|en' : (trDir === 'fr' ? 'fr|pt-BR' : (trDir === 'en' ? 'en|pt-BR' : 'en|pt-BR'));
+    if(trDir === 'auto' && !isPT && /[àâçéèêëîïôùûœ]/i.test(q)) pair = 'fr|pt-BR';
+
+    var lab3 = document.createElement('div');
+    lab3.className = 'tr-section-label';
+    lab3.innerHTML = '🌐 Full translation <span class="tr-badge" style="background:var(--blue-soft);color:var(--blue);border-color:var(--blue);">needs internet</span>';
+    box.appendChild(lab3);
+
+    var spin = document.createElement('div');
+    spin.className = 'tr-spinner';
+    spin.textContent = 'Translating…';
+    box.appendChild(spin);
+
+    var url = 'https://api.mymemory.translated.net/get?q=' + encodeURIComponent(q) + '&langpair=' + encodeURIComponent(pair);
+    fetch(url).then(function(r){ return r.json(); }).then(function(data){
+      spin.remove();
+      var out = data && data.responseData && data.responseData.translatedText;
+      if(!out || (data.responseStatus && data.responseStatus !== 200)){
+        var warn = document.createElement('div');
+        warn.className = 'tr-note';
+        warn.textContent = 'Couldn\'t translate that right now (the free translation service may be busy). The offline results above still work.';
+        box.appendChild(warn);
+        return;
+      }
+      out = String(out);
+      if(isPT){
+        box.appendChild(trCard(q, TRANSLATOR.phrase(q), ['🇬🇧 ' + trEscape(out)], 'Machine translation · MyMemory', true, true));
+        trSaveRecent(q, TRANSLATOR.phrase(q));
+      } else {
+        var pron = TRANSLATOR.phrase(out);
+        box.appendChild(trCard(out, pron, ['↩︎ ' + trEscape(q)], 'Machine translation · MyMemory — tap 🔊 to hear it properly', true, true));
+        trSaveRecent(out, pron);
+      }
+    }).catch(function(){
+      spin.remove();
+      var warn = document.createElement('div');
+      warn.className = 'tr-note';
+      warn.textContent = navigator.onLine
+        ? 'Translation service unreachable right now. Offline results above still work.'
+        : 'You\'re offline — online translation needs internet, but everything above works without it.';
+      box.appendChild(warn);
+    });
+  }
+
+  if(!local.length && !isPT){
+    var note = document.createElement('div');
+    note.className = 'tr-note';
+    note.textContent = 'Not in your app yet — using online translation below.';
+    box.insertBefore(note, box.firstChild);
+  }
+}
+
+(function initTranslator(){
+  var input = document.getElementById('trInput');
+  var go = document.getElementById('trGoBtn');
+  if(!input || !go) return;
+  trRenderDirChips();
+  renderTrRecent();
+  go.addEventListener('click', doTranslate);
+  input.addEventListener('keydown', function(e){
+    if(e.key === 'Enter' && !e.shiftKey){ e.preventDefault(); doTranslate(); }
+  });
+  input.addEventListener('input', function(){
+    clearTimeout(trDebounce);
+    var v = input.value.trim();
+    trDebounce = setTimeout(function(){
+      if(!v){ document.getElementById('trResults').innerHTML = ''; return; }
+      var local = trSearchLocal(v);
+      if(local.length){
+        var box = document.getElementById('trResults');
+        box.innerHTML = '';
+        var lab = document.createElement('div');
+        lab.className = 'tr-section-label';
+        lab.innerHTML = '📚 From your app <span class="tr-badge">verified · offline</span>';
+        box.appendChild(lab);
+        local.forEach(function(e){
+          var tr = [];
+          if(e.fr) tr.push('🇫🇷 ' + trEscape(e.fr));
+          if(e.es) tr.push('🇪🇸 ' + trEscape(e.es));
+          if(e.en) tr.push('🇬🇧 ' + trEscape(e.en));
+          box.appendChild(trCard(e.pt, e.pron, tr, e.src, false, false));
+        });
+        var hint = document.createElement('div');
+        hint.className = 'tr-note';
+        hint.style.marginTop = '10px';
+        hint.textContent = 'Press Enter for a full translation.';
+        box.appendChild(hint);
+      }
+    }, 220);
+  });
+  var clr = document.getElementById('trClearRecent');
+  if(clr) clr.addEventListener('click', function(){
+    trRecent = []; localStorage.setItem(TR_KEY, '[]'); renderTrRecent();
+  });
+  var quick = document.getElementById('quickTranslateBtn');
+  if(quick) quick.addEventListener('click', function(){
+    showTab('translator');
+    setTimeout(function(){ input.focus(); }, 250);
+  });
+})();
+
+
+/* ================= Places to go (Hangouts) ================= */
+var PLACE_CATEGORIES = [
+  {
+    id:'parks', emoji:'🌳', title:'Parks', sub:'Free, easy, and full of people — the lowest-pressure place to practice.',
+    phrase:{pt:'Esse lugar é lindo, né?', pron:'EH-see loo-GAR eh LEEN-doo, neh', en:'This place is beautiful, right?'},
+    places:[
+      {name:'Parque Ibirapuera', area:'Vila Mariana / Moema', note:"São Paulo's biggest and best-known park — free weekend fitness classes, running paths, museums inside."},
+      {name:'Parque Villa-Lobos', area:'Alto de Pinheiros', note:'Wide open lawns and dedicated cycling and running tracks.'},
+      {name:'Parque da Água Branca', area:'Água Branca', note:'Small, shaded and calm, with a well-known organic feira on weekends.'},
+      {name:'Parque Trianon', area:'Av. Paulista', note:'A pocket of Atlantic forest right on Paulista — good pause between museums.'},
+      {name:'Praça Pôr do Sol', area:'Alto de Pinheiros', note:'The city’s classic sunset hill — crowded, social, very paulistano.'},
+      {name:'Horto Florestal São Paulo', area:'Santana', note:'Forest trails at the edge of the city if you want proper nature.'},
+      {name:'Parque da Independência', area:'Ipiranga', note:'Formal gardens next to the Museu do Ipiranga.'}
+    ]
+  },
+  {
+    id:'museums', emoji:'🖼️', title:'Museums & Culture', sub:'Great solo activity — and reading the labels is free reading practice.',
+    phrase:{pt:'Uma entrada, por favor.', pron:'OO-mah en-TRAH-dah, por fah-VOR', en:'One ticket, please.'},
+    places:[
+      {name:'Museu da Língua Portuguesa', area:'Luz', note:'A whole museum about the Portuguese language itself — genuinely made for what you’re doing.'},
+      {name:'MASP Museu de Arte de São Paulo', area:'Av. Paulista', note:'The iconic red building on stilts; famous glass-easel painting display.'},
+      {name:'Pinacoteca de São Paulo', area:'Luz', note:'Brazilian art from the 19th century onward, in a beautifully restored building.'},
+      {name:'Museu do Ipiranga', area:'Ipiranga', note:'Grand history museum reopened in 2022 after a long restoration.'},
+      {name:'MIS Museu da Imagem e do Som', area:'Jardins', note:'Film, photography and music exhibitions; often the most contemporary shows in town.'},
+      {name:'Instituto Tomie Ohtake', area:'Pinheiros', note:'Contemporary art and architecture, free entry to many shows.'},
+      {name:'Japan House São Paulo', area:'Av. Paulista', note:'Japanese design and culture — free, small, and beautifully done.'},
+      {name:'Farol Santander São Paulo', area:'Centro', note:'Exhibitions plus one of the best downtown rooftop views.'}
+    ]
+  },
+  {
+    id:'cafes', emoji:'☕', title:'Cafés', sub:'Your easiest daily rep: order in Portuguese, every single time.',
+    phrase:{pt:'Um café, por favor. Aceita cartão?', pron:'oong kah-FEH, por fah-VOR. ah-SAY-tah kar-TOWNG', en:'A coffee, please. Do you take card?'},
+    places:[
+      {name:'Coffee Lab', area:'Vila Madalena', note:'One of the pioneers of specialty coffee in Brazil.'},
+      {name:'Sofá Café', area:'Pinheiros / Jardins', note:'Small, comfortable, good for sitting a while with a notebook.'},
+      {name:'Suplicy Cafés Especiais', area:'Jardins / Paulista', note:'Reliable local chain, several locations across the city.'},
+      {name:'Santo Grão', area:'Jardins', note:'Bigger café-restaurant, good for a longer breakfast.'},
+      {name:'Isso é Café', area:'Pinheiros', note:'Neighborhood specialty spot, easy to chat with the baristas.'}
+    ]
+  },
+  {
+    id:'rooftops', emoji:'🌇', title:'Rooftop Bars', sub:'Where an evening turns social — good for networking energy.',
+    phrase:{pt:'Uma caipirinha, por favor.', pron:'OO-mah keye-pee-REEN-yah, por fah-VOR', en:'A caipirinha, please.'},
+    places:[
+      {name:'Skye Bar Hotel Unique', area:'Jardins', note:'The famous red rooftop pool and skyline view.'},
+      {name:'Terraço Itália', area:'Centro', note:'Classic top-of-the-city view from one of the tallest downtown buildings.'},
+      {name:'Riviera Bar', area:'Consolação', note:'Restored historic bar, a long-running meeting point.'},
+      {name:'SESC Paulista Rooftop', area:'Av. Paulista', note:'Free public rooftop terrace with one of the best Paulista views.'}
+    ]
+  },
+  {
+    id:'fitness', emoji:'🧘', title:'Yoga, Gym & Classes', sub:'A recurring class means the same faces every week — that’s how you make friends.',
+    phrase:{pt:'Vocês têm aula experimental?', pron:'vo-SEHZ teng OW-lah es-peh-ree-men-TAHL', en:'Do you have a trial class?'},
+    places:[
+      {name:'SESC Vila Mariana', area:'Vila Mariana', note:'Pool, theatre, library and cheap classes — closest SESC to your neighborhood.'},
+      {name:'SESC Pompeia', area:'Pompeia', note:'Famous Lina Bo Bardi building; sports courts, workshops and events.'},
+      {name:'SESC Paulista', area:'Av. Paulista', note:'Central unit with free exhibitions and a rooftop.'},
+      {name:'Smart Fit', area:'Citywide', note:'Cheap no-commitment gym chain with units nearly everywhere, including Vila Mariana.'},
+      {name:'Parque Ibirapuera aulas gratuitas', area:'Ibirapuera', note:'Free open-air weekend fitness and yoga classes in the park.'}
+    ]
+  },
+  {
+    id:'markets', emoji:'🛒', title:'Markets & Feiras', sub:'The single best place to practice — vendors love to chat and expect haggling.',
+    phrase:{pt:'Quanto custa o quilo?', pron:'KWAN-too KOOS-tah oo KEE-loo', en:'How much per kilo?'},
+    places:[
+      {name:'Mercado Municipal de São Paulo', area:'Centro', note:'The Mercadão — famous for the mortadella sandwich and pastel de bacalhau.'},
+      {name:'Mercado Municipal de Pinheiros', area:'Pinheiros', note:'Smaller and less touristy, with good food stalls upstairs.'},
+      {name:'Feira da Praça Benedito Calixto', area:'Pinheiros', note:'Saturday street fair — antiques, food, and live chorinho music.'},
+      {name:'Feira do Bixiga', area:'Bela Vista', note:'Sunday fair in the historic Italian neighborhood.'}
+    ]
+  }
+];
+
+function mapsUrl(name){
+  return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(name + ', São Paulo, Brazil');
+}
+
+function renderPlaces(){
+  var wrap = document.getElementById('placesList');
+  if(!wrap) return;
+  wrap.innerHTML = '';
+  PLACE_CATEGORIES.forEach(function(cat){
+    var el = document.createElement('div');
+    el.className = 'place-cat';
+    el.innerHTML =
+      '<button type="button" class="place-head">' +
+        '<span class="emoji">' + cat.emoji + '</span>' +
+        '<span class="ph-body"><h4>' + cat.title + '</h4><span class="ph-sub">' + cat.sub + '</span></span>' +
+        '<span class="ph-arrow">▶</span>' +
+      '</button>' +
+      '<div class="place-body">' +
+        '<div class="place-phrase">' +
+          '<div class="pp-body">' +
+            '<div class="pp-pt">' + cat.phrase.pt + '</div>' +
+            '<div class="pp-pron">' + cat.phrase.pron + '</div>' +
+            '<div class="pp-en">' + cat.phrase.en + '</div>' +
+          '</div>' +
+          '<button type="button" class="speak-btn" aria-label="Listen"' + (ttsSupported ? '' : ' disabled') + '>🔊</button>' +
+        '</div>' +
+        cat.places.map(function(p){
+          return '<div class="place-item">' +
+            '<div class="pi-body">' +
+              '<div class="pi-name">' + p.name + '</div>' +
+              '<div class="pi-area">' + p.area + '</div>' +
+              '<div class="pi-note">' + p.note + '</div>' +
+            '</div>' +
+            '<a class="maps-link" target="_blank" rel="noopener" href="' + mapsUrl(p.name) + '">📍 Maps</a>' +
+          '</div>';
+        }).join('') +
+        '<div class="place-foot">Links open a Google Maps search — check hours before you go.</div>' +
+      '</div>';
+
+    el.querySelector('.place-head').addEventListener('click', function(){
+      el.classList.toggle('open');
+    });
+    var sp = el.querySelector('.place-phrase .speak-btn');
+    sp.addEventListener('click', function(e){ e.stopPropagation(); speakPT(cat.phrase.pt, sp); });
+    wrap.appendChild(el);
+  });
+}
+renderPlaces();
 
 /* ================= Offline install (PWA) ================= */
 if('serviceWorker' in navigator){
