@@ -996,7 +996,7 @@ footer{max-width:960px; margin:10px auto 0; padding:0 18px 30px; font-size:12px;
 <!-- CLASS NOTES -->
 <section class="panel" id="panel-classnotes">
   <div class="section-title">📓 My Class Notes <span class="pill">From Your Lessons</span></div>
-  <p style="color:var(--ink-soft); font-size:14px;">Your actual class notes, turned into audio + quizzes so what you learn in class doesn't fade by next week. Add new lessons here as you go.</p>
+  <p style="color:var(--ink-soft); font-size:14px;">Your actual class notes, turned into audio + quizzes so what you learn in class doesn't fade by next week. Newest lesson first.</p>
 
   <div class="progress-wrap">
     <div class="progress-bar"><div class="progress-fill" id="lessonProgress"></div></div>
@@ -2571,7 +2571,8 @@ var CLASS_LESSONS = [
 function renderClassLessons(){
   var list = document.getElementById('lessonList');
   list.innerHTML = '';
-  CLASS_LESSONS.forEach(function(lesson){
+  // newest lesson first, so the latest class is always at the top
+  CLASS_LESSONS.slice().reverse().forEach(function(lesson){
     var passed = game.classQuizPassed.indexOf(lesson.id) > -1;
     var card = document.createElement('div');
     card.className = 'day-card' + (passed ? ' complete' : '');
@@ -3843,7 +3844,7 @@ function importProgress(file){
 })();
 
 /* ================= Offline install (PWA) + self-update ================= */
-var APP_BUILD = '2026-08-11 · build 9';
+var APP_BUILD = '2026-08-11 · build 10';
 
 (function stampBuild(){
   var el = document.getElementById('buildStamp');
