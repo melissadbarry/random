@@ -143,6 +143,16 @@ main{max-width:960px; margin:0 auto; padding:20px 18px 40px;}
 .start-card .sh-track-fill{height:100%; background:var(--green); width:0%; transition:width .4s;}
 .start-card .sh-track-label{font-size:11px; color:var(--ink-soft); margin-top:4px;}
 
+.ft-toggle{display:flex; gap:8px; margin-bottom:16px; flex-wrap:wrap;}
+.ft-toggle-btn{
+  border:1px solid var(--border); background:var(--bg-alt); color:var(--ink-soft);
+  border-radius:20px; padding:8px 15px; font-size:13.5px; font-weight:700; cursor:pointer;
+}
+.ft-toggle-btn.active{background:var(--green); color:#fff; border-color:var(--green);}
+.ft-toggle-btn:not(.active):hover{background:var(--border);}
+.ft-view{display:none;}
+.ft-view.active{display:block; animation:fade .2s ease;}
+
 .section-title{display:flex; align-items:center; gap:8px; font-size:18px; margin:26px 0 12px;}
 .section-title:first-child{margin-top:0;}
 .pill{
@@ -511,8 +521,6 @@ footer{max-width:960px; margin:10px auto 0; padding:0 18px 30px; font-size:12px;
 
 <!-- OVERVIEW -->
 <section class="panel active" id="panel-overview">
-  <div class="start-card" id="startHereCard"></div>
-
   <div class="hero">
     <h2 class="display">Go from "I hope they speak English…" to "I can handle this."</h2>
     <p class="tagline">You don't need to be fluent — you just need the right Portuguese. This isn't about perfection, it's about confidence.</p>
@@ -532,6 +540,56 @@ footer{max-width:960px; margin:10px auto 0; padding:0 18px 30px; font-size:12px;
       <li>Apps feel slow, confusing, and disconnected from real life</li>
       <li>You want results now, not someday</li>
     </ul>
+  </div>
+
+  <div class="section-title">🚀 6-Week Fast Track <span class="pill">15 min/day</span></div>
+  <div class="ft-toggle">
+    <button type="button" class="ft-toggle-btn active" data-view="start">▶️ Start Here</button>
+    <button type="button" class="ft-toggle-btn" data-view="plan">🗓️ Full 6-Week Plan</button>
+  </div>
+
+  <div class="ft-view active" id="ftViewStart">
+    <div class="start-card" id="startHereCard"></div>
+  </div>
+
+  <div class="ft-view" id="ftViewPlan">
+    <p style="color:var(--ink-soft); font-size:14px;">Class moves slowly because a group has to move slowly. This doesn't. 15 focused minutes a day, on top of class (not instead of it), is enough to actually move — daily reps beat weekly ones every time. A simple loop for each day:</p>
+    <div class="card" style="margin-bottom:16px;">
+      <ul class="win">
+        <li><strong>~5 min — Hear it:</strong> Cheat Sheet, Class Notes, or a Sentence Builder reference grid. Tap every 🔊, say it back out loud.</li>
+        <li><strong>~5 min — Use it:</strong> one Sentence Builder drill, Crash Course day, or Class Notes quiz.</li>
+        <li><strong>~5 min — Live it:</strong> say it to a real person or screen — your Uber driver, a barista, or shadow a line from Portuguese TV.</li>
+      </ul>
+    </div>
+    <div class="grid">
+      <div class="card">
+        <h3>Week 1 — Foundations</h3>
+        <p class="desc">Crash Course Days 1–2 · Sentence Builder Levels 1–2 · Class Notes Aula #1</p>
+      </div>
+      <div class="card">
+        <h3>Week 2 — Getting Around &amp; Asking</h3>
+        <p class="desc">Crash Course Days 3–4 · Sentence Builder Level 3 · Class Notes Aula #2</p>
+      </div>
+      <div class="card">
+        <h3>Week 3 — Numbers &amp; Daily Life</h3>
+        <p class="desc">Sentence Builder Levels 4, 6 &amp; 7 · Crash Course Day 5 · Class Notes kitchen vocab</p>
+      </div>
+      <div class="card">
+        <h3>Week 4 — Real Conversation</h3>
+        <p class="desc">Sentence Builder Level 5 · Crash Course Day 6 · start Speaking Practice with ChatGPT voice</p>
+      </div>
+      <div class="card">
+        <h3>Week 5 — Plans &amp; Real Situations</h3>
+        <p class="desc">Sentence Builder Level 8 · Crash Course Day 7 · Travel Guide + Slang · book something on the Hangouts planner</p>
+      </div>
+      <div class="card">
+        <h3>Week 6 — Immersion &amp; Confidence</h3>
+        <p class="desc">Re-take any quiz under 90% · full mock chats in Speaking Practice · real talk with Uber drivers, friends, class</p>
+      </div>
+    </div>
+    <div class="goal-banner">
+      🎯 Keep going to class every week — it's still where you get corrected by a real teacher. This app is what happens on the other 6 days.
+    </div>
   </div>
 
   <div class="section-title">🎒 The Brazil Starter Kit</div>
@@ -596,45 +654,6 @@ footer{max-width:960px; margin:10px auto 0; padding:0 18px 30px; font-size:12px;
       </ul>
       <button class="jump-btn" data-goto="hangouts" style="background:var(--coral);">Open Hangouts →</button>
     </div>
-  </div>
-
-  <div class="section-title">🚀 6-Week Fast Track <span class="pill">15 min/day</span></div>
-  <p style="color:var(--ink-soft); font-size:14px;">Class moves slowly because a group has to move slowly. This doesn't. 15 focused minutes a day, on top of class (not instead of it), is enough to actually move — daily reps beat weekly ones every time. A simple loop for each day:</p>
-  <div class="card" style="margin-bottom:16px;">
-    <ul class="win">
-      <li><strong>~5 min — Hear it:</strong> Cheat Sheet, Class Notes, or a Sentence Builder reference grid. Tap every 🔊, say it back out loud.</li>
-      <li><strong>~5 min — Use it:</strong> one Sentence Builder drill, Crash Course day, or Class Notes quiz.</li>
-      <li><strong>~5 min — Live it:</strong> say it to a real person or screen — your Uber driver, a barista, or shadow a line from Portuguese TV.</li>
-    </ul>
-  </div>
-  <div class="grid">
-    <div class="card">
-      <h3>Week 1 — Foundations</h3>
-      <p class="desc">Crash Course Days 1–2 · Sentence Builder Levels 1–2 · Class Notes Aula #1</p>
-    </div>
-    <div class="card">
-      <h3>Week 2 — Getting Around &amp; Asking</h3>
-      <p class="desc">Crash Course Days 3–4 · Sentence Builder Level 3 · Class Notes Aula #2</p>
-    </div>
-    <div class="card">
-      <h3>Week 3 — Numbers &amp; Daily Life</h3>
-      <p class="desc">Sentence Builder Levels 4, 6 &amp; 7 · Crash Course Day 5 · Class Notes kitchen vocab</p>
-    </div>
-    <div class="card">
-      <h3>Week 4 — Real Conversation</h3>
-      <p class="desc">Sentence Builder Level 5 · Crash Course Day 6 · start Speaking Practice with ChatGPT voice</p>
-    </div>
-    <div class="card">
-      <h3>Week 5 — Plans &amp; Real Situations</h3>
-      <p class="desc">Sentence Builder Level 8 · Crash Course Day 7 · Travel Guide + Slang · book something on the Hangouts planner</p>
-    </div>
-    <div class="card">
-      <h3>Week 6 — Immersion &amp; Confidence</h3>
-      <p class="desc">Re-take any quiz under 90% · full mock chats in Speaking Practice · real talk with Uber drivers, friends, class</p>
-    </div>
-  </div>
-  <div class="goal-banner">
-    🎯 Keep going to class every week — it's still where you get corrected by a real teacher. This app is what happens on the other 6 days.
   </div>
 
   <div class="section-title">✨ My Transformation</div>
@@ -2586,6 +2605,16 @@ function renderStartHere(){
   }
 }
 renderStartHere();
+
+document.querySelectorAll('.ft-toggle-btn').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    document.querySelectorAll('.ft-toggle-btn').forEach(function(b){ b.classList.remove('active'); });
+    btn.classList.add('active');
+    document.querySelectorAll('.ft-view').forEach(function(v){ v.classList.remove('active'); });
+    var targetId = btn.dataset.view === 'start' ? 'ftViewStart' : 'ftViewPlan';
+    document.getElementById(targetId).classList.add('active');
+  });
+});
 
 /* ================= Offline install (PWA) ================= */
 if('serviceWorker' in navigator){
