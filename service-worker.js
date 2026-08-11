@@ -1,4 +1,4 @@
-var CACHE_NAME = 'bsk-cache-v1';
+var CACHE_NAME = 'bsk-cache-v2';
 var ASSETS = [
   './',
   './index.html',
@@ -25,16 +25,34 @@ self.addEventListener('activate', function(event){
 
 self.addEventListener('fetch', function(event){
   if(event.request.method !== 'GET') return;
-  event.respondWith(
-    caches.match(event.request).then(function(cached){
-      if(cached) return cached;
-      return fetch(event.request).then(function(response){
+
+  var isHTML = event.request.mode === 'navigate' ||
+    (event.request.headers.get('accept') || '').indexOf('text/html') !== -1;
+
+  if(isHTML){
+    // Network-first for the app shell: always get the latest version when online,
+    // fall back to whatever's cached only when offline.
+    event.respondWith(
+      fetch(event.request).then(function(response){
         var copy = response.clone();
         caches.open(CACHE_NAME).then(function(cache){ cache.put(event.request, copy); });
         return response;
       }).catch(function(){
-        return caches.match('./index.html');
-      });
+        return caches.match(event.request).then(function(cached){ return cached || caches.match('./index.html'); });
+      })
+    );
+    return;
+  }
+
+  // Static assets (icons, manifest): serve from cache instantly, refresh in the background.
+  event.respondWith(
+    caches.match(event.request).then(function(cached){
+      var fetchPromise = fetch(event.request).then(function(response){
+        var copy = response.clone();
+        caches.open(CACHE_NAME).then(function(cache){ cache.put(event.request, copy); });
+        return response;
+      }).catch(function(){ return cached; });
+      return cached || fetchPromise;
     })
   );
 });

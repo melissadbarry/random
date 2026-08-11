@@ -123,6 +123,26 @@ main{max-width:960px; margin:0 auto; padding:20px 18px 40px;}
 .quote-arrow{color:var(--green); font-weight:700;}
 .quote-new{font-weight:700; color:var(--ink);}
 
+.start-card{
+  background:var(--card); border:2px solid var(--green); border-radius:18px; padding:20px 22px; margin-bottom:20px;
+  box-shadow:var(--shadow);
+}
+.start-card .sh-eyebrow{
+  font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:.04em; color:var(--green); margin-bottom:6px;
+  display:flex; align-items:center; gap:6px; flex-wrap:wrap;
+}
+.start-card .sh-day{color:var(--ink-soft); font-weight:600; text-transform:none; letter-spacing:0;}
+.start-card h2{font-size:19px; margin-bottom:4px;}
+.start-card .sh-sub{font-size:13.5px; color:var(--ink-soft); margin-bottom:14px;}
+.start-card .sh-btn{
+  display:inline-block; font-size:14.5px; font-weight:700; color:#fff; background:var(--green);
+  border:none; border-radius:10px; padding:11px 18px; cursor:pointer;
+}
+.start-card .sh-track{margin-top:14px;}
+.start-card .sh-track-bar{height:6px; border-radius:5px; background:var(--bg-alt); border:1px solid var(--border); overflow:hidden; max-width:280px;}
+.start-card .sh-track-fill{height:100%; background:var(--green); width:0%; transition:width .4s;}
+.start-card .sh-track-label{font-size:11px; color:var(--ink-soft); margin-top:4px;}
+
 .section-title{display:flex; align-items:center; gap:8px; font-size:18px; margin:26px 0 12px;}
 .section-title:first-child{margin-top:0;}
 .pill{
@@ -491,6 +511,8 @@ footer{max-width:960px; margin:10px auto 0; padding:0 18px 30px; font-size:12px;
 
 <!-- OVERVIEW -->
 <section class="panel active" id="panel-overview">
+  <div class="start-card" id="startHereCard"></div>
+
   <div class="hero">
     <h2 class="display">Go from "I hope they speak English…" to "I can handle this."</h2>
     <p class="tagline">You don't need to be fluent — you just need the right Portuguese. This isn't about perfection, it's about confidence.</p>
@@ -1002,10 +1024,16 @@ var game = Object.assign({
   dayQuizPassed: [],
   sentenceLevelsPassed: [],
   xpSentenceBuilds: [],
-  classQuizPassed: []
+  classQuizPassed: [],
+  startDate: null
 }, JSON.parse(localStorage.getItem(GKEY) || '{}'));
 
 function saveGame(){ localStorage.setItem(GKEY, JSON.stringify(game)); }
+
+if(!game.startDate){
+  game.startDate = Date.now();
+  saveGame();
+}
 
 var LEVELS = [
   "Curious Traveler", "Phrase Collector", "Conversation Starter", "Culture Explorer",
@@ -1666,6 +1694,7 @@ function renderDays(){
       }
       saveDone();
       renderDays();
+      renderStartHere();
     });
 
     list.appendChild(card);
@@ -2113,6 +2142,7 @@ function renderSentenceLevels(){
           showToast('Almost!', 'Score at least ' + Math.ceil(total * 0.9) + '/' + total + ' to pass Level ' + lvl.n + '.');
         }
         renderSentenceLevels();
+        renderStartHere();
       });
     });
   });
@@ -2305,6 +2335,7 @@ function renderClassLessons(){
           showToast('Almost!', 'Score at least ' + Math.ceil(total * 0.75) + '/' + total + ' to pass this lesson.');
         }
         renderClassLessons();
+        renderStartHere();
       });
     });
   });
@@ -2416,6 +2447,7 @@ function renderScenarios(){
         addXP(15, s.title + ' practiced');
         if(SCENARIOS.every(function(x){ return scenariosPracticed.has(x.id); })) unlockBadge('speaking-pro');
         renderScenarios();
+        renderStartHere();
       }
     });
     list.appendChild(card);
@@ -2458,6 +2490,7 @@ function renderPlanner(){
           });
           if(allChecked) unlockBadge('social-pro');
         }
+        renderStartHere();
       });
       td.appendChild(cb);
       tr.appendChild(td);
@@ -2466,6 +2499,93 @@ function renderPlanner(){
   });
 }
 renderPlanner();
+
+/* ================= Start Here pathway (Overview) ================= */
+var PATHWAY = [
+  {tab:"crash", label:"Crash Course — Day 1: Sounds & Greetings", sub:"Pronunciation basics + how to greet anyone confidently.",
+   isDone:function(){ return doneSet.has('day-1'); }},
+  {tab:"sentences", label:"Sentence Builder — Level 1: Introduce Yourself", sub:"Learn to build real sentences, not just match words.",
+   isDone:function(){ return game.sentenceLevelsPassed.indexOf(1) > -1; }},
+  {tab:"classnotes", label:"Class Notes — Aula #1", sub:"Review your own lesson notes with audio.",
+   isDone:function(){ return game.classQuizPassed.indexOf(1) > -1; }},
+  {tab:"classnotes", label:"Class Notes — Pronouns & Everyday Words", sub:"eu, você, ele/ela, and the rest from class.",
+   isDone:function(){ return game.classQuizPassed.indexOf(2) > -1; }},
+  {tab:"crash", label:"Crash Course — Day 2: Everyday Essentials", sub:"Yes, no, please, numbers, question words.",
+   isDone:function(){ return doneSet.has('day-2'); }},
+  {tab:"sentences", label:"Sentence Builder — Level 2: Ask Questions", sub:"Onde, quanto, você pode...?",
+   isDone:function(){ return game.sentenceLevelsPassed.indexOf(2) > -1; }},
+  {tab:"crash", label:"Crash Course — Day 3: Getting Around", sub:"Directions and asking for help.",
+   isDone:function(){ return doneSet.has('day-3'); }},
+  {tab:"sentences", label:"Sentence Builder — Level 3: Say What You Want", sub:"Quero vs. queria vs. preciso de.",
+   isDone:function(){ return game.sentenceLevelsPassed.indexOf(3) > -1; }},
+  {tab:"classnotes", label:"Class Notes — Aula #2", sub:"Health, belongings & body vocab.",
+   isDone:function(){ return game.classQuizPassed.indexOf(3) > -1; }},
+  {tab:"crash", label:"Crash Course — Day 4: Food & Café Culture", sub:"Order confidently, handle a restaurant.",
+   isDone:function(){ return doneSet.has('day-4'); }},
+  {tab:"sentences", label:"Sentence Builder — Level 4: Daily Life", sub:"Everyday present-tense verbs.",
+   isDone:function(){ return game.sentenceLevelsPassed.indexOf(4) > -1; }},
+  {tab:"sentences", label:"Sentence Builder — Level 6: Prepositions", sub:"no/na/do/da/ao/à and more.",
+   isDone:function(){ return game.sentenceLevelsPassed.indexOf(6) > -1; }},
+  {tab:"sentences", label:"Sentence Builder — Level 7: Counting & Numbers", sub:"0–20 for prices, ages, and tables.",
+   isDone:function(){ return game.sentenceLevelsPassed.indexOf(7) > -1; }},
+  {tab:"classnotes", label:"Class Notes — Kitchen & Cooking", sub:"Ovos, frigideira, azeite de oliva...",
+   isDone:function(){ return game.classQuizPassed.indexOf(4) > -1; }},
+  {tab:"crash", label:"Crash Course — Day 5: Making Conversation", sub:"Hold a short, real conversation.",
+   isDone:function(){ return doneSet.has('day-5'); }},
+  {tab:"sentences", label:"Sentence Builder — Level 5: Connect Ideas", sub:"e, mas, também, porque, então.",
+   isDone:function(){ return game.sentenceLevelsPassed.indexOf(5) > -1; }},
+  {tab:"crash", label:"Crash Course — Day 6: Real-Life Scenarios", sub:"Shopping, emergencies, wifi.",
+   isDone:function(){ return doneSet.has('day-6'); }},
+  {tab:"speaking", label:"Speaking Practice — Order Coffee & Small Talk", sub:"Copy the prompt into ChatGPT voice and talk it out loud.",
+   isDone:function(){ return scenariosPracticed.has('cafe'); }},
+  {tab:"speaking", label:"Speaking Practice — Asking for Directions", sub:"Copy the prompt into ChatGPT voice and talk it out loud.",
+   isDone:function(){ return scenariosPracticed.has('directions'); }},
+  {tab:"sentences", label:"Sentence Builder — Level 8: Days, Time & Plans", sub:"Actually schedule a meetup in Portuguese.",
+   isDone:function(){ return game.sentenceLevelsPassed.indexOf(8) > -1; }},
+  {tab:"crash", label:"Crash Course — Day 7: Confidence Practice", sub:"Put it all together.",
+   isDone:function(){ return doneSet.has('day-7'); }},
+  {tab:"speaking", label:"Speaking Practice — Meeting Someone New", sub:"Copy the prompt into ChatGPT voice and talk it out loud.",
+   isDone:function(){ return scenariosPracticed.has('smalltalk'); }},
+  {tab:"speaking", label:"Speaking Practice — Emergency & Help", sub:"Copy the prompt into ChatGPT voice and talk it out loud.",
+   isDone:function(){ return scenariosPracticed.has('emergency'); }},
+  {tab:"speaking", label:"Speaking Practice — Networking Small Talk", sub:"Copy the prompt into ChatGPT voice and talk it out loud.",
+   isDone:function(){ return scenariosPracticed.has('networking'); }},
+  {tab:"speaking", label:"Speaking Practice — Free Chat", sub:"Open conversation, no script.",
+   isDone:function(){ return scenariosPracticed.has('freechat'); }},
+  {tab:"hangouts", label:"Hangouts — Book something real this week", sub:"Check off one activity on the weekly planner.",
+   isDone:function(){ return Object.keys(planState).some(function(k){ return planState[k]; }); }}
+];
+
+function renderStartHere(){
+  var el = document.getElementById('startHereCard');
+  if(!el) return;
+  var dayNum = Math.max(1, Math.floor((Date.now() - game.startDate) / 86400000) + 1);
+  var doneCount = PATHWAY.filter(function(s){ return s.isDone(); }).length;
+  var next = PATHWAY.find(function(s){ return !s.isDone(); });
+
+  var html = '<div class="sh-eyebrow">▶️ Start Here <span class="sh-day">· Day ' + dayNum + ' of your 6-week sprint</span></div>';
+  if(next){
+    html +=
+      '<h2>' + next.label + '</h2>' +
+      '<div class="sh-sub">' + next.sub + '</div>' +
+      '<button type="button" class="sh-btn" id="startHereBtn">Go →</button>';
+  } else {
+    html +=
+      '<h2>🎉 You\'ve been through the whole pathway!</h2>' +
+      '<div class="sh-sub">Re-take any quiz sitting under 90%, then go have a real conversation today — that\'s the part no app can do for you.</div>';
+  }
+  html +=
+    '<div class="sh-track">' +
+      '<div class="sh-track-bar"><div class="sh-track-fill" style="width:' + (100 * doneCount / PATHWAY.length) + '%"></div></div>' +
+      '<div class="sh-track-label">' + doneCount + ' / ' + PATHWAY.length + ' steps done</div>' +
+    '</div>';
+  el.innerHTML = html;
+
+  if(next){
+    document.getElementById('startHereBtn').addEventListener('click', function(){ showTab(next.tab); });
+  }
+}
+renderStartHere();
 
 /* ================= Offline install (PWA) ================= */
 if('serviceWorker' in navigator){
