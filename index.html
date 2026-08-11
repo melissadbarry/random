@@ -273,6 +273,16 @@ main{max-width:960px; margin:0 auto; padding:20px 18px 40px;}
 .pattern-pt{font-weight:700; font-family:ui-monospace,"SF Mono",Consolas,monospace; color:var(--ink);}
 .pattern-arrow{color:var(--green);}
 .pattern-en{color:var(--ink-soft);}
+.ref-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:8px; margin-top:2px;}
+.ref-chip{
+  background:var(--card); border:1px solid var(--border); border-radius:8px; padding:7px 9px;
+  display:flex; align-items:center; gap:6px;
+}
+.ref-chip .info{flex:1; min-width:0;}
+.ref-chip .pt{font-weight:700; font-size:12.8px; color:var(--ink);}
+.ref-chip .pron{font-size:10.8px; color:var(--green); font-family:ui-monospace,"SF Mono",Consolas,monospace;}
+.ref-chip .en{font-size:11.3px; color:var(--ink-soft);}
+.ref-chip .speak-btn{width:26px; height:26px; font-size:11px;}
 .builder-list{display:flex; flex-direction:column; gap:10px; margin-bottom:14px;}
 .builder-item{background:var(--bg-alt); border:1px solid var(--border); border-radius:10px; padding:10px 12px;}
 .builder-answer{
@@ -657,8 +667,8 @@ footer{max-width:960px; margin:10px auto 0; padding:0 18px 30px; font-size:12px;
 
 <!-- SENTENCE BUILDER -->
 <section class="panel" id="panel-sentences">
-  <div class="section-title">🧩 Sentence Builder <span class="pill">Levels 1–5</span></div>
-  <p style="color:var(--ink-soft); font-size:14px;">Words alone don't get you through a conversation — sentences do. Each level teaches one real grammar pattern, then has you build full Portuguese sentences from scratch (not just match a word to its translation). Pass a level's quiz (75%+) to unlock the next one.</p>
+  <div class="section-title">🧩 Sentence Builder <span class="pill">Levels 1–8</span></div>
+  <p style="color:var(--ink-soft); font-size:14px;">Words alone don't get you through a conversation — sentences do. Each level teaches one real grammar pattern, then has you build full Portuguese sentences from scratch (not just match a word to its translation). Pass a level's quiz (90%+) to unlock the next one.</p>
 
   <div class="progress-wrap">
     <div class="progress-bar"><div class="progress-fill" id="levelProgress"></div></div>
@@ -907,7 +917,7 @@ var BADGES = [
   {id:"streak-3", ic:"🔥", name:"3-Day Streak", desc:"Show up 3 days in a row"},
   {id:"week-warrior", ic:"🏅", name:"Week One Warrior", desc:"Complete all 7 crash course days"},
   {id:"sentence-starter", ic:"🧱", name:"Sentence Starter", desc:"Pass Sentence Builder Level 1"},
-  {id:"sentence-master", ic:"🏗️", name:"Sentence Architect", desc:"Pass all 5 Sentence Builder levels"},
+  {id:"sentence-master", ic:"🏗️", name:"Sentence Architect", desc:"Pass all 8 Sentence Builder levels"},
   {id:"social-pro", ic:"🤝", name:"Social Planner Pro", desc:"Fill the entire weekly planner"},
   {id:"level-5", ic:"⭐", name:"São Paulo Local", desc:"Reach Level 5"},
   {id:"speaking-pro", ic:"🎙️", name:"Role-Play Ready", desc:"Practice all 6 ChatGPT voice scenarios"},
@@ -1607,6 +1617,128 @@ var GRAMMAR_LEVELS = [
       {q:"Não falo bem português ___ estou aprendendo. (giving a reason)", options:["e","mas","porque","também"], answer:"porque"},
       {q:"Está chovendo, ___ vou pegar um táxi. (result)", options:["então","mas","porque","também"], answer:"então"}
     ]
+  },
+  {
+    n:6, title:"Prepositions & Contractions", icon:"🔌",
+    blurb:"Prepositions are the glue of every sentence — and in Portuguese they fuse with articles (em + o = no). Learn the fusions that show up constantly.",
+    patterns:[
+      {pt:"em + o/a = no/na", en:"in/at/on the ___ — e.g. \"no Brasil,\" \"na praia\""},
+      {pt:"de + o/a = do/da", en:"of/from the ___ — e.g. \"do parque,\" \"da Bahia\""},
+      {pt:"a + o/a = ao/à", en:"to the ___ — e.g. \"ao cinema,\" \"à noite\""},
+      {pt:"com / sem + [noun]", en:"with / without ___ — e.g. \"com açúcar,\" \"sem pressa\""},
+      {pt:"para + [person/place]", en:"for / to ___ — e.g. \"para você,\" \"para o hotel\""}
+    ],
+    reference:{
+      label:"🔤 Good to Know: Contractions",
+      items:[
+        {pt:"no", pron:"noo", en:"in/at the (masc.)"},
+        {pt:"na", pron:"nah", en:"in/at the (fem.)"},
+        {pt:"do", pron:"doo", en:"of/from the (masc.)"},
+        {pt:"da", pron:"dah", en:"of/from the (fem.)"},
+        {pt:"ao", pron:"ow", en:"to the (masc.)"},
+        {pt:"à", pron:"ah", en:"to the (fem.)"}
+      ]
+    },
+    sentences:[
+      {pt:"Eu moro no Brasil.", pron:"eh-oo MOH-roo noo brah-ZEEL", en:"I live in Brazil."},
+      {pt:"Ela é da Bahia.", pron:"EH-lah eh dah bah-EE-ah", en:"She's from Bahia."},
+      {pt:"Vou para a praia com meus amigos.", pron:"voh PAH-rah ah PRY-ah kohn meh-ooz ah-MEE-gooz", en:"I'm going to the beach with my friends."},
+      {pt:"O café é sem açúcar.", pron:"oo kah-FEH eh seng ah-SOO-kar", en:"The coffee is without sugar."},
+      {pt:"Ele mora perto do parque.", pron:"EH-lee MOH-rah PER-too doo PAR-kee", en:"He lives near the park."},
+      {pt:"Nós vamos ao cinema hoje.", pron:"nohz VAH-mooz ow SEE-neh-mah OH-zhee", en:"We're going to the movies today."}
+    ],
+    quiz:[
+      {q:"Eu moro ___ Brasil. (em + o)", options:["no","na","do","da"], answer:"no"},
+      {q:"Ela é ___ Bahia. (de + a)", options:["do","da","no","na"], answer:"da"},
+      {q:"Nós vamos ___ cinema hoje. (a + o)", options:["ao","à","no","da"], answer:"ao"},
+      {q:"O café é ___ açúcar. (without)", options:["sem","com","para","de"], answer:"sem"}
+    ]
+  },
+  {
+    n:7, title:"Counting & Numbers", icon:"🔢",
+    blurb:"Numbers show up everywhere — prices, ages, table sizes, room numbers. Learn zero through twenty and use them in real sentences, not just a countdown.",
+    patterns:[
+      {pt:"Quanto custa? — Custa ___ reais.", en:"How much does it cost? — It costs ___ reais."},
+      {pt:"Eu tenho ___ anos.", en:"I am ___ years old."},
+      {pt:"Mesa para ___ pessoas.", en:"A table for ___ people."}
+    ],
+    reference:{
+      label:"🔢 Numbers 0–20",
+      items:[
+        {pt:"zero", pron:"ZEH-roo", en:"0"},
+        {pt:"um", pron:"oong", en:"1"},
+        {pt:"dois", pron:"doys", en:"2"},
+        {pt:"três", pron:"tress", en:"3"},
+        {pt:"quatro", pron:"KWAH-troo", en:"4"},
+        {pt:"cinco", pron:"SEEN-koo", en:"5"},
+        {pt:"seis", pron:"says", en:"6"},
+        {pt:"sete", pron:"SEH-chee", en:"7"},
+        {pt:"oito", pron:"OY-too", en:"8"},
+        {pt:"nove", pron:"NOH-vee", en:"9"},
+        {pt:"dez", pron:"dez", en:"10"},
+        {pt:"onze", pron:"OHN-zee", en:"11"},
+        {pt:"doze", pron:"DOH-zee", en:"12"},
+        {pt:"treze", pron:"TREH-zee", en:"13"},
+        {pt:"quatorze", pron:"kwah-TOR-zee", en:"14"},
+        {pt:"quinze", pron:"KEEN-zee", en:"15"},
+        {pt:"dezesseis", pron:"deh-zeh-SAYS", en:"16"},
+        {pt:"dezessete", pron:"deh-zeh-SEH-chee", en:"17"},
+        {pt:"dezoito", pron:"deh-ZOY-too", en:"18"},
+        {pt:"dezenove", pron:"deh-zeh-NOH-vee", en:"19"},
+        {pt:"vinte", pron:"VEEN-chee", en:"20"}
+      ]
+    },
+    sentences:[
+      {pt:"Eu tenho dezoito anos.", pron:"eh-oo TEN-yoo deh-ZOY-too AH-nooz", en:"I am eighteen years old."},
+      {pt:"Custa quinze reais.", pron:"KOOS-tah KEEN-zee heh-EYES", en:"It costs fifteen reais."},
+      {pt:"Mesa para quatro pessoas, por favor.", pron:"MEH-zah PAH-rah KWAH-troo peh-SOH-ahz por fah-VOR", en:"A table for four people, please."},
+      {pt:"Meu quarto é o número doze.", pron:"meh-oo KWAR-too eh oo NOO-meh-roo DOH-zee", en:"My room is number twelve."},
+      {pt:"Eu preciso de vinte reais.", pron:"eh-oo preh-SEE-zoo jee VEEN-chee heh-EYES", en:"I need twenty reais."},
+      {pt:"Nós somos sete no total.", pron:"nohz SOH-mooz SEH-chee noo toh-TAHL", en:"We are seven in total."}
+    ],
+    quiz:[
+      {q:"How do you say \"fifteen\"?", options:["quinze","quatorze","cinquenta","quinto"], answer:"quinze"},
+      {q:"Mesa para ___ pessoas. (a table for four)", options:["quatro","quarto","catorze","quarenta"], answer:"quatro"},
+      {q:"How do you say \"eighteen\"?", options:["dezoito","oitenta","oito","dezenove"], answer:"dezoito"},
+      {q:"Custa ___ reais. (it costs twenty)", options:["vinte","doze","dez","vinte e um"], answer:"vinte"}
+    ]
+  },
+  {
+    n:8, title:"Days, Time & Making Plans", icon:"📅",
+    blurb:"Put a day and a time on a plan — the exact skill that turns 'we should hang out' into an actual meetup.",
+    patterns:[
+      {pt:"Hoje é ___. / Amanhã é ___.", en:"Today is ___. / Tomorrow is ___."},
+      {pt:"São ___ horas. / É meio-dia / meia-noite.", en:"It's ___ o'clock. / It's noon / midnight."},
+      {pt:"às ___ horas", en:"at ___ o'clock"},
+      {pt:"Vamos nos ver + [day/time]?", en:"Shall we meet ___?"},
+      {pt:"na segunda / na terça / no sábado", en:"on Monday / on Tuesday / on Saturday"}
+    ],
+    reference:{
+      label:"🗓️ Days of the Week",
+      items:[
+        {pt:"segunda-feira", pron:"seh-GOON-dah FAY-rah", en:"Monday"},
+        {pt:"terça-feira", pron:"TER-sah FAY-rah", en:"Tuesday"},
+        {pt:"quarta-feira", pron:"KWAR-tah FAY-rah", en:"Wednesday"},
+        {pt:"quinta-feira", pron:"KEEN-tah FAY-rah", en:"Thursday"},
+        {pt:"sexta-feira", pron:"SES-tah FAY-rah", en:"Friday"},
+        {pt:"sábado", pron:"SAH-bah-doo", en:"Saturday"},
+        {pt:"domingo", pron:"doh-MEEN-goo", en:"Sunday"}
+      ]
+    },
+    sentences:[
+      {pt:"Hoje é segunda-feira.", pron:"OH-zhee eh seh-GOON-dah FAY-rah", en:"Today is Monday."},
+      {pt:"Amanhã é sábado.", pron:"ah-mah-NYAH eh SAH-bah-doo", en:"Tomorrow is Saturday."},
+      {pt:"São três horas da tarde.", pron:"sowng tress OH-rahz dah TAR-jee", en:"It's three in the afternoon."},
+      {pt:"A reunião é às dez horas.", pron:"ah heh-oo-nee-OWNG eh ahz dez OH-rahz", en:"The meeting is at ten o'clock."},
+      {pt:"Vamos nos ver na sexta-feira?", pron:"VAH-mooz noos vehr nah SES-tah FAY-rah", en:"Shall we meet on Friday?"},
+      {pt:"Nos vemos às sete da noite.", pron:"nooz VEH-mooz ahz SEH-chee dah NOY-chee", en:"See you at seven at night."}
+    ],
+    quiz:[
+      {q:"Which day comes right after segunda-feira?", options:["terça-feira","quarta-feira","domingo","sábado"], answer:"terça-feira"},
+      {q:"How do you say \"It's three o'clock\"?", options:["São três horas.","É três hora.","Três horas são.","Estou três horas."], answer:"São três horas."},
+      {q:"A reunião é ___ dez horas. (at)", options:["às","no","da","em"], answer:"às"},
+      {q:"How would you ask \"Shall we meet on Friday?\"", options:["Vamos nos ver na sexta-feira?","Eu vou na sexta-feira.","Onde fica sexta-feira?","Que dia é sexta-feira?"], answer:"Vamos nos ver na sexta-feira?"}
+    ]
   }
 ];
 
@@ -1734,17 +1866,34 @@ function renderSentenceLevels(){
       return '<li><span class="pattern-pt">' + p.pt + '</span><span class="pattern-arrow">→</span><span class="pattern-en">' + p.en + '</span></li>';
     }).join('') + '</ul>';
 
+    var referenceHtml = '';
+    if(lvl.reference){
+      referenceHtml = '<div class="pattern-box"><div class="pattern-label">' + lvl.reference.label + '</div><div class="ref-grid">' +
+        lvl.reference.items.map(function(it){
+          return '<div class="ref-chip"><div class="info"><div class="pt">' + it.pt + '</div>' +
+            (it.pron ? '<div class="pron">' + it.pron + '</div>' : '') +
+            '<div class="en">' + it.en + '</div></div>' +
+            '<button type="button" class="speak-btn" data-word="' + it.pt.replace(/"/g, '&quot;') + '" aria-label="Listen" ' + (ttsSupported ? '' : 'disabled') + '>🔊</button></div>';
+        }).join('') +
+      '</div></div>';
+    }
+
     card.innerHTML =
       '<div class="level-num">' + (passed ? '✓' : lvl.icon) + '</div>' +
       '<div class="level-body">' +
         '<h3>Level ' + lvl.n + ': ' + lvl.title + '</h3>' +
         '<div class="goal">' + lvl.blurb + '</div>' +
         '<div class="pattern-box"><div class="pattern-label">🧩 Pattern</div>' + patternsHtml + '</div>' +
+        referenceHtml +
         '<div class="builder-label">✍️ Build These Sentences</div>' +
         '<div class="builder-list" id="builders-' + lvl.n + '"></div>' +
         '<button class="day-btn primary" data-role="quiz">' + (passed ? '✓ Level Quiz Passed' : '🧠 Take Level ' + lvl.n + ' Quiz') + '</button>' +
       '</div>';
     wrap.appendChild(card);
+
+    card.querySelectorAll('.ref-chip .speak-btn').forEach(function(btn){
+      btn.addEventListener('click', function(){ speakPT(btn.getAttribute('data-word'), btn); });
+    });
 
     var builderList = card.querySelector('#builders-' + lvl.n);
     lvl.sentences.forEach(function(s, si){
@@ -1764,7 +1913,7 @@ function renderSentenceLevels(){
 
     card.querySelector('[data-role="quiz"]').addEventListener('click', function(){
       openQuiz('Level ' + lvl.n + ' Quiz', lvl.quiz, function(score, total){
-        var pass = score >= Math.ceil(total * 0.75);
+        var pass = score >= Math.ceil(total * 0.9);
         if(pass){
           if(game.sentenceLevelsPassed.indexOf(lvl.n) === -1){
             game.sentenceLevelsPassed.push(lvl.n);
@@ -1774,7 +1923,7 @@ function renderSentenceLevels(){
             if(game.sentenceLevelsPassed.length === GRAMMAR_LEVELS.length) unlockBadge('sentence-master');
           }
         } else {
-          showToast('Almost!', 'Score at least ' + Math.ceil(total * 0.75) + '/' + total + ' to pass Level ' + lvl.n + '.');
+          showToast('Almost!', 'Score at least ' + Math.ceil(total * 0.9) + '/' + total + ' to pass Level ' + lvl.n + '.');
         }
         renderSentenceLevels();
       });
