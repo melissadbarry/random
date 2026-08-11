@@ -246,6 +246,47 @@ main{max-width:960px; margin:0 auto; padding:20px 18px 40px;}
 .maps-link:hover{opacity:.9;}
 .place-foot{font-size:11.3px; color:var(--ink-soft); margin-top:10px;}
 
+/* ---- Verb Lab ---- */
+.verb-card{background:var(--card); border:1px solid var(--border); border-radius:14px; margin-bottom:9px; box-shadow:var(--shadow); overflow:hidden;}
+.verb-head{display:flex; align-items:center; gap:12px; padding:13px 15px; cursor:pointer; width:100%; background:none; border:none; text-align:left; color:var(--ink);}
+.verb-head:hover{background:var(--bg-alt);}
+.verb-head .vh-body{flex:1; min-width:0;}
+.verb-head .vh-inf{font-size:15.5px; font-weight:700;}
+.verb-head .vh-tr{font-size:12.4px; color:var(--ink-soft); margin-top:1px;}
+.verb-head .vh-tag{font-size:9.5px; font-weight:700; text-transform:uppercase; letter-spacing:.03em; padding:2px 7px; border-radius:10px; background:var(--bg-alt); color:var(--ink-soft); border:1px solid var(--border); white-space:nowrap;}
+.verb-head .vh-arrow{color:var(--ink-soft); font-size:13px; transition:transform .2s; flex:0 0 auto;}
+.verb-card.open .vh-arrow{transform:rotate(90deg);}
+.verb-body{display:none; padding:0 15px 14px;}
+.verb-card.open .verb-body{display:block; animation:fade .2s ease;}
+.tense-block{margin-top:12px;}
+.tense-title{font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:.04em; color:var(--green); margin-bottom:6px; display:flex; align-items:center; gap:6px; flex-wrap:wrap;}
+.tense-title .tt-hint{color:var(--ink-soft); font-weight:600; text-transform:none; letter-spacing:0; font-size:11px;}
+.conj-row{display:flex; align-items:center; gap:9px; padding:6px 0; border-top:1px solid var(--border);}
+.conj-row .cr-person{flex:0 0 108px; font-size:11.8px; color:var(--ink-soft);}
+.conj-row .cr-form{flex:1; min-width:0;}
+.conj-row .cr-pt{font-size:14px; font-weight:700;}
+.conj-row .cr-pron{font-size:11px; color:var(--green); font-family:ui-monospace,"SF Mono",Consolas,monospace;}
+.conj-row .speak-btn{width:28px; height:28px; font-size:12px;}
+.verb-ex{background:var(--green-soft); border-radius:8px; padding:8px 10px; margin-top:8px; display:flex; align-items:center; gap:8px;}
+.verb-ex .ve-body{flex:1; min-width:0;}
+.verb-ex .ve-pt{font-size:12.8px; font-weight:700;}
+.verb-ex .ve-pron{font-size:10.8px; color:var(--green); font-family:ui-monospace,"SF Mono",Consolas,monospace;}
+.verb-ex .speak-btn{width:26px; height:26px; font-size:11px;}
+.verb-note{font-size:11.4px; color:var(--ink-soft); margin-top:10px;}
+@media (max-width:420px){ .conj-row .cr-person{flex:0 0 86px; font-size:11px;} }
+
+/* ---- Review card / My Words ---- */
+#reviewCard{border-color:var(--coral);}
+#reviewCard .rv-eyebrow{font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:.04em; color:var(--coral); margin-bottom:6px;}
+#reviewCard h2{font-size:19px; margin-bottom:4px;}
+#reviewCard .rv-sub{font-size:13.5px; color:var(--ink-soft); margin-bottom:14px;}
+#reviewCard .sh-btn{background:var(--coral);}
+.myw-card{margin-top:16px; border-top:4px solid var(--yellow);}
+.myw-card h3{font-size:15px; margin-bottom:6px;}
+.myw-form{display:flex; gap:8px; flex-wrap:wrap; align-items:center;}
+.myw-in{flex:1 1 180px; min-width:150px;}
+.ref-chip .myw-del{width:24px; height:24px; padding:0; font-size:10px; line-height:1; flex:0 0 auto;}
+
 .section-title{display:flex; align-items:center; gap:8px; font-size:18px; margin:26px 0 12px;}
 .section-title:first-child{margin-top:0;}
 .pill{
@@ -687,6 +728,22 @@ footer{max-width:960px; margin:10px auto 0; padding:0 18px 30px; font-size:12px;
     </div>
   </div>
 
+  <div class="start-card" id="reviewCard" style="display:none;"></div>
+
+  <div class="section-title">⏳ Verbs: Present, Past &amp; Future <span class="pill">the easy way</span></div>
+  <p style="color:var(--ink-soft); font-size:14px;">The 20 verbs that carry most day-to-day conversation. Only the three tenses you actually need, using the simplest form Brazilians really say. Tap a verb to open it.</p>
+
+  <div class="card" style="margin-bottom:14px;">
+    <ul class="win">
+      <li><strong>Present</strong> — what you do / are doing now: <em>Eu falo português.</em></li>
+      <li><strong>Past</strong> — finished actions (pretérito perfeito), the one past tense to learn first: <em>Eu falei com ele.</em></li>
+      <li><strong>Future</strong> — the easy version everyone actually uses: <strong>vou + verb</strong>, never changing the verb: <em>Eu vou falar.</em></li>
+    </ul>
+  </div>
+
+  <div class="chip-row" id="verbChips" style="margin-bottom:14px;"></div>
+  <div id="verbList"></div>
+
   <div class="section-title">🎒 The Brazil Starter Kit</div>
   <div class="grid">
     <div class="card kit-card">
@@ -768,6 +825,19 @@ footer{max-width:960px; margin:10px auto 0; padding:0 18px 30px; font-size:12px;
       <li>📚 Don't want boring grammar-heavy lessons</li>
       <li>❤️ Want to feel comfortable and prepared</li>
     </ul>
+  </div>
+
+  <div class="section-title">💾 Back Up Your Progress</div>
+  <div class="card" style="max-width:560px;">
+    <p style="font-size:13.5px; color:var(--ink-soft); margin-bottom:10px;">
+      All your XP, streak, levels and saved words live only in this browser. Clearing your browsing data —
+      or switching phones — wipes them. Export a backup file now and again so that can't cost you anything.
+    </p>
+    <div style="display:flex; gap:8px; flex-wrap:wrap;">
+      <button type="button" class="jump-btn" id="backupExport">⬇️ Export backup</button>
+      <button type="button" class="quiz-btn" id="backupImport" style="margin-top:8px; margin-left:0;">⬆️ Restore from file</button>
+      <input type="file" id="backupFile" accept="application/json,.json" style="display:none;">
+    </div>
   </div>
 
   <div class="goal-banner">
@@ -926,6 +996,21 @@ footer{max-width:960px; margin:10px auto 0; padding:0 18px 30px; font-size:12px;
   <div class="progress-wrap">
     <div class="progress-bar"><div class="progress-fill" id="lessonProgress"></div></div>
     <div class="progress-label" id="lessonProgressLabel">0 / 4 lesson quizzes passed</div>
+  </div>
+
+  <div class="card myw-card">
+    <h3>✍️ Add Your Own Words</h3>
+    <p style="font-size:13.2px; color:var(--ink-soft); margin-bottom:10px;">
+      Heard something good from an Uber driver, a waiter, or on TV? Save it here before you forget.
+      It gets pronunciation and audio automatically, and becomes searchable in the Translator.
+    </p>
+    <div class="myw-form">
+      <input class="search myw-in" id="mywPt" placeholder="Portuguese word or phrase *">
+      <input class="search myw-in" id="mywEn" placeholder="What it means">
+      <input class="search myw-in" id="mywNote" placeholder="Where you heard it (optional)">
+      <button type="button" class="jump-btn" id="mywAdd" style="margin-top:0;">+ Save</button>
+    </div>
+    <div id="myWordsList" style="margin-top:14px;"></div>
   </div>
 
   <div id="lessonList"></div>
@@ -1104,8 +1189,10 @@ footer{max-width:960px; margin:10px auto 0; padding:0 18px 30px; font-size:12px;
 
 /* ================= Tab navigation ================= */
 function showTab(name){
+  var target = name && document.getElementById('panel-' + name);
+  if(!target) return;   // ignore buttons that aren't navigation
   document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
-  document.getElementById('panel-' + name).classList.add('active');
+  target.classList.add('active');
   document.querySelectorAll('#tabs button, #bottomTabs button').forEach(function(b){
     b.classList.toggle('active', b.dataset.tab === name);
   });
@@ -1114,7 +1201,8 @@ function showTab(name){
 document.querySelectorAll('#tabs button, #bottomTabs button').forEach(function(b){
   b.addEventListener('click', function(){ showTab(b.dataset.tab); });
 });
-document.querySelectorAll('.jump-btn').forEach(function(b){
+// only .jump-btn elements that actually declare a destination
+document.querySelectorAll('.jump-btn[data-goto]').forEach(function(b){
   b.addEventListener('click', function(){ showTab(b.dataset.goto); });
 });
 
@@ -1267,7 +1355,8 @@ document.getElementById('quizClose').addEventListener('click', closeQuiz);
 quizOverlay.addEventListener('click', function(e){ if(e.target === this) closeQuiz(); });
 function closeQuiz(){ quizOverlay.classList.remove('open'); }
 
-function openQuiz(title, questions, onFinish){
+function openQuiz(title, questions, onFinish, opts){
+  opts = opts || {};
   quizTitle.textContent = title;
   var idx = 0, score = 0;
 
@@ -1286,10 +1375,14 @@ function openQuiz(title, questions, onFinish){
         var buttons = optWrap.querySelectorAll('.quiz-option');
         buttons.forEach(function(bb){ bb.disabled = true; });
         var correct = opt === q.answer;
-        if(correct){ b.classList.add('correct'); score++; }
+        if(correct){
+          b.classList.add('correct'); score++;
+          if(opts.review) clearMissed(q);
+        }
         else {
           b.classList.add('wrong');
           buttons.forEach(function(bb){ if(bb.textContent === q.answer) bb.classList.add('correct'); });
+          if(opts.track !== false) recordMissed(q, title);
         }
         var nextBtn = document.createElement('button');
         nextBtn.className = 'quiz-next';
@@ -1980,7 +2073,8 @@ var GRAMMAR_LEVELS = [
     patterns:[
       {pt:"Quanto custa? Custa", pron:"KWAN-too KOOS-tah? KOOS-tah", en:"___ reais = How much does it cost? — It costs ___ reais."},
       {pt:"Eu tenho", pron:"eh-oo TEN-yoo", en:"___ anos = I am ___ years old."},
-      {pt:"Mesa para", pron:"MEH-zah PAH-rah", en:"___ pessoas = A table for ___ people."}
+      {pt:"Mesa para", pron:"MEH-zah PAH-rah", en:"___ pessoas = A table for ___ people."},
+      {pt:"[tens] e [units]", pron:"ee", en:"Join tens and units with \"e\": trinta e cinco = 35, quarenta e dois = 42"}
     ],
     reference:{
       label:"🔢 Numbers 0–20",
@@ -2005,7 +2099,34 @@ var GRAMMAR_LEVELS = [
         {pt:"dezessete", pron:"deh-zeh-SEH-chee", en:"17"},
         {pt:"dezoito", pron:"deh-ZOY-too", en:"18"},
         {pt:"dezenove", pron:"deh-zeh-NOH-vee", en:"19"},
-        {pt:"vinte", pron:"VEEN-chee", en:"20"}
+        {pt:"vinte", pron:"VEEN-chee", en:"20"},
+        {pt:"trinta", pron:"TREEN-tah", en:"30"},
+        {pt:"quarenta", pron:"kwah-REN-tah", en:"40"},
+        {pt:"cinquenta", pron:"seen-KWEN-tah", en:"50"},
+        {pt:"sessenta", pron:"seh-SEN-tah", en:"60"},
+        {pt:"setenta", pron:"seh-TEN-tah", en:"70"},
+        {pt:"oitenta", pron:"oy-TEN-tah", en:"80"},
+        {pt:"noventa", pron:"noh-VEN-tah", en:"90"},
+        {pt:"cem", pron:"seng", en:"100 (exactly)"},
+        {pt:"cento e um", pron:"SEN-too ee oong", en:"101 (cento when followed by more)"},
+        {pt:"duzentos", pron:"doo-ZEN-tooz", en:"200"},
+        {pt:"trezentos", pron:"treh-ZEN-tooz", en:"300"},
+        {pt:"quinhentos", pron:"keen-YEN-tooz", en:"500"},
+        {pt:"mil", pron:"meew", en:"1000"}
+      ]
+    },
+    reference2:{
+      label:"💰 Building Bigger Numbers & Money",
+      items:[
+        {pt:"trinta e cinco", pron:"TREEN-tah ee SEEN-koo", en:"35 — join with \"e\""},
+        {pt:"quarenta e dois", pron:"kwah-REN-tah ee doys", en:"42"},
+        {pt:"cento e vinte", pron:"SEN-too ee VEEN-chee", en:"120"},
+        {pt:"mil e quinhentos", pron:"meew ee keen-YEN-tooz", en:"1500"},
+        {pt:"reais", pron:"heh-EYES", en:"reais (plural of real)"},
+        {pt:"um real", pron:"oong heh-OW", en:"one real"},
+        {pt:"centavos", pron:"sen-TAH-vooz", en:"cents"},
+        {pt:"trinta e cinco reais", pron:"TREEN-tah ee SEEN-koo heh-EYES", en:"R$35"},
+        {pt:"dez e cinquenta", pron:"dez ee seen-KWEN-tah", en:"R$10,50 (how prices are said aloud)"}
       ]
     },
     sentences:[
@@ -2014,13 +2135,16 @@ var GRAMMAR_LEVELS = [
       {pt:"Mesa para quatro pessoas, por favor.", pron:"MEH-zah PAH-rah KWAH-troo peh-SOH-ahz por fah-VOR", en:"A table for four people, please."},
       {pt:"Meu quarto é o número doze.", pron:"meh-oo KWAR-too eh oo NOO-meh-roo DOH-zee", en:"My room is number twelve."},
       {pt:"Eu preciso de vinte reais.", pron:"eh-oo preh-SEE-zoo jee VEEN-chee heh-EYES", en:"I need twenty reais."},
-      {pt:"Nós somos sete no total.", pron:"nohz SOH-mooz SEH-chee noo toh-TAHL", en:"We are seven in total."}
+      {pt:"Nós somos sete no total.", pron:"nohz SOH-mooz SEH-chee noo toh-TAHL", en:"We are seven in total."},
+      {pt:"Custa trinta e cinco reais.", pron:"KOOS-tah TREEN-tah ee SEEN-koo heh-EYES", en:"It costs thirty-five reais."},
+      {pt:"O total deu cento e vinte reais.", pron:"oo toh-TAHL deh-oo SEN-too ee VEEN-chee heh-EYES", en:"The total came to a hundred and twenty reais."}
     ],
     quiz:[
       {q:"How do you say \"fifteen\"?", options:["quinze","quatorze","cinquenta","quinto"], answer:"quinze"},
       {q:"Mesa para ___ pessoas. (a table for four)", options:["quatro","quarto","catorze","quarenta"], answer:"quatro"},
       {q:"How do you say \"eighteen\"?", options:["dezoito","oitenta","oito","dezenove"], answer:"dezoito"},
-      {q:"Custa ___ reais. (it costs twenty)", options:["vinte","doze","dez","vinte e um"], answer:"vinte"}
+      {q:"Custa ___ reais. (it costs twenty)", options:["vinte","doze","dez","vinte e um"], answer:"vinte"},
+      {q:"How do you say 35?", options:["trinta e cinco","trinta cinco","cinco e trinta","trinta e cinquenta"], answer:"trinta e cinco"}
     ]
   },
   {
@@ -2188,10 +2312,10 @@ function renderSentenceLevels(){
         '<span class="pattern-arrow">→</span><span class="pattern-en">' + p.en + '</span></li>';
     }).join('') + '</ul>';
 
-    var referenceHtml = '';
-    if(lvl.reference){
-      referenceHtml = '<div class="pattern-box"><div class="pattern-label">' + lvl.reference.label + '</div><div class="ref-grid">' +
-        lvl.reference.items.map(function(it){
+    function buildRefBlock(ref){
+      if(!ref) return '';
+      return '<div class="pattern-box"><div class="pattern-label">' + ref.label + '</div><div class="ref-grid">' +
+        ref.items.map(function(it){
           return '<div class="ref-chip"><div class="info"><div class="pt">' + it.pt + '</div>' +
             (it.pron ? '<div class="pron">' + it.pron + '</div>' : '') +
             '<div class="en">' + it.en + '</div></div>' +
@@ -2199,6 +2323,7 @@ function renderSentenceLevels(){
         }).join('') +
       '</div></div>';
     }
+    var referenceHtml = buildRefBlock(lvl.reference) + buildRefBlock(lvl.reference2);
 
     card.innerHTML =
       '<div class="level-num">' + (passed ? '✓' : lvl.icon) + '</div>' +
@@ -3340,6 +3465,317 @@ function renderPlaces(){
   });
 }
 renderPlaces();
+
+
+/* ================= Verb Lab (present / past / future) ================= */
+var VERBS = [
+  {inf:"ser", en:"to be (permanent)", fr:"être (permanent)", type:"essential", typeLabel:"Irregular · essential",
+   present:["sou","é","somos","são"], past:["fui","foi","fomos","foram"], stem:"ser",
+   ex:{present:"Eu sou brasileira.", past:"Eu fui estudante.", future:"Eu vou ser professora."}},
+  {inf:"estar", en:"to be (right now)", fr:"être (moment)", type:"essential", typeLabel:"Irregular · essential",
+   present:["estou","está","estamos","estão"], past:["estive","esteve","estivemos","estiveram"], stem:"estar",
+   ex:{present:"Eu estou cansada.", past:"Eu estive doente.", future:"Eu vou estar em casa."}},
+  {inf:"ter", en:"to have", fr:"avoir", type:"essential", typeLabel:"Irregular · essential",
+   present:["tenho","tem","temos","têm"], past:["tive","teve","tivemos","tiveram"], stem:"ter",
+   ex:{present:"Eu tenho tempo.", past:"Eu tive uma ideia.", future:"Eu vou ter aula."}},
+  {inf:"ir", en:"to go", fr:"aller", type:"essential", typeLabel:"Irregular · essential",
+   present:["vou","vai","vamos","vão"], past:["fui","foi","fomos","foram"], stem:"ir",
+   ex:{present:"Eu vou ao mercado.", past:"Eu fui à praia.", future:"Eu vou sair mais tarde."}},
+  {inf:"fazer", en:"to do / to make", fr:"faire", type:"essential", typeLabel:"Irregular · essential",
+   present:["faço","faz","fazemos","fazem"], past:["fiz","fez","fizemos","fizeram"], stem:"fazer",
+   ex:{present:"Eu faço o jantar.", past:"Eu fiz um bolo.", future:"Eu vou fazer compras."}},
+  {inf:"querer", en:"to want", fr:"vouloir", type:"essential", typeLabel:"Irregular · essential",
+   present:["quero","quer","queremos","querem"], past:["quis","quis","quisemos","quiseram"], stem:"querer",
+   ex:{present:"Eu quero um café.", past:"Eu quis ajudar.", future:"Eu vou querer a sobremesa."}},
+  {inf:"poder", en:"can / to be able to", fr:"pouvoir", type:"essential", typeLabel:"Irregular · essential",
+   present:["posso","pode","podemos","podem"], past:["pude","pôde","pudemos","puderam"], stem:"poder",
+   ex:{present:"Eu posso ir.", past:"Eu não pude vir.", future:"Eu vou poder ajudar."}},
+  {inf:"ver", en:"to see", fr:"voir", type:"essential", typeLabel:"Irregular · essential",
+   present:["vejo","vê","vemos","veem"], past:["vi","viu","vimos","viram"], stem:"ver",
+   ex:{present:"Eu vejo o mar.", past:"Eu vi o filme.", future:"Eu vou ver meus amigos."}},
+  {inf:"vir", en:"to come", fr:"venir", type:"essential", typeLabel:"Irregular · essential",
+   present:["venho","vem","vimos","vêm"], past:["vim","veio","viemos","vieram"], stem:"vir",
+   ex:{present:"Eu venho de ônibus.", past:"Eu vim ontem.", future:"Eu vou vir amanhã."}},
+  {inf:"dar", en:"to give", fr:"donner", type:"essential", typeLabel:"Irregular · essential",
+   present:["dou","dá","damos","dão"], past:["dei","deu","demos","deram"], stem:"dar",
+   ex:{present:"Eu dou uma ajuda.", past:"Eu dei um presente.", future:"Eu vou dar uma volta."}},
+  {inf:"saber", en:"to know (facts)", fr:"savoir", type:"essential", typeLabel:"Irregular · essential",
+   present:["sei","sabe","sabemos","sabem"], past:["soube","soube","soubemos","souberam"], stem:"saber",
+   ex:{present:"Eu sei falar um pouco.", past:"Eu soube da notícia.", future:"Eu vou saber amanhã."}},
+  {inf:"dizer", en:"to say", fr:"dire", type:"essential", typeLabel:"Irregular · essential",
+   present:["digo","diz","dizemos","dizem"], past:["disse","disse","dissemos","disseram"], stem:"dizer",
+   ex:{present:"Eu digo a verdade.", past:"Eu disse que sim.", future:"Eu vou dizer para ela."}},
+  {inf:"falar", en:"to speak / to talk", fr:"parler", type:"ar", typeLabel:"Regular -AR",
+   present:["falo","fala","falamos","falam"], past:["falei","falou","falamos","falaram"], stem:"falar",
+   ex:{present:"Eu falo português.", past:"Eu falei com ele.", future:"Eu vou falar devagar."}},
+  {inf:"morar", en:"to live (reside)", fr:"habiter", type:"ar", typeLabel:"Regular -AR",
+   present:["moro","mora","moramos","moram"], past:["morei","morou","moramos","moraram"], stem:"morar",
+   ex:{present:"Eu moro em São Paulo.", past:"Eu morei na França.", future:"Eu vou morar aqui."}},
+  {inf:"trabalhar", en:"to work", fr:"travailler", type:"ar", typeLabel:"Regular -AR",
+   present:["trabalho","trabalha","trabalhamos","trabalham"], past:["trabalhei","trabalhou","trabalhamos","trabalharam"], stem:"trabalhar",
+   ex:{present:"Eu trabalho de casa.", past:"Eu trabalhei ontem.", future:"Eu vou trabalhar cedo."}},
+  {inf:"gostar (de)", en:"to like", fr:"aimer", type:"ar", typeLabel:"Regular -AR",
+   present:["gosto","gosta","gostamos","gostam"], past:["gostei","gostou","gostamos","gostaram"], stem:"gostar",
+   ex:{present:"Eu gosto de praia.", past:"Eu gostei muito.", future:"Eu vou gostar disso."}},
+  {inf:"precisar (de)", en:"to need", fr:"avoir besoin de", type:"ar", typeLabel:"Regular -AR",
+   present:["preciso","precisa","precisamos","precisam"], past:["precisei","precisou","precisamos","precisaram"], stem:"precisar",
+   ex:{present:"Eu preciso de ajuda.", past:"Eu precisei sair.", future:"Eu vou precisar de tempo."}},
+  {inf:"chegar", en:"to arrive", fr:"arriver", type:"ar", typeLabel:"Regular -AR",
+   present:["chego","chega","chegamos","chegam"], past:["cheguei","chegou","chegamos","chegaram"], stem:"chegar",
+   ex:{present:"Eu chego às oito.", past:"Eu cheguei atrasada.", future:"Eu vou chegar cedo."}},
+  {inf:"comer", en:"to eat", fr:"manger", type:"er", typeLabel:"Regular -ER",
+   present:["como","come","comemos","comem"], past:["comi","comeu","comemos","comeram"], stem:"comer",
+   ex:{present:"Eu como frutas.", past:"Eu comi feijoada.", future:"Eu vou comer fora."}},
+  {inf:"beber", en:"to drink", fr:"boire", type:"er", typeLabel:"Regular -ER",
+   present:["bebo","bebe","bebemos","bebem"], past:["bebi","bebeu","bebemos","beberam"], stem:"beber",
+   ex:{present:"Eu bebo água.", past:"Eu bebi um suco.", future:"Eu vou beber um café."}},
+  {inf:"abrir", en:"to open", fr:"ouvrir", type:"ir", typeLabel:"Regular -IR",
+   present:["abro","abre","abrimos","abrem"], past:["abri","abriu","abrimos","abriram"], stem:"abrir",
+   ex:{present:"Eu abro a janela.", past:"Eu abri a porta.", future:"Eu vou abrir a conta."}}
+];
+
+var VERB_PERSONS = ['eu', 'você / ele / ela', 'nós', 'vocês / eles'];
+var verbFilter = 'all';
+
+function verbPron(t){
+  try { return TRANSLATOR.phrase(t); } catch(e){ return ''; }
+}
+
+function conjRows(forms, prefix){
+  return forms.map(function(f, i){
+    var full = prefix ? (prefix + ' ' + f) : f;
+    return '<div class="conj-row">' +
+      '<div class="cr-person">' + VERB_PERSONS[i] + '</div>' +
+      '<div class="cr-form"><div class="cr-pt">' + full + '</div>' +
+      '<div class="cr-pron">' + verbPron(full) + '</div></div>' +
+      '<button type="button" class="speak-btn" data-say="' + full.replace(/"/g,'&quot;') + '" aria-label="Listen"' + (ttsSupported ? '' : ' disabled') + '>🔊</button>' +
+    '</div>';
+  }).join('');
+}
+
+function exBlock(sentence){
+  return '<div class="verb-ex"><div class="ve-body">' +
+    '<div class="ve-pt">' + sentence + '</div>' +
+    '<div class="ve-pron">' + verbPron(sentence) + '</div></div>' +
+    '<button type="button" class="speak-btn" data-say="' + sentence.replace(/"/g,'&quot;') + '" aria-label="Listen"' + (ttsSupported ? '' : ' disabled') + '>🔊</button></div>';
+}
+
+function renderVerbChips(){
+  var wrap = document.getElementById('verbChips');
+  if(!wrap) return;
+  wrap.innerHTML = '';
+  [['all','All 21'],['essential','Irregular · essential'],['ar','Regular -AR'],['er','Regular -ER/-IR']].forEach(function(f){
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'chip' + (verbFilter === f[0] ? ' on' : '');
+    b.textContent = f[1];
+    b.addEventListener('click', function(){ verbFilter = f[0]; renderVerbChips(); renderVerbs(); });
+    wrap.appendChild(b);
+  });
+}
+
+function renderVerbs(){
+  var wrap = document.getElementById('verbList');
+  if(!wrap) return;
+  wrap.innerHTML = '';
+  VERBS.filter(function(v){
+    if(verbFilter === 'all') return true;
+    if(verbFilter === 'er') return v.type === 'er' || v.type === 'ir';
+    return v.type === verbFilter;
+  }).forEach(function(v){
+    var el = document.createElement('div');
+    el.className = 'verb-card';
+    var futureForms = VERB_PERSONS.map(function(_, i){ return ['vou','vai','vamos','vão'][i]; });
+    el.innerHTML =
+      '<button type="button" class="verb-head">' +
+        '<span class="vh-body"><span class="vh-inf">' + v.inf + '</span>' +
+        '<span class="vh-tr">🇫🇷 ' + v.fr + ' · 🇬🇧 ' + v.en + '</span></span>' +
+        '<span class="vh-tag">' + v.typeLabel + '</span>' +
+        '<span class="vh-arrow">▶</span>' +
+      '</button>' +
+      '<div class="verb-body">' +
+        '<div class="tense-block"><div class="tense-title">▸ Present <span class="tt-hint">what you do now</span></div>' +
+          conjRows(v.present, '') + exBlock(v.ex.present) + '</div>' +
+        '<div class="tense-block"><div class="tense-title">▸ Past <span class="tt-hint">finished action — pretérito perfeito</span></div>' +
+          conjRows(v.past, '') + exBlock(v.ex.past) + '</div>' +
+        '<div class="tense-block"><div class="tense-title">▸ Future <span class="tt-hint">vou + ' + v.stem + ' — the verb never changes</span></div>' +
+          conjRows(futureForms.map(function(f){ return f + ' ' + v.stem; }), '') + exBlock(v.ex.future) + '</div>' +
+        (v.type === 'ar' ? '<div class="verb-note">💡 Freebie: for regular -AR verbs, <strong>nós</strong> is identical in present and past (<em>' + v.present[2] + '</em>). Context tells you which one you mean.</div>' : '') +
+        (v.inf === 'ir' ? '<div class="verb-note">💡 Note: "vou ir" sounds odd — for the future of <em>ir</em>, Brazilians just say <em>eu vou</em> + the place (<em>eu vou na praia</em>).</div>' : '') +
+        (v.inf === 'ser' ? '<div class="verb-note">💡 Note: the past of <em>ser</em> and <em>ir</em> are identical (fui, foi, fomos, foram). Context always makes it clear.</div>' : '') +
+      '</div>';
+
+    el.querySelector('.verb-head').addEventListener('click', function(){ el.classList.toggle('open'); });
+    el.querySelectorAll('.speak-btn[data-say]').forEach(function(btn){
+      btn.addEventListener('click', function(e){ e.stopPropagation(); speakPT(btn.getAttribute('data-say'), btn); });
+    });
+    wrap.appendChild(el);
+  });
+}
+renderVerbChips();
+renderVerbs();
+
+
+/* ================= Missed-question review deck ================= */
+function recordMissed(q, tag){
+  if(!q || !q.q) return;
+  game.missed = game.missed || [];
+  if(game.missed.some(function(m){ return m.q === q.q; })) return;
+  game.missed.push({q:q.q, answer:q.answer, options:q.options, tag:tag || ''});
+  saveGame();
+  renderReviewCard();
+}
+function clearMissed(q){
+  if(!game.missed) return;
+  var before = game.missed.length;
+  game.missed = game.missed.filter(function(m){ return m.q !== q.q; });
+  if(game.missed.length !== before){ saveGame(); renderReviewCard(); }
+}
+function renderReviewCard(){
+  var el = document.getElementById('reviewCard');
+  if(!el) return;
+  var n = (game.missed || []).length;
+  if(!n){ el.style.display = 'none'; el.innerHTML = ''; return; }
+  el.style.display = 'block';
+  el.innerHTML =
+    '<div class="rv-eyebrow">🔁 Review deck</div>' +
+    '<h2>' + n + ' thing' + (n === 1 ? '' : 's') + ' you got wrong</h2>' +
+    '<div class="rv-sub">These are the exact questions you missed, from every quiz in the app. Get one right here and it leaves the deck.</div>' +
+    '<button type="button" class="sh-btn" id="reviewBtn">Review ' + (n > 10 ? '10 of them' : 'them') + ' →</button>';
+  document.getElementById('reviewBtn').addEventListener('click', function(){
+    var pool = shuffle(game.missed).slice(0, 10).map(function(m){
+      return {q:m.q, answer:m.answer, options:m.options};
+    });
+    openQuiz('🔁 Review — your missed questions', pool, function(score, total){
+      if(score > 0) addXP(score * 3, 'review: ' + score + ' fixed');
+      renderReviewCard();
+    }, {review:true, track:false});
+  });
+}
+renderReviewCard();
+
+/* ================= My Words (add vocabulary yourself) ================= */
+var MYW_KEY = 'bsk-my-words';
+var myWords = JSON.parse(localStorage.getItem(MYW_KEY) || '[]');
+function saveMyWords(){ localStorage.setItem(MYW_KEY, JSON.stringify(myWords)); }
+
+function syncMyWordsToIndex(){
+  for(var i = TR_INDEX.length - 1; i >= 0; i--){
+    if(TR_INDEX[i].src === 'My Words') TR_INDEX.splice(i, 1);
+  }
+  myWords.forEach(function(w){
+    TR_INDEX.push({pt:w.pt, pron:w.pron || '', en:w.en || '', fr:'', es:'', src:'My Words'});
+  });
+}
+
+function renderMyWords(){
+  var wrap = document.getElementById('myWordsList');
+  if(!wrap) return;
+  if(!myWords.length){
+    wrap.innerHTML = '<div class="tr-empty">Nothing saved yet — add the first word a driver, waiter or friend teaches you.</div>';
+    return;
+  }
+  wrap.innerHTML = '';
+  var grid = document.createElement('div');
+  grid.className = 'ref-grid';
+  myWords.slice().reverse().forEach(function(w){
+    var el = document.createElement('div');
+    el.className = 'ref-chip';
+    el.innerHTML =
+      '<div class="info"><div class="pt">' + trEscape(w.pt) + '</div>' +
+      (w.pron ? '<div class="pron">' + trEscape(w.pron) + '</div>' : '') +
+      (w.en ? '<div class="en">' + trEscape(w.en) + '</div>' : '') +
+      (w.note ? '<div class="fr">' + trEscape(w.note) + '</div>' : '') + '</div>' +
+      '<button type="button" class="speak-btn" aria-label="Listen"' + (ttsSupported ? '' : ' disabled') + '>🔊</button>' +
+      '<button type="button" class="mini-btn myw-del" aria-label="Delete" title="Delete">✕</button>';
+    el.querySelector('.speak-btn').addEventListener('click', function(){ speakPT(w.pt, this); });
+    el.querySelector('.myw-del').addEventListener('click', function(){
+      myWords = myWords.filter(function(x){ return !(x.pt === w.pt && x.ts === w.ts); });
+      saveMyWords(); syncMyWordsToIndex(); renderMyWords();
+    });
+    grid.appendChild(el);
+  });
+  wrap.appendChild(grid);
+}
+
+(function initMyWords(){
+  var btn = document.getElementById('mywAdd');
+  if(!btn) return;
+  syncMyWordsToIndex();
+  renderMyWords();
+  btn.addEventListener('click', function(){
+    var pt = document.getElementById('mywPt').value.trim();
+    var en = document.getElementById('mywEn').value.trim();
+    var note = document.getElementById('mywNote').value.trim();
+    if(!pt){ document.getElementById('mywPt').focus(); return; }
+    var pron = '';
+    try { pron = TRANSLATOR.phrase(pt); } catch(e){}
+    myWords.push({pt:pt, en:en, note:note, pron:pron, ts:Date.now()});
+    saveMyWords(); syncMyWordsToIndex(); renderMyWords();
+    document.getElementById('mywPt').value = '';
+    document.getElementById('mywEn').value = '';
+    document.getElementById('mywNote').value = '';
+    addXP(2, 'saved a new word');
+    showToast('Saved', pt + (pron ? ' · ' + pron : ''));
+  });
+  ['mywPt','mywEn','mywNote'].forEach(function(id){
+    var f = document.getElementById(id);
+    if(f) f.addEventListener('keydown', function(e){ if(e.key === 'Enter'){ e.preventDefault(); btn.click(); } });
+  });
+})();
+
+/* ================= Backup & restore progress ================= */
+var BACKUP_KEYS = ['bsk-game-state','bsk-phrases-done','bsk-planner','bsk-scenarios-practiced',
+                   'bsk-translator-recent','bsk-my-words','bsk-theme'];
+
+function exportProgress(){
+  var data = {app:'brazil-starter-kit', version:1, exportedAt:new Date().toISOString(), data:{}};
+  BACKUP_KEYS.forEach(function(k){
+    var v = localStorage.getItem(k);
+    if(v !== null) data.data[k] = v;
+  });
+  var blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'brazil-kit-backup-' + new Date().toISOString().slice(0,10) + '.json';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
+  showToast('Backup saved', 'Keep the file somewhere safe.');
+}
+
+function importProgress(file){
+  var reader = new FileReader();
+  reader.onload = function(){
+    var parsed;
+    try { parsed = JSON.parse(reader.result); } catch(e){
+      showToast('Import failed', 'That file isn\'t a valid backup.'); return;
+    }
+    if(!parsed || parsed.app !== 'brazil-starter-kit' || !parsed.data){
+      showToast('Import failed', 'That doesn\'t look like a Brazil Kit backup.'); return;
+    }
+    var when = parsed.exportedAt ? new Date(parsed.exportedAt).toLocaleString() : 'unknown date';
+    if(!window.confirm('Restore backup from ' + when + '?\n\nThis REPLACES all progress currently on this device.')) return;
+    BACKUP_KEYS.forEach(function(k){
+      if(Object.prototype.hasOwnProperty.call(parsed.data, k)) localStorage.setItem(k, parsed.data[k]);
+    });
+    window.location.reload();
+  };
+  reader.readAsText(file);
+}
+
+(function initBackup(){
+  var ex = document.getElementById('backupExport');
+  var imp = document.getElementById('backupImport');
+  var file = document.getElementById('backupFile');
+  if(!ex || !imp || !file) return;
+  ex.addEventListener('click', exportProgress);
+  imp.addEventListener('click', function(){ file.click(); });
+  file.addEventListener('change', function(){
+    if(file.files && file.files[0]) importProgress(file.files[0]);
+    file.value = '';
+  });
+})();
 
 /* ================= Offline install (PWA) ================= */
 if('serviceWorker' in navigator){
