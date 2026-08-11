@@ -2074,7 +2074,8 @@ var GRAMMAR_LEVELS = [
       {pt:"Quanto custa? Custa", pron:"KWAN-too KOOS-tah? KOOS-tah", en:"___ reais = How much does it cost? — It costs ___ reais."},
       {pt:"Eu tenho", pron:"eh-oo TEN-yoo", en:"___ anos = I am ___ years old."},
       {pt:"Mesa para", pron:"MEH-zah PAH-rah", en:"___ pessoas = A table for ___ people."},
-      {pt:"[tens] e [units]", pron:"ee", en:"Join tens and units with \"e\": trinta e cinco = 35, quarenta e dois = 42"}
+      {pt:"[tens] e [units]", pron:"ee", en:"Join with \"e\": trinta e cinco = 35. Same for hundreds: cento e vinte = 120."},
+      {pt:"[n]centos", pron:"SEN-tooz", en:"400–900 all follow one pattern: quatrocentos, seiscentos, setecentos, oitocentos, novecentos."}
     ],
     reference:{
       label:"🔢 Numbers 0–20",
@@ -2099,7 +2100,12 @@ var GRAMMAR_LEVELS = [
         {pt:"dezessete", pron:"deh-zeh-SEH-chee", en:"17"},
         {pt:"dezoito", pron:"deh-ZOY-too", en:"18"},
         {pt:"dezenove", pron:"deh-zeh-NOH-vee", en:"19"},
-        {pt:"vinte", pron:"VEEN-chee", en:"20"},
+        {pt:"vinte", pron:"VEEN-chee", en:"20"}
+      ]
+    },
+    reference2:{
+      label:"🔟 Tens & Hundreds — everything else is built from these",
+      items:[
         {pt:"trinta", pron:"TREEN-tah", en:"30"},
         {pt:"quarenta", pron:"kwah-REN-tah", en:"40"},
         {pt:"cinquenta", pron:"seen-KWEN-tah", en:"50"},
@@ -2107,26 +2113,20 @@ var GRAMMAR_LEVELS = [
         {pt:"setenta", pron:"seh-TEN-tah", en:"70"},
         {pt:"oitenta", pron:"oy-TEN-tah", en:"80"},
         {pt:"noventa", pron:"noh-VEN-tah", en:"90"},
-        {pt:"cem", pron:"seng", en:"100 (exactly)"},
-        {pt:"cento e um", pron:"SEN-too ee oong", en:"101 (cento when followed by more)"},
+        {pt:"cem", pron:"seng", en:"100"},
         {pt:"duzentos", pron:"doo-ZEN-tooz", en:"200"},
-        {pt:"trezentos", pron:"treh-ZEN-tooz", en:"300"},
         {pt:"quinhentos", pron:"keen-YEN-tooz", en:"500"},
         {pt:"mil", pron:"meew", en:"1000"}
       ]
     },
-    reference2:{
-      label:"💰 Building Bigger Numbers & Money",
+    reference3:{
+      label:"💰 Putting Them Together & Money",
       items:[
-        {pt:"trinta e cinco", pron:"TREEN-tah ee SEEN-koo", en:"35 — join with \"e\""},
-        {pt:"quarenta e dois", pron:"kwah-REN-tah ee doys", en:"42"},
-        {pt:"cento e vinte", pron:"SEN-too ee VEEN-chee", en:"120"},
-        {pt:"mil e quinhentos", pron:"meew ee keen-YEN-tooz", en:"1500"},
+        {pt:"trinta e cinco", pron:"TREEN-tah ee SEEN-koo", en:"35 — tens + e + units"},
+        {pt:"cento e vinte", pron:"SEN-too ee VEEN-chee", en:"120 — cem becomes cento when more follows"},
         {pt:"reais", pron:"heh-EYES", en:"reais (plural of real)"},
-        {pt:"um real", pron:"oong heh-OW", en:"one real"},
-        {pt:"centavos", pron:"sen-TAH-vooz", en:"cents"},
         {pt:"trinta e cinco reais", pron:"TREEN-tah ee SEEN-koo heh-EYES", en:"R$35"},
-        {pt:"dez e cinquenta", pron:"dez ee seen-KWEN-tah", en:"R$10,50 (how prices are said aloud)"}
+        {pt:"dez e cinquenta", pron:"dez ee seen-KWEN-tah", en:"R$10,50 — how prices are said aloud"}
       ]
     },
     sentences:[
@@ -2323,7 +2323,7 @@ function renderSentenceLevels(){
         }).join('') +
       '</div></div>';
     }
-    var referenceHtml = buildRefBlock(lvl.reference) + buildRefBlock(lvl.reference2);
+    var referenceHtml = buildRefBlock(lvl.reference) + buildRefBlock(lvl.reference2) + buildRefBlock(lvl.reference3);
 
     card.innerHTML =
       '<div class="level-num">' + (passed ? '✓' : lvl.icon) + '</div>' +
