@@ -2284,8 +2284,8 @@ function renderClassLessons(){
       lesson.vocab.map(function(v){
         return '<div class="ref-chip"><div class="info"><div class="pt">' + v.pt + '</div>' +
           '<div class="pron">' + v.pron + '</div>' +
-          '<div class="en">🇬🇧 ' + v.en + '</div>' +
-          '<div class="fr">🇫🇷 ' + v.fr + '</div></div>' +
+          '<div class="fr">🇫🇷 ' + v.fr + '</div>' +
+          '<div class="en">🇬🇧 ' + v.en + '</div></div>' +
           '<button type="button" class="speak-btn" data-word="' + v.pt.replace(/"/g, '&quot;') + '" aria-label="Listen" ' + (ttsSupported ? '' : 'disabled') + '>🔊</button></div>';
       }).join('') +
     '</div>';
@@ -2296,8 +2296,8 @@ function renderClassLessons(){
         lesson.sentences.map(function(s){
           return '<div class="ref-chip"><div class="info"><div class="pt">' + s.pt + '</div>' +
             '<div class="pron">' + s.pron + '</div>' +
-            '<div class="en">🇬🇧 ' + s.en + '</div>' +
-            '<div class="fr">🇫🇷 ' + s.fr + '</div></div>' +
+            '<div class="fr">🇫🇷 ' + s.fr + '</div>' +
+            '<div class="en">🇬🇧 ' + s.en + '</div></div>' +
             '<button type="button" class="speak-btn" data-word="' + s.pt.replace(/"/g, '&quot;') + '" aria-label="Listen" ' + (ttsSupported ? '' : 'disabled') + '>🔊</button></div>';
         }).join('') +
       '</div>';
