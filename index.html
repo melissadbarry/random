@@ -73,6 +73,7 @@ button{font:inherit;}
   border:1px solid var(--border); background:var(--bg-alt); color:var(--ink);
   border-radius:20px; padding:7px 12px; cursor:pointer; font-size:13px;
 }
+.theme-btn.on{background:var(--green); color:#fff; border-color:var(--green);}
 
 nav.tabs{
   max-width:960px; margin:0 auto; display:flex; gap:4px; padding:0 10px 10px;
@@ -544,10 +545,14 @@ footer{max-width:960px; margin:10px auto 0; padding:0 18px 30px; font-size:12px;
 .bottom-nav .row{display:flex; justify-content:space-around;}
 .bottom-nav button{
   background:none; border:none; color:var(--ink-soft); font-size:10.5px; display:flex; flex-direction:column;
-  align-items:center; gap:2px; padding:4px 6px; cursor:pointer; flex:1;
+  align-items:center; gap:2px; padding:4px 6px; cursor:pointer;
+  /* min-width:0 lets flex items shrink below their label width on narrow phones */
+  flex:1 1 0; min-width:0; overflow:hidden; text-align:center; line-height:1.15;
 }
 .bottom-nav button .ic{font-size:18px;}
 .bottom-nav button.active{color:var(--green); font-weight:700;}
+@media (max-width:395px){ .bottom-nav button{font-size:9.6px; padding:4px 3px;} .bottom-nav button .ic{font-size:17px;} }
+@media (max-width:340px){ .bottom-nav button{font-size:8.8px; padding:4px 1px;} .bottom-nav button .ic{font-size:16px;} }
 
 /* ---- Modal (quiz + badges) ---- */
 .modal-overlay{
@@ -1137,7 +1142,6 @@ footer{max-width:960px; margin:10px auto 0; padding:0 18px 30px; font-size:12px;
 <div class="bottom-nav">
   <div class="row" id="bottomTabs">
     <button data-tab="overview" class="active"><span class="ic">✨</span>Overview</button>
-    <button data-tab="translator"><span class="ic">🔤</span>Translate</button>
     <button data-tab="cheatsheet"><span class="ic">📘</span>Phrases</button>
     <button data-tab="travel"><span class="ic">🌴</span>SP Guide</button>
     <button data-tab="crash"><span class="ic">⚡</span>7-Day</button>
@@ -1196,6 +1200,9 @@ function showTab(name){
   document.querySelectorAll('#tabs button, #bottomTabs button').forEach(function(b){
     b.classList.toggle('active', b.dataset.tab === name);
   });
+  // Translator has no bottom-nav item, so light up the top-bar button instead
+  var qt = document.getElementById('quickTranslateBtn');
+  if(qt) qt.classList.toggle('on', name === 'translator');
   window.scrollTo({top:0, behavior:'smooth'});
 }
 document.querySelectorAll('#tabs button, #bottomTabs button').forEach(function(b){
