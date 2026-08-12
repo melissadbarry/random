@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Contact Form Demo</title>
+<style>
+:root{
+  --bg:#F6F5EF; --ink:#1B2420; --ink-soft:#54615A;
+  --green:#0D8A3E; --card:#FFFFFF; --border:#DDD9C8;
+  --coral:#C34E36; --coral-soft:#F5DCD3;
+  --green-soft:#DCF0DF;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#10160F; --ink:#EAF0E7; --ink-soft:#A7B4A9;
+    --green:#4FCB7C; --card:#171F16; --border:#2A342A;
+    --coral:#E28468; --coral-soft:#3A241C;
+    --green-soft:#173322;
+  }
+}
+*{box-sizing:border-box;}
+body{
+  margin:0; min-height:100vh; background:var(--bg); color:var(--ink);
+  font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  display:flex; align-items:center; justify-content:center; padding:24px;
+}
+.card{
+  background:var(--card); border:1px solid var(--border); border-radius:14px;
+  padding:28px; max-width:420px; width:100%;
+  box-shadow:0 8px 24px rgba(0,0,0,.08);
+}
+h1{font-size:19px; margin:0 0 18px;}
+.field{margin-bottom:14px; display:flex; flex-direction:column; gap:5px;}
+label{font-size:13px; font-weight:600; color:var(--ink-soft);}
+input, textarea{
+  font:inherit; padding:9px 11px; border-radius:8px; border:1px solid var(--border);
+  background:var(--bg); color:var(--ink);
+}
+input:focus, textarea:focus{outline:2px solid var(--green); outline-offset:1px;}
+textarea{resize:vertical;}
+button{
+  font:inherit; font-weight:700; background:var(--green); color:#fff; border:none;
+  border-radius:20px; padding:10px 18px; cursor:pointer; width:100%;
+}
+button:disabled{opacity:.6; cursor:not-allowed;}
+.contact-form-error{
+  background:var(--coral-soft); color:var(--coral); border-radius:8px;
+  padding:8px 12px; font-size:13px; margin:0 0 14px;
+}
+.contact-form-success{
+  background:var(--green-soft); color:var(--green); border-radius:8px;
+  padding:14px; font-size:14px; text-align:center;
+}
+</style>
+</head>
+<body>
+<div class="card">
+  <h1>Contact us</h1>
+  <div id="root"></div>
+</div>
+
+<script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js" crossorigin></script>
+
+<script type="text/babel" data-presets="react">
+const { useState } = React;
+
+// Replace with your real Formspree form ID (from https://formspree.io/forms).
+const FORMSPREE_ENDPOINT = "https://formspree.io/f/YOUR_FORM_ID";
+
+function ContactForm() {
+  const [status, setStatus] = useState("idle"); // idle | submitting | success | error
+  const [errorMessage, setErrorMessage] = useState("");
+
+  async function handleSubmit(event) {
+    event.preventDefault();
+    setStatus("submitting");
+    setErrorMessage("");
+
+    const form = event.target;
+    const formData = new FormData(form);
+
+    try {
+      const response = await fetch(FORMSPREE_ENDPOINT, {
+        method: "POST",
+        headers: { Accept: "application/json" },
+        body: formData,
+      });
+
+      if (response.status === 200) {
+        setStatus("success");
+        form.reset();
+        return;
+      }
+
+      let message = "Something went wrong. Please try again.";
+      const data = await response.json().catch(() => null);
+      if (data && Array.isArray(data.errors) && data.errors.length) {
+        message = data.errors.map((e) => e.message).join(", ");
+      }
+      setErrorMessage(message);
+      setStatus("error");
+    } catch (err) {
+      setErrorMessage("Network error. Please check your connection and try again.");
+      setStatus("error");
+    }
+  }
+
+  if (status === "success") {
+    return (
+      <div className="contact-form-success" role="status">
+        <p>Thanks! Your message has been sent.</p>
+      </div>
+    );
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="contact-form" noValidate>
+      <div className="field">
+        <label htmlFor="name">Name</label>
+        <input id="name" name="name" type="text" required disabled={status === "submitting"} />
+      </div>
+
+      <div className="field">
+        <label htmlFor="email">Email</label>
+        <input id="email" name="email" type="email" required disabled={status === "submitting"} />
+      </div>
+
+      <div className="field">
+        <label htmlFor="message">Message</label>
+        <textarea id="message" name="message" rows={5} required disabled={status === "submitting"} />
+      </div>
+
+      {status === "error" && (
+        <p className="contact-form-error" role="alert">{errorMessage}</p>
+      )}
+
+      <button type="submit" disabled={status === "submitting"}>
+        {status === "submitting" ? "Sending…" : "Send message"}
+      </button>
+    </form>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<ContactForm />);
+</script>
+</body>
+</html>
