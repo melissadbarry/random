@@ -970,7 +970,7 @@ footer{max-width:960px; margin:10px auto 0; padding:0 18px 30px; font-size:12px;
 <!-- CRASH COURSE -->
 <section class="panel" id="panel-crash">
   <div class="section-title">⚡ 7-Day Jumpstart: Beginner Portuguese Crash Course</div>
-  <p style="color:var(--ink-soft); font-size:14px;">Learn the fundamentals in just 7 days. Pass each day's mini-quiz to unlock "Mark Day Complete" (+30 XP).</p>
+  <p style="color:var(--ink-soft); font-size:14px;">Learn the fundamentals in just 7 days. Each day's quiz needs a perfect score to unlock "Mark Day Complete" (+30 XP).</p>
 
   <div class="progress-wrap">
     <div class="progress-bar"><div class="progress-fill" id="dayProgress"></div></div>
@@ -983,7 +983,7 @@ footer{max-width:960px; margin:10px auto 0; padding:0 18px 30px; font-size:12px;
 <!-- SENTENCE BUILDER -->
 <section class="panel" id="panel-sentences">
   <div class="section-title">🧩 Sentence Builder <span class="pill">Levels 1–8</span></div>
-  <p style="color:var(--ink-soft); font-size:14px;">Words alone don't get you through a conversation — sentences do. Each level teaches one real grammar pattern, then has you build full Portuguese sentences from scratch (not just match a word to its translation). Pass a level's quiz (90%+) to unlock the next one.</p>
+  <p style="color:var(--ink-soft); font-size:14px;">Words alone don't get you through a conversation — sentences do. Each level teaches one real grammar pattern, then has you build full Portuguese sentences from scratch (not just match a word to its translation). You need a perfect score to unlock the next level — anything you miss goes straight to your review deck.</p>
 
   <div class="progress-wrap">
     <div class="progress-bar"><div class="progress-fill" id="levelProgress"></div></div>
@@ -996,11 +996,11 @@ footer{max-width:960px; margin:10px auto 0; padding:0 18px 30px; font-size:12px;
 <!-- CLASS NOTES -->
 <section class="panel" id="panel-classnotes">
   <div class="section-title">📓 My Class Notes <span class="pill">From Your Lessons</span></div>
-  <p style="color:var(--ink-soft); font-size:14px;">Your actual class notes, turned into audio + quizzes so what you learn in class doesn't fade by next week. Newest lesson first.</p>
+  <p style="color:var(--ink-soft); font-size:14px;">Your actual class notes, turned into audio + quizzes so what you learn in class doesn't fade by next week. Newest lesson first. Each quiz mixes in questions from earlier lessons and needs a perfect score to pass.</p>
 
   <div class="progress-wrap">
     <div class="progress-bar"><div class="progress-fill" id="lessonProgress"></div></div>
-    <div class="progress-label" id="lessonProgressLabel">0 / 5 lesson quizzes passed</div>
+    <div class="progress-label" id="lessonProgressLabel">0 / 6 lesson quizzes passed</div>
   </div>
 
   <div class="card myw-card">
@@ -1370,7 +1370,8 @@ function openQuiz(title, questions, onFinish, opts){
   function renderQuestion(){
     var q = questions[idx];
     quizBody.innerHTML =
-      '<div class="quiz-progress">Question ' + (idx + 1) + ' of ' + questions.length + ' · Score: ' + score + '</div>' +
+      '<div class="quiz-progress">Question ' + (idx + 1) + ' of ' + questions.length + ' · Score: ' + score +
+        (opts.review ? '' : ' · need ' + questions.length + '/' + questions.length + ' to pass') + '</div>' +
       '<div class="quiz-question">' + q.q + '</div>' +
       '<div id="optWrap"></div>';
     var optWrap = document.getElementById('optWrap');
@@ -1876,7 +1877,7 @@ function renderDays(){
 
     card.querySelector('[data-role="quiz"]').addEventListener('click', function(){
       openQuiz('Day ' + d.n + ' Quiz', d.quiz, function(score, total){
-        var pass = score >= Math.ceil(total * 0.66);
+        var pass = score === total;   // 100% required
         if(pass){
           if(game.dayQuizPassed.indexOf(d.n) === -1){
             game.dayQuizPassed.push(d.n);
@@ -1884,7 +1885,7 @@ function renderDays(){
             addXP(15, 'Day ' + d.n + ' quiz passed');
           }
         } else {
-          showToast('Almost!', 'Score at least ' + Math.ceil(total * 0.66) + '/' + total + ' to unlock Day ' + d.n + ' completion.');
+          showToast('Not yet', 'You need ' + total + '/' + total + ' to unlock Day ' + d.n + '. Missed ones go to your review deck.');
         }
         renderDays();
       });
@@ -2367,7 +2368,7 @@ function renderSentenceLevels(){
 
     card.querySelector('[data-role="quiz"]').addEventListener('click', function(){
       openQuiz('Level ' + lvl.n + ' Quiz', lvl.quiz, function(score, total){
-        var pass = score >= Math.ceil(total * 0.9);
+        var pass = score === total;   // 100% required
         if(pass){
           if(game.sentenceLevelsPassed.indexOf(lvl.n) === -1){
             game.sentenceLevelsPassed.push(lvl.n);
@@ -2377,7 +2378,7 @@ function renderSentenceLevels(){
             if(game.sentenceLevelsPassed.length === GRAMMAR_LEVELS.length) unlockBadge('sentence-master');
           }
         } else {
-          showToast('Almost!', 'Score at least ' + Math.ceil(total * 0.9) + '/' + total + ' to pass Level ' + lvl.n + '.');
+          showToast('Not yet', 'You need ' + total + '/' + total + ' to pass Level ' + lvl.n + '. Missed ones go to your review deck.');
         }
         renderSentenceLevels();
         renderStartHere();
@@ -2565,6 +2566,57 @@ var CLASS_LESSONS = [
       {q:"Which word means \"shower\"?", options:["chuveiro","espelho","parede","armário"], answer:"chuveiro"},
       {q:"Which colour is \"vermelho\"?", options:["Red","Green","Blue","Black"], answer:"Red"}
     ]
+  },
+  {
+    id:6, date:"Aug 13, 2026", title:"Aula #4 — Saber vs Conhecer, Frequência & Acentos",
+    vocab:[
+      {pt:"conhecer", pron:"koh-nyeh-SER", en:"To know / be acquainted with (a person, a place)", fr:"Connaître"},
+      {pt:"saber", pron:"sah-BER", en:"To know (a fact, how to do something)", fr:"Savoir"},
+      {pt:"idioma / língua", pron:"ee-jee-OH-mah / LEEN-gwah", en:"Language", fr:"Langue"},
+      {pt:"outro / outra", pron:"OH-troo / OH-trah", en:"Other / another", fr:"Autre"},
+      {pt:"sempre", pron:"SEM-pree", en:"Always", fr:"Toujours"},
+      {pt:"normalmente", pron:"nor-mahw-MEN-chee", en:"Normally", fr:"Normalement"},
+      {pt:"geralmente", pron:"zheh-rahw-MEN-chee", en:"Generally", fr:"En général"},
+      {pt:"frequentemente", pron:"freh-kwen-teh-MEN-chee", en:"Frequently", fr:"Fréquemment"},
+      {pt:"às vezes", pron:"ahz VEH-zeez", en:"Sometimes", fr:"Parfois"},
+      {pt:"somente", pron:"soh-MEN-chee", en:"Only", fr:"Seulement"},
+      {pt:"a chuva", pron:"ah SHOO-vah", en:"The rain", fr:"La pluie"},
+      {pt:"chover", pron:"shoh-VER", en:"To rain", fr:"Pleuvoir"},
+      {pt:"chão", pron:"showng", en:"Ground / floor (outside)", fr:"Sol (à l'extérieur)"},
+      {pt:"piso", pron:"PEE-zoo", en:"Floor (indoors)", fr:"Sol (à l'intérieur)"},
+      {pt:"com licença", pron:"kohn lee-SEN-sah", en:"Excuse me (to pass by)", fr:"Excusez-moi"},
+      {pt:"preciso", pron:"preh-SEE-zoo", en:"I need to / I must", fr:"Je dois"},
+      {pt:"respostas", pron:"heh-POS-tahz", en:"Answers", fr:"Réponses"},
+      {pt:"E aí?", pron:"ee ah-EE", en:"What's up?", fr:"Quoi de neuf ?"},
+      {pt:"sozinho / sozinha", pron:"soh-ZEE-nyoo / soh-ZEE-nyah", en:"Alone", fr:"Seul / Seule"},
+      {pt:"pois não", pron:"poyz nowng", en:"Sure / how can I help? (polite yes)", fr:"Bien sûr / je vous en prie"},
+      {pt:"à vontade", pron:"ah vohn-TAH-jee", en:"At ease / make yourself at home", fr:"À l'aise"},
+      {pt:"pode", pron:"POH-jee", en:"Can / may (from poder)", fr:"Peut / pouvoir"},
+      {pt:"prazer", pron:"prah-ZER", en:"Pleasure / nice to meet you", fr:"Enchanté(e)"},
+      {pt:"ir embora", pron:"eer em-BOH-rah", en:"To leave / go away", fr:"Partir / s'en aller"},
+      {pt:"acento circunflexo (â)", pron:"ah-SEN-too seer-koon-FLEK-soo", en:"Circumflex accent — â, ê, ô", fr:"Accent circonflexe"},
+      {pt:"acento agudo (á)", pron:"ah-SEN-too ah-GOO-doo", en:"Acute accent — á, é, í, ó, ú", fr:"Accent aigu"},
+      {pt:"til (ã)", pron:"teew", en:"Tilde — makes the vowel nasal: ã, õ", fr:"Tilde (nasal)"}
+    ],
+    sentences:[
+      {pt:"Prazer em conhecer você.", pron:"prah-ZER eng koh-nyeh-SER vo-SEH", en:"Nice to meet you.", fr:"Enchanté de vous connaître."},
+      {pt:"Eu conheço São Paulo, mas não sei o endereço.", pron:"eh-oo koh-NYEH-soo sowng POW-loo, mice nowng say oo en-deh-REH-soo", en:"I know São Paulo, but I don't know the address.", fr:"Je connais São Paulo, mais je ne sais pas l'adresse."},
+      {pt:"Eu sei falar um pouco de português.", pron:"eh-oo say fah-LAR oong POH-koo jee por-too-GESS", en:"I know how to speak a little Portuguese.", fr:"Je sais parler un peu portugais."},
+      {pt:"Normalmente eu almoço em casa.", pron:"nor-mahw-MEN-chee eh-oo ahw-MOH-soo eng KAH-zah", en:"I normally have lunch at home.", fr:"Normalement je déjeune à la maison."},
+      {pt:"Às vezes chove muito aqui.", pron:"ahz VEH-zeez SHOH-vee MOO-een-too ah-KEE", en:"Sometimes it rains a lot here.", fr:"Parfois il pleut beaucoup ici."},
+      {pt:"Com licença, preciso ir embora.", pron:"kohn lee-SEN-sah, preh-SEE-zoo eer em-BOH-rah", en:"Excuse me, I need to leave.", fr:"Excusez-moi, je dois partir."},
+      {pt:"Eu moro sozinha.", pron:"eh-oo MOH-roo soh-ZEE-nyah", en:"I live alone.", fr:"J'habite seule."}
+    ],
+    tip:"💡 The big one from this class: <strong>saber</strong> = know a fact or know <em>how</em> to do something (<em>eu sei falar</em>). <strong>Conhecer</strong> = be acquainted with a person or place (<em>eu conheço São Paulo</em>). French makes the same split with savoir / connaître, so lean on that. Also <strong>chão</strong> is the ground outside, <strong>piso</strong> is the floor indoors.",
+    quiz:[
+      {q:"Eu ___ falar português. (know HOW to do something)", options:["sei","conheço","posso","tenho"], answer:"sei"},
+      {q:"Eu ___ o irmão dela. (know a PERSON)", options:["conheço","sei","posso","moro"], answer:"conheço"},
+      {q:"You're indoors and want to say \"the floor\". Which word?", options:["piso","chão","parede","teto"], answer:"piso"},
+      {q:"Put these from most often to least often:", options:["sempre → geralmente → às vezes","às vezes → sempre → geralmente","geralmente → sempre → às vezes","sempre → às vezes → geralmente"], answer:"sempre → geralmente → às vezes"},
+      {q:"A shopkeeper says \"pois não\". They mean:", options:["Sure — how can I help?","No, we don't have it","Please leave","I don't understand"], answer:"Sure — how can I help?"},
+      {q:"Which accent makes a vowel nasal?", options:["til (ã)","acento agudo (á)","acento circunflexo (â)","cedilha (ç)"], answer:"til (ã)"},
+      {q:"\"Com licença, preciso ir embora\" means:", options:["Excuse me, I need to leave","Sorry, I don't know","Excuse me, can you repeat?","Please, come in"], answer:"Excuse me, I need to leave"}
+    ]
   }
 ];
 
@@ -2619,8 +2671,17 @@ function renderClassLessons(){
     });
 
     card.querySelector('[data-role="quiz"]').addEventListener('click', function(){
-      openQuiz(lesson.title + ' Quiz', lesson.quiz, function(score, total){
-        var pass = score >= Math.ceil(total * 0.75);
+      // Cumulative: this lesson's questions plus a few pulled from earlier lessons,
+      // so older material keeps coming back instead of being learned once and dropped.
+      var prior = [];
+      CLASS_LESSONS.forEach(function(l){
+        if(l.id < lesson.id) prior = prior.concat(l.quiz || []);
+      });
+      var review = shuffle(prior).slice(0, Math.min(3, prior.length));
+      var questions = shuffle((lesson.quiz || []).concat(review));
+
+      openQuiz(lesson.title + ' Quiz', questions, function(score, total){
+        var pass = score === total;           // 100% required
         if(pass){
           if(game.classQuizPassed.indexOf(lesson.id) === -1){
             game.classQuizPassed.push(lesson.id);
@@ -2629,7 +2690,7 @@ function renderClassLessons(){
             if(game.classQuizPassed.length === CLASS_LESSONS.length) unlockBadge('class-star');
           }
         } else {
-          showToast('Almost!', 'Score at least ' + Math.ceil(total * 0.75) + '/' + total + ' to pass this lesson.');
+          showToast('Not yet', 'You need ' + total + '/' + total + ' to pass. Missed ones go to your review deck.');
         }
         renderClassLessons();
         renderStartHere();
@@ -3844,7 +3905,7 @@ function importProgress(file){
 })();
 
 /* ================= Offline install (PWA) + self-update ================= */
-var APP_BUILD = '2026-08-11 · build 10';
+var APP_BUILD = '2026-08-13 · build 11';
 
 (function stampBuild(){
   var el = document.getElementById('buildStamp');
