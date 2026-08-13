@@ -275,6 +275,10 @@ main{max-width:960px; margin:0 auto; padding:20px 18px 40px;}
 .verb-ex .speak-btn{width:26px; height:26px; font-size:11px;}
 .verb-note{font-size:11.4px; color:var(--ink-soft); margin-top:10px;}
 @media (max-width:420px){ .conj-row .cr-person{flex:0 0 86px; font-size:11px;} }
+.lw-rule{font-size:13px; color:var(--ink-soft); background:var(--bg-alt); border:1px solid var(--border);
+  border-radius:9px; padding:10px 12px; margin-bottom:12px; line-height:1.45;}
+.lw-rule strong{color:var(--ink);}
+.lw-note{font-size:10.8px; color:var(--ink-soft); opacity:.9; margin-top:2px; font-style:italic;}
 
 /* ---- Review card / My Words ---- */
 #reviewCard{border-color:var(--coral);}
@@ -748,6 +752,19 @@ footer{max-width:960px; margin:10px auto 0; padding:0 18px 30px; font-size:12px;
 
   <div class="chip-row" id="verbChips" style="margin-bottom:14px;"></div>
   <div id="verbList"></div>
+
+  <div class="section-title">🧷 The Little Words <span class="pill">le · la · un · de · mon · sur</span></div>
+  <p style="color:var(--ink-soft); font-size:14px;">Articles, possessives, pronouns and prepositions — the small words that go <em>before</em> the noun and decide whether a sentence sounds right. Tap a group to open it.</p>
+
+  <div class="card" style="margin-bottom:14px;">
+    <ul class="win">
+      <li><strong>Every noun has a gender.</strong> Usually <em>-o</em> = masculine, <em>-a</em> = feminine — and the little word in front has to match it, exactly like French.</li>
+      <li><strong>Portuguese uses "the" more than French or English.</strong> You say <em>Eu gosto <strong>da</strong> praia</em>, and Brazilians even say <em>a Maria</em>, <em>o João</em> before people's names.</li>
+      <li><strong>Prepositions glue onto articles.</strong> <em>de + a = da</em>, <em>em + o = no</em>. That's why you almost never see "de a" written out.</li>
+    </ul>
+  </div>
+
+  <div id="littleWordsList"></div>
 
   <div class="section-title">🎒 The Brazil Starter Kit</div>
   <div class="grid">
@@ -3904,8 +3921,178 @@ function importProgress(file){
   });
 })();
 
+
+/* ================= The Little Words (articles / possessives / prepositions) ================= */
+var LITTLE_WORDS = [
+  {
+    id:'def', emoji:'🔵', title:'o · a · os · as', sub:'"the" — le / la / les',
+    rule:'Portuguese has four words for <strong>the</strong>, matching the noun\'s gender and number. Used far more often than in English — including before people\'s names in Brazil (<em>a Maria</em>, <em>o João</em>).',
+    items:[
+      {pt:'o', pron:'oo', fr:'le', en:'the (masculine singular)', note:'o carro, o banheiro'},
+      {pt:'a', pron:'ah', fr:'la', en:'the (feminine singular)', note:'a casa, a praia'},
+      {pt:'os', pron:'ooz', fr:'les', en:'the (masculine plural)', note:'os amigos'},
+      {pt:'as', pron:'ahz', fr:'les', en:'the (feminine plural)', note:'as cores'}
+    ],
+    examples:[
+      {pt:'O banheiro fica ali.', pron:'oo bah-NYAY-roo FEE-kah ah-LEE', fr:'Les toilettes sont là-bas.', en:'The bathroom is over there.'},
+      {pt:'Eu gosto da praia.', pron:'eh-oo GOS-too dah PRY-ah', fr:"J'aime la plage.", en:'I like the beach.'}
+    ]
+  },
+  {
+    id:'indef', emoji:'🟡', title:'um · uma · uns · umas', sub:'"a / an / some" — un / une / des',
+    rule:'Same gender rule as <em>o/a</em>. The plurals <em>uns / umas</em> mean "some" and are often just dropped in speech.',
+    items:[
+      {pt:'um', pron:'oong', fr:'un', en:'a / an (masculine)', note:'um café'},
+      {pt:'uma', pron:'OO-mah', fr:'une', en:'a / an (feminine)', note:'uma cerveja'},
+      {pt:'uns', pron:'oongz', fr:'des', en:'some (masculine)', note:'uns amigos'},
+      {pt:'umas', pron:'OO-mahz', fr:'des', en:'some (feminine)', note:'umas perguntas'}
+    ],
+    examples:[
+      {pt:'Eu queria um café, por favor.', pron:'eh-oo keh-REE-ah oong kah-FEH por fah-VOR', fr:'Je voudrais un café, s\'il vous plaît.', en:'I would like a coffee, please.'},
+      {pt:'Uma mesa para dois.', pron:'OO-mah MEH-zah PAH-rah doys', fr:'Une table pour deux.', en:'A table for two.'}
+    ]
+  },
+  {
+    id:'contract', emoji:'🔗', title:'do · da · no · na · ao · à', sub:'preposition + "the", fused together',
+    rule:'This is the one that makes sentences look confusing. <strong>de/em/a + o/a</strong> always merge into a single word. You basically never write them apart.',
+    items:[
+      {pt:'do / da', pron:'doo / dah', fr:'du / de la', en:'of/from the', note:'de + o/a'},
+      {pt:'dos / das', pron:'dooz / dahz', fr:'des', en:'of/from the (plural)', note:'de + os/as'},
+      {pt:'no / na', pron:'noo / nah', fr:'dans le / dans la', en:'in/at/on the', note:'em + o/a'},
+      {pt:'nos / nas', pron:'nooz / nahz', fr:'dans les', en:'in/at/on the (plural)', note:'em + os/as'},
+      {pt:'ao / à', pron:'ow / ah', fr:'au / à la', en:'to the', note:'a + o/a'},
+      {pt:'aos / às', pron:'owz / ahz', fr:'aux', en:'to the (plural)', note:'a + os/as'},
+      {pt:'pelo / pela', pron:'PEH-loo / PEH-lah', fr:'par le / par la', en:'by/through the', note:'por + o/a'},
+      {pt:'num / numa', pron:'noong / NOO-mah', fr:'dans un / dans une', en:'in a', note:'em + um/uma'}
+    ],
+    examples:[
+      {pt:'Eu moro no Brasil.', pron:'eh-oo MOH-roo noo brah-ZEEL', fr:'J\'habite au Brésil.', en:'I live in Brazil.'},
+      {pt:'Ela é da Bahia.', pron:'EH-lah eh dah bah-EE-ah', fr:'Elle est de Bahia.', en:'She\'s from Bahia.'},
+      {pt:'Vamos ao cinema às oito.', pron:'VAH-mooz ow SEE-neh-mah ahz OY-too', fr:'On va au cinéma à huit heures.', en:'We\'re going to the cinema at eight.'}
+    ]
+  },
+  {
+    id:'poss', emoji:'👤', title:'meu · minha · seu · sua', sub:'"my / your / his / her" — mon / ma / ton / ta',
+    rule:'Like French, the possessive matches <strong>the thing owned</strong>, not the owner. A man still says <em>minha casa</em>, because <em>casa</em> is feminine. For "his/hers", Brazilians usually prefer <em>dele / dela</em> — it removes the ambiguity in <em>seu</em>.',
+    items:[
+      {pt:'meu / minha', pron:'MEH-oo / MEE-nyah', fr:'mon / ma', en:'my', note:'meu nome, minha casa'},
+      {pt:'meus / minhas', pron:'MEH-ooz / MEE-nyahz', fr:'mes', en:'my (plural)', note:'meus amigos'},
+      {pt:'seu / sua', pron:'SEH-oo / SOO-ah', fr:'ton / ta · votre', en:'your', note:'seu nome, sua casa'},
+      {pt:'dele / dela', pron:'DEH-lee / DEH-lah', fr:'à lui / à elle', en:'his / her', note:'a casa dela = her house'},
+      {pt:'nosso / nossa', pron:'NOH-soo / NOH-sah', fr:'notre', en:'our', note:'nossa turma'},
+      {pt:'deles / delas', pron:'DEH-leez / DEH-lahz', fr:'leur', en:'their', note:'o carro deles'}
+    ],
+    examples:[
+      {pt:'Meu nome é Melissa.', pron:'MEH-oo NOH-mee eh meh-LEE-sah', fr:'Je m\'appelle Melissa.', en:'My name is Melissa.'},
+      {pt:'Essa é a minha primeira vez aqui.', pron:'EH-sah eh ah MEE-nyah pree-MAY-rah vez ah-KEE', fr:'C\'est ma première fois ici.', en:'This is my first time here.'},
+      {pt:'O carro dela é azul.', pron:'oo KAH-hoo DEH-lah eh ah-ZOOW', fr:'Sa voiture (à elle) est bleue.', en:'Her car is blue.'}
+    ]
+  },
+  {
+    id:'pron', emoji:'🙋', title:'eu · mim · comigo', sub:'"I / me / with me" — je / moi / avec moi',
+    rule:'<strong>Eu</strong> is the subject (je). After a preposition you switch to <strong>mim</strong> (moi): <em>para mim</em>, <em>de mim</em>. And "with me" is its own word entirely — <strong>comigo</strong>, never "com mim".',
+    items:[
+      {pt:'eu', pron:'eh-oo', fr:'je', en:'I (subject)', note:'Eu falo.'},
+      {pt:'mim', pron:'meeng', fr:'moi', en:'me (after a preposition)', note:'para mim, de mim'},
+      {pt:'comigo', pron:'koh-MEE-goo', fr:'avec moi', en:'with me', note:'never "com mim"'},
+      {pt:'você', pron:'vo-SEH', fr:'tu / toi', en:'you', note:'both subject and after prepositions'},
+      {pt:'com você', pron:'kohn vo-SEH', fr:'avec toi', en:'with you', note:'contigo is also heard'},
+      {pt:'ele / ela', pron:'EH-lee / EH-lah', fr:'il / elle · lui', en:'he / she · him / her'},
+      {pt:'nós / a gente', pron:'nohz / ah ZHEN-chee', fr:'nous / on', en:'we', note:'a gente takes the é form'},
+      {pt:'conosco', pron:'koh-NOS-koo', fr:'avec nous', en:'with us'}
+    ],
+    examples:[
+      {pt:'Isso é para mim?', pron:'EE-soo eh PAH-rah meeng', fr:'C\'est pour moi ?', en:'Is this for me?'},
+      {pt:'Você quer ir comigo?', pron:'vo-SEH ker eer koh-MEE-goo', fr:'Tu veux venir avec moi ?', en:'Do you want to come with me?'}
+    ]
+  },
+  {
+    id:'place', emoji:'📍', title:'em · sobre · dentro · embaixo', sub:'where something is — dans / sur / sous',
+    rule:'French splits <em>dans / en / sur</em>; Portuguese mostly just uses <strong>em</strong> (which then fuses into no/na). When you need to be precise about position, use the longer phrases below — nearly all of them end in <em>de</em>.',
+    items:[
+      {pt:'em (→ no / na)', pron:'eng', fr:'dans · en · sur · à', en:'in / on / at', note:'the all-purpose one'},
+      {pt:'dentro de', pron:'DEN-troo jee', fr:'à l\'intérieur de', en:'inside', note:'dentro da bolsa'},
+      {pt:'em cima de', pron:'eng SEE-mah jee', fr:'sur / au-dessus de', en:'on top of', note:'em cima da mesa'},
+      {pt:'sobre', pron:'SOH-bree', fr:'sur · à propos de', en:'on / about', note:'also means "about"'},
+      {pt:'embaixo de', pron:'em-BYE-shoo jee', fr:'sous / en-dessous de', en:'under', note:'embaixo da cama'},
+      {pt:'ao lado de', pron:'ow LAH-doo jee', fr:'à côté de', en:'next to'},
+      {pt:'perto de / longe de', pron:'PER-too jee / LOHN-zhee jee', fr:'près de / loin de', en:'near / far from'},
+      {pt:'atrás de', pron:'ah-TRAHZ jee', fr:'derrière', en:'behind'},
+      {pt:'na frente de', pron:'nah FREN-chee jee', fr:'devant', en:'in front of'},
+      {pt:'entre', pron:'EN-tree', fr:'entre', en:'between'}
+    ],
+    examples:[
+      {pt:'A chave está em cima da mesa.', pron:'ah SHAH-vee es-TAH eng SEE-mah dah MEH-zah', fr:'La clé est sur la table.', en:'The key is on the table.'},
+      {pt:'O mercado fica perto daqui.', pron:'oo mer-KAH-doo FEE-kah PER-too dah-KEE', fr:'Le marché est près d\'ici.', en:'The market is near here.'}
+    ]
+  },
+  {
+    id:'parapor', emoji:'⚖️', title:'para vs por', sub:'the classic trap — pour / par',
+    rule:'<strong>Para</strong> = destination, purpose, recipient (where it\'s going, who it\'s for). <strong>Por</strong> = cause, route, exchange, duration (why, through, in exchange for). When in doubt, ask "is this heading somewhere?" — if yes, <em>para</em>.',
+    items:[
+      {pt:'para', pron:'PAH-rah', fr:'pour · vers', en:'for / to (destination, purpose)', note:'para você, para o hotel'},
+      {pt:'por', pron:'por', fr:'par · pour', en:'by / through / in exchange for', note:'por aqui, por R$50'},
+      {pt:'com / sem', pron:'kohn / seng', fr:'avec / sans', en:'with / without'},
+      {pt:'de', pron:'jee', fr:'de', en:'of / from', note:'also "by" for transport: de ônibus'},
+      {pt:'até', pron:'ah-TEH', fr:"jusqu'à", en:'until / up to'},
+      {pt:'desde', pron:'DEZ-jee', fr:'depuis', en:'since'}
+    ],
+    examples:[
+      {pt:'Este presente é para você.', pron:'ES-chee preh-ZEN-chee eh PAH-rah vo-SEH', fr:'Ce cadeau est pour toi.', en:'This gift is for you.'},
+      {pt:'Eu vou para o trabalho de metrô.', pron:'eh-oo voh PAH-rah oo trah-BAH-lyoo jee meh-TROH', fr:'Je vais au travail en métro.', en:'I go to work by subway.'},
+      {pt:'Comprei por cinquenta reais.', pron:'kohm-PRAY por seen-KWEN-tah heh-EYES', fr:'Je l\'ai acheté pour cinquante reais.', en:'I bought it for fifty reais.'}
+    ]
+  }
+];
+
+function renderLittleWords(){
+  var wrap = document.getElementById('littleWordsList');
+  if(!wrap) return;
+  wrap.innerHTML = '';
+  LITTLE_WORDS.forEach(function(g){
+    var el = document.createElement('div');
+    el.className = 'place-cat';
+    el.innerHTML =
+      '<button type="button" class="place-head">' +
+        '<span class="emoji">' + g.emoji + '</span>' +
+        '<span class="ph-body"><h4>' + g.title + '</h4><span class="ph-sub">' + g.sub + '</span></span>' +
+        '<span class="ph-arrow">▶</span>' +
+      '</button>' +
+      '<div class="place-body">' +
+        '<div class="lw-rule">' + g.rule + '</div>' +
+        '<div class="ref-grid">' +
+          g.items.map(function(it){
+            return '<div class="ref-chip"><div class="info">' +
+              '<div class="pt">' + it.pt + '</div>' +
+              '<div class="pron">' + it.pron + '</div>' +
+              '<div class="fr">🇫🇷 ' + it.fr + '</div>' +
+              '<div class="en">🇬🇧 ' + it.en + '</div>' +
+              (it.note ? '<div class="lw-note">' + it.note + '</div>' : '') +
+            '</div>' +
+            '<button type="button" class="speak-btn" data-say="' + it.pt.replace(/\s*\(.*?\)\s*/g,' ').replace(/"/g,'&quot;').trim() + '" aria-label="Listen"' + (ttsSupported ? '' : ' disabled') + '>🔊</button></div>';
+          }).join('') +
+        '</div>' +
+        '<div class="vocab-label" style="margin-top:14px;">🗣️ In a real sentence</div>' +
+        g.examples.map(function(ex){
+          return '<div class="verb-ex"><div class="ve-body">' +
+            '<div class="ve-pt">' + ex.pt + '</div>' +
+            '<div class="ve-pron">' + ex.pron + '</div>' +
+            '<div class="lw-note" style="margin-top:3px;">🇫🇷 ' + ex.fr + ' · 🇬🇧 ' + ex.en + '</div></div>' +
+            '<button type="button" class="speak-btn" data-say="' + ex.pt.replace(/"/g,'&quot;') + '" aria-label="Listen"' + (ttsSupported ? '' : ' disabled') + '>🔊</button></div>';
+        }).join('') +
+      '</div>';
+
+    el.querySelector('.place-head').addEventListener('click', function(){ el.classList.toggle('open'); });
+    el.querySelectorAll('.speak-btn[data-say]').forEach(function(btn){
+      btn.addEventListener('click', function(e){ e.stopPropagation(); speakPT(btn.getAttribute('data-say'), btn); });
+    });
+    wrap.appendChild(el);
+  });
+}
+renderLittleWords();
+
 /* ================= Offline install (PWA) + self-update ================= */
-var APP_BUILD = '2026-08-13 · build 11';
+var APP_BUILD = '2026-08-13 · build 12';
 
 (function stampBuild(){
   var el = document.getElementById('buildStamp');
