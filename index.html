@@ -279,6 +279,8 @@ main{max-width:960px; margin:0 auto; padding:20px 18px 40px;}
   border-radius:9px; padding:10px 12px; margin-bottom:12px; line-height:1.45;}
 .lw-rule strong{color:var(--ink);}
 .lw-note{font-size:10.8px; color:var(--ink-soft); opacity:.9; margin-top:2px; font-style:italic;}
+.conj-row.agente-row{background:var(--yellow-soft); border-radius:7px; padding-left:6px; padding-right:6px;}
+.conj-row .cr-hint{font-size:9.6px; color:var(--ink-soft); font-style:italic; margin-top:1px; line-height:1.2;}
 .rem-times{display:flex; gap:12px; flex-wrap:wrap;}
 .rem-lbl{font-size:12.5px; color:var(--ink-soft); display:flex; flex-direction:column; gap:4px; font-weight:600;}
 .rem-in{max-width:150px;}
@@ -707,7 +709,7 @@ footer{max-width:960px; margin:10px auto 0; padding:0 18px 30px; font-size:12px;
   </div>
 
   <div class="ft-view" id="ftViewPlan">
-    <p style="color:var(--ink-soft); font-size:14px;">Class moves slowly because a group has to move slowly. This doesn't. 15 focused minutes a day, on top of class (not instead of it), is enough to actually move — daily reps beat weekly ones every time. A simple loop for each day:</p>
+    <p style="color:var(--ink-soft); font-size:14px;">Class moves slowly because a group has to move slowly. This doesn't. 15 focused minutes a day, on top of your two classes (not instead of them), is enough to actually move — daily reps beat weekly ones every time. A simple loop for each day:</p>
     <div class="card" style="margin-bottom:16px;">
       <ul class="win">
         <li><strong>~5 min — Hear it:</strong> Cheat Sheet, Class Notes, or a Sentence Builder reference grid. Tap every 🔊, say it back out loud.</li>
@@ -742,7 +744,7 @@ footer{max-width:960px; margin:10px auto 0; padding:0 18px 30px; font-size:12px;
       </div>
     </div>
     <div class="goal-banner">
-      🎯 Keep going to class every week — it's still where you get corrected by a real teacher. This app is what happens on the other 6 days.
+      🎯 Keep going to class twice a week — it's still where a real teacher corrects you. This app is what happens on the other five days.
     </div>
   </div>
 
@@ -757,6 +759,7 @@ footer{max-width:960px; margin:10px auto 0; padding:0 18px 30px; font-size:12px;
       <li><strong>Present</strong> — what you do / are doing now: <em>Eu falo português.</em></li>
       <li><strong>Past</strong> — finished actions (pretérito perfeito), the one past tense to learn first: <em>Eu falei com ele.</em></li>
       <li><strong>Future</strong> — the easy version everyone actually uses: <strong>vou + verb</strong>, never changing the verb: <em>Eu vou falar.</em></li>
+      <li><strong>a gente</strong> is the everyday word for "we" — the French <em>on</em>. It means <em>nous</em> but takes the <em>ele/ela</em> form: <em>a gente vai</em>, never "a gente vamos". It's in every table below.</li>
     </ul>
   </div>
 
@@ -3714,7 +3717,15 @@ var VERBS = [
    ex:{present:"Eu abro a janela.", past:"Eu abri a porta.", future:"Eu vou abrir a conta."}}
 ];
 
-var VERB_PERSONS = ['eu', 'você / ele / ela', 'nós', 'vocês / eles'];
+// "a gente" means we (like French "on") but takes the ele/ela form — so it maps
+// to the same conjugation slot (index 1), which is exactly the bit people get wrong.
+var VERB_PERSONS = [
+  {label:'eu',                  idx:0},
+  {label:'você / ele / ela',    idx:1},
+  {label:'a gente',             idx:1, hint:'= we (informal) — same form as ele/ela'},
+  {label:'nós',                 idx:2},
+  {label:'vocês / eles / elas', idx:3}
+];
 var verbFilter = 'all';
 
 function verbPron(t){
@@ -3722,10 +3733,12 @@ function verbPron(t){
 }
 
 function conjRows(forms, prefix){
-  return forms.map(function(f, i){
+  return VERB_PERSONS.map(function(person){
+    var f = forms[person.idx];
     var full = prefix ? (prefix + ' ' + f) : f;
-    return '<div class="conj-row">' +
-      '<div class="cr-person">' + VERB_PERSONS[i] + '</div>' +
+    return '<div class="conj-row' + (person.hint ? ' agente-row' : '') + '">' +
+      '<div class="cr-person">' + person.label +
+        (person.hint ? '<div class="cr-hint">' + person.hint + '</div>' : '') + '</div>' +
       '<div class="cr-form"><div class="cr-pt">' + full + '</div>' +
       '<div class="cr-pron">' + verbPron(full) + '</div></div>' +
       '<button type="button" class="speak-btn" data-say="' + full.replace(/"/g,'&quot;') + '" aria-label="Listen"' + (ttsSupported ? '' : ' disabled') + '>🔊</button>' +
@@ -3765,7 +3778,7 @@ function renderVerbs(){
   }).forEach(function(v){
     var el = document.createElement('div');
     el.className = 'verb-card';
-    var futureForms = VERB_PERSONS.map(function(_, i){ return ['vou','vai','vamos','vão'][i]; });
+    var futureForms = ['vou','vai','vamos','vão'];   // conjRows maps persons onto these
     el.innerHTML =
       '<button type="button" class="verb-head">' +
         '<span class="vh-body"><span class="vh-inf">' + v.inf + '</span>' +
@@ -4135,22 +4148,22 @@ var REMINDER_MSGS = {
     "Girl. You're building a whole new life here. Fifteen minutes. Go.",
     "Someone will ask you \"de onde você é?\" today. Be ready.",
     "Your Uber driver is one conversation away from being impressed.",
-    "Class is once a week. This is one of the other six days.",
-    "Coffee first. Then \"um café, por favor\" — out loud.",
-    "15 minutes now, or awkward silence at the padaria later. Your call.",
+    "Class is twice a week. This is one of the other five days.",
+    "Coffee first. Then order the next one in Portuguese, out loud.",
+    "15 minutes now, or awkward silence with the next person you meet. Your call.",
     "Think you'll enjoy Brazil without Portuguese? Be serious. 🇧🇷",
     "The streak is watching. 🔥",
-    "Duolingo owl could never. Open your app.",
+    "Duolingo would have you naming fruits. You're building sentences.",
     "You said six weeks. Week's not going to practice itself.",
     "Small reps beat big intentions. Fifteen minutes.",
     "Today's the day someone compliments your Portuguese. Earn it.",
     "Não vai desistir agora. (Don't give up now.)",
-    "Future you, ordering confidently at a rodízio, says thanks.",
-    "You already paid for the class. Get your money's worth.",
+    "Future you, ordering without hesitating, says thanks.",
+    "You're already paying for the classes. Get your money's worth.",
     "One quiz. One sentence built. That's it. Go.",
     "Morning brain is the best brain. Use it on Portuguese.",
     "São Paulo isn't going to translate itself.",
-    "Fifteen minutes stands between you and not freezing at the counter.",
+    "Fifteen minutes between you and not freezing at the counter.",
     "Bom dia! Say it back, then open the app."
   ],
   evening: [
@@ -4160,14 +4173,14 @@ var REMINDER_MSGS = {
     "Reviewing before sleep is the cheat code. Go.",
     "Don't break the streak on a Tuesday. Embarrassing.",
     "Whatever happened today, you can still get 15 minutes in.",
-    "That word the waiter said? Look it up. Save it. Two minutes.",
+    "That word you didn't catch today? Look it up. Save it. Two minutes.",
     "Portuguese TV counts — but do one quiz first.",
-    "Tomorrow's you would like a slightly better vocabulary, please.",
+    "Tomorrow's you would like a bigger vocabulary, please.",
     "You're closer than you think. Don't stall now.",
     "One level. One lesson. Then rest.",
     "The review deck has your name on it. 🔁",
     "Fifteen minutes, then guilt-free Netflix. Deal?",
-    "Practice now, flirt in Portuguese later. Motivation is motivation.",
+    "Someone didn't understand you today. Tomorrow they will.",
     "Even five minutes keeps the streak alive.",
     "Você consegue. (You can do it.) Now prove it.",
     "End the day one sentence better than you started it.",
@@ -4316,7 +4329,7 @@ function renderNudge(){
 renderNudge();
 
 /* ================= Offline install (PWA) + self-update ================= */
-var APP_BUILD = '2026-08-13 · build 13';
+var APP_BUILD = '2026-08-13 · build 14';
 
 (function stampBuild(){
   var el = document.getElementById('buildStamp');
