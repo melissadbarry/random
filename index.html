@@ -279,6 +279,15 @@ main{max-width:960px; margin:0 auto; padding:20px 18px 40px;}
   border-radius:9px; padding:10px 12px; margin-bottom:12px; line-height:1.45;}
 .lw-rule strong{color:var(--ink);}
 .lw-note{font-size:10.8px; color:var(--ink-soft); opacity:.9; margin-top:2px; font-style:italic;}
+.rem-times{display:flex; gap:12px; flex-wrap:wrap;}
+.rem-lbl{font-size:12.5px; color:var(--ink-soft); display:flex; flex-direction:column; gap:4px; font-weight:600;}
+.rem-in{max-width:150px;}
+.rem-msg{font-size:12.6px; color:var(--ink-soft); padding:6px 0; border-top:1px solid var(--border);}
+#nudgeCard{border-color:var(--yellow);}
+#nudgeCard .nudge-eyebrow{font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:.04em; color:var(--yellow); margin-bottom:6px;}
+#nudgeCard h2{font-size:19px; margin-bottom:4px;}
+#nudgeCard .nudge-sub{font-size:13.5px; color:var(--ink-soft); margin-bottom:14px;}
+#nudgeCard .sh-btn{background:var(--yellow); color:#3a2c00;}
 
 /* ---- Review card / My Words ---- */
 #reviewCard{border-color:var(--coral);}
@@ -737,6 +746,7 @@ footer{max-width:960px; margin:10px auto 0; padding:0 18px 30px; font-size:12px;
     </div>
   </div>
 
+  <div class="start-card" id="nudgeCard" style="display:none;"></div>
   <div class="start-card" id="reviewCard" style="display:none;"></div>
 
   <div class="section-title">⏳ Verbs: Present, Past &amp; Future <span class="pill">the easy way</span></div>
@@ -847,6 +857,28 @@ footer{max-width:960px; margin:10px auto 0; padding:0 18px 30px; font-size:12px;
       <li>📚 Don't want boring grammar-heavy lessons</li>
       <li>❤️ Want to feel comfortable and prepared</li>
     </ul>
+  </div>
+
+  <div class="section-title">🔔 Daily Reminders <span class="pill">twice a day</span></div>
+  <div class="card" style="max-width:600px;">
+    <p style="font-size:13.5px; color:var(--ink-soft); margin-bottom:12px;">
+      This adds <strong>6 weeks of reminders straight to your iPhone calendar</strong> — two a day, each one
+      a different nudge, with a tap-through to the app. Import once and you're done. (A website can't send
+      real push notifications on its own, but calendar alerts show up the same way on your lock screen.)
+    </p>
+    <div class="rem-times">
+      <label class="rem-lbl">Morning <input type="time" id="remMorning" value="08:30" class="search rem-in"></label>
+      <label class="rem-lbl">Evening <input type="time" id="remEvening" value="19:30" class="search rem-in"></label>
+    </div>
+    <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-top:12px;">
+      <button type="button" class="jump-btn" id="remDownload">📅 Add 6 weeks of reminders</button>
+      <button type="button" class="quiz-btn" id="remPreview" style="margin-top:8px; margin-left:0;">👀 See the messages</button>
+    </div>
+    <div id="remPreviewBox" style="display:none; margin-top:12px;"></div>
+    <div class="place-foot" style="margin-top:10px;">
+      On iPhone: tap the button, then <strong>Add All</strong> when Calendar opens. To stop them later,
+      delete the "Portuguese practice" events from your calendar.
+    </div>
   </div>
 
   <div class="section-title">💾 Back Up Your Progress</div>
@@ -1342,8 +1374,12 @@ function renderBadges(){
 }
 
 /* Streak tracking */
+var daysAway = 0;   // gap since the previous visit, captured before lastVisit is overwritten
 (function(){
   var today = new Date().toISOString().slice(0,10);
+  if(game.lastVisit && game.lastVisit !== today){
+    daysAway = Math.round((new Date(today) - new Date(game.lastVisit)) / 86400000);
+  }
   if(game.lastVisit !== today){
     var yesterday = new Date(Date.now() - 86400000).toISOString().slice(0,10);
     if(game.lastVisit === yesterday){
@@ -4091,8 +4127,196 @@ function renderLittleWords(){
 }
 renderLittleWords();
 
+
+/* ================= Daily reminders (calendar file) + away nudge ================= */
+var REMINDER_MSGS = {
+  morning: [
+    "Bom dia. You didn't move to Brazil to speak English. 15 minutes.",
+    "Girl. You're building a whole new life here. Fifteen minutes. Go.",
+    "Someone will ask you \"de onde você é?\" today. Be ready.",
+    "Your Uber driver is one conversation away from being impressed.",
+    "Class is once a week. This is one of the other six days.",
+    "Coffee first. Then \"um café, por favor\" — out loud.",
+    "15 minutes now, or awkward silence at the padaria later. Your call.",
+    "Think you'll enjoy Brazil without Portuguese? Be serious. 🇧🇷",
+    "The streak is watching. 🔥",
+    "Duolingo owl could never. Open your app.",
+    "You said six weeks. Week's not going to practice itself.",
+    "Small reps beat big intentions. Fifteen minutes.",
+    "Today's the day someone compliments your Portuguese. Earn it.",
+    "Não vai desistir agora. (Don't give up now.)",
+    "Future you, ordering confidently at a rodízio, says thanks.",
+    "You already paid for the class. Get your money's worth.",
+    "One quiz. One sentence built. That's it. Go.",
+    "Morning brain is the best brain. Use it on Portuguese.",
+    "São Paulo isn't going to translate itself.",
+    "Fifteen minutes stands between you and not freezing at the counter.",
+    "Bom dia! Say it back, then open the app."
+  ],
+  evening: [
+    "Boa noite. One quick round before bed?",
+    "Did you speak any Portuguese today? Be honest. Then open the app.",
+    "Ten minutes now beats a guilty scroll. You know this.",
+    "Reviewing before sleep is the cheat code. Go.",
+    "Don't break the streak on a Tuesday. Embarrassing.",
+    "Whatever happened today, you can still get 15 minutes in.",
+    "That word the waiter said? Look it up. Save it. Two minutes.",
+    "Portuguese TV counts — but do one quiz first.",
+    "Tomorrow's you would like a slightly better vocabulary, please.",
+    "You're closer than you think. Don't stall now.",
+    "One level. One lesson. Then rest.",
+    "The review deck has your name on it. 🔁",
+    "Fifteen minutes, then guilt-free Netflix. Deal?",
+    "Practice now, flirt in Portuguese later. Motivation is motivation.",
+    "Even five minutes keeps the streak alive.",
+    "Você consegue. (You can do it.) Now prove it.",
+    "End the day one sentence better than you started it.",
+    "Your class notes are in the app. Go make them stick.",
+    "Six weeks goes fast. So does skipping.",
+    "Last call for today's Portuguese. ⏰",
+    "Boa noite — but not before one round."
+  ]
+};
+
+function icsEscape(t){
+  return String(t).replace(/\\/g,'\\\\').replace(/;/g,'\;').replace(/,/g,'\\,').replace(/\n/g,'\\n');
+}
+function icsBytes(str){
+  try { return new TextEncoder().encode(str).length; }
+  catch(e){ return unescape(encodeURIComponent(str)).length; }
+}
+// RFC 5545 folds at 75 OCTETS, not characters - emoji and accents are multi-byte.
+function icsFold(line){
+  if(icsBytes(line) <= 75) return line;
+  var out = '', cur = '', limit = 75, first = true;
+  for(var i = 0; i < line.length; i++){
+    var ch = line[i];
+    if(/[\uD800-\uDBFF]/.test(ch) && i + 1 < line.length) ch += line[++i]; // keep surrogate pairs intact
+    if(icsBytes(cur + ch) > limit){
+      out += (first ? '' : '\r\n ') + cur;
+      first = false; cur = ch; limit = 74;   // continuation lines lose an octet to the leading space
+    } else {
+      cur += ch;
+    }
+  }
+  if(cur) out += (first ? '' : '\r\n ') + cur;
+  return out;
+}
+function pad2(n){ return (n < 10 ? '0' : '') + n; }
+function icsLocal(d){
+  return d.getFullYear() + pad2(d.getMonth()+1) + pad2(d.getDate()) + 'T' +
+         pad2(d.getHours()) + pad2(d.getMinutes()) + '00';
+}
+function icsUTCStamp(){
+  var d = new Date();
+  return d.getUTCFullYear() + pad2(d.getUTCMonth()+1) + pad2(d.getUTCDate()) + 'T' +
+         pad2(d.getUTCHours()) + pad2(d.getUTCMinutes()) + pad2(d.getUTCSeconds()) + 'Z';
+}
+
+function buildReminderICS(morning, evening, weeks){
+  weeks = weeks || 6;
+  var APP_URL = 'https://melissadbarry.github.io/random/';
+  var lines = ['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Brazil Starter Kit//Portuguese Reminders//EN',
+               'CALSCALE:GREGORIAN','METHOD:PUBLISH','X-WR-CALNAME:Portuguese practice'];
+  var stamp = icsUTCStamp();
+  var start = new Date(); start.setHours(0,0,0,0); start.setDate(start.getDate()+1);  // start tomorrow
+  var days = weeks * 7, n = 0;
+
+  for(var d = 0; d < days; d++){
+    [['morning', morning], ['evening', evening]].forEach(function(slot){
+      var when = slot[1].split(':');
+      var dt = new Date(start);
+      dt.setDate(start.getDate() + d);
+      dt.setHours(parseInt(when[0],10), parseInt(when[1],10), 0, 0);
+      var pool = REMINDER_MSGS[slot[0]];
+      var msg = pool[(d + (slot[0] === 'evening' ? 7 : 0)) % pool.length];
+      n++;
+      lines.push('BEGIN:VEVENT');
+      lines.push('UID:bsk-' + n + '-' + Date.now() + '@brazilkit');
+      lines.push('DTSTAMP:' + stamp);
+      lines.push('DTSTART:' + icsLocal(dt));
+      lines.push('DURATION:PT15M');
+      lines.push(icsFold('SUMMARY:🇧🇷 ' + icsEscape(msg)));
+      lines.push(icsFold('DESCRIPTION:' + icsEscape(msg + '\n\n15 minutes: hear it, use it, live it.\n' + APP_URL)));
+      lines.push(icsFold('URL:' + APP_URL));
+      lines.push('BEGIN:VALARM');
+      lines.push('TRIGGER:PT0M');
+      lines.push('ACTION:DISPLAY');
+      lines.push(icsFold('DESCRIPTION:' + icsEscape(msg)));
+      lines.push('END:VALARM');
+      lines.push('END:VEVENT');
+    });
+  }
+  lines.push('END:VCALENDAR');
+  return lines.join('\r\n');
+}
+
+(function initReminders(){
+  var dl = document.getElementById('remDownload');
+  var pv = document.getElementById('remPreview');
+  if(!dl) return;
+
+  dl.addEventListener('click', function(){
+    var m = (document.getElementById('remMorning').value || '08:30');
+    var e = (document.getElementById('remEvening').value || '19:30');
+    var ics = buildReminderICS(m, e, 6);
+    var blob = new Blob([ics], {type:'text/calendar;charset=utf-8'});
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url; a.download = 'portuguese-practice-reminders.ics';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(function(){ URL.revokeObjectURL(url); }, 1500);
+    showToast('Calendar file ready', 'Open it and tap "Add All" to load 84 reminders.');
+  });
+
+  pv.addEventListener('click', function(){
+    var box = document.getElementById('remPreviewBox');
+    if(box.style.display === 'block'){ box.style.display = 'none'; return; }
+    box.style.display = 'block';
+    box.innerHTML =
+      '<div class="vocab-label">🌅 Mornings</div>' +
+      REMINDER_MSGS.morning.slice(0,6).map(function(m){ return '<div class="rem-msg">' + m + '</div>'; }).join('') +
+      '<div class="vocab-label" style="margin-top:12px;">🌙 Evenings</div>' +
+      REMINDER_MSGS.evening.slice(0,6).map(function(m){ return '<div class="rem-msg">' + m + '</div>'; }).join('') +
+      '<div class="place-foot">…and ' + (REMINDER_MSGS.morning.length + REMINDER_MSGS.evening.length - 12) +
+      ' more, so they stay funny instead of turning into wallpaper.</div>';
+  });
+})();
+
+/* Nudge when she's been away */
+function renderNudge(){
+  var el = document.getElementById('nudgeCard');
+  if(!el) return;
+  if(daysAway < 2){ el.style.display = 'none'; return; }
+  var msg, sub;
+  if(daysAway <= 3){
+    msg = daysAway + ' days away — welcome back.';
+    sub = 'Nothing lost, the streak just reset. Pick up exactly where the pathway says and it\'s like you never stopped.';
+  } else if(daysAway <= 7){
+    msg = 'It\'s been ' + daysAway + ' days.';
+    sub = 'Not a disaster — but this is the gap the 6-week plan can\'t absorb many more of. One 15-minute round today puts you back on track.';
+  } else {
+    msg = daysAway + ' days. Let\'s just restart cleanly.';
+    sub = 'Don\'t try to catch up on everything. Do one thing today — the review deck if it has cards, otherwise whatever Start Here says.';
+  }
+  el.style.display = 'block';
+  el.innerHTML =
+    '<div class="nudge-eyebrow">👋 Been a minute</div>' +
+    '<h2>' + msg + '</h2>' +
+    '<div class="nudge-sub">' + sub + '</div>' +
+    '<button type="button" class="sh-btn" id="nudgeBtn">Do 15 minutes now →</button>';
+  document.getElementById('nudgeBtn').addEventListener('click', function(){
+    el.style.display = 'none';
+    var t = document.querySelector('.ft-toggle-btn[data-view="start"]');
+    if(t) t.click();
+    var card = document.getElementById('startHereCard');
+    if(card) card.scrollIntoView({behavior:'smooth', block:'center'});
+  });
+}
+renderNudge();
+
 /* ================= Offline install (PWA) + self-update ================= */
-var APP_BUILD = '2026-08-13 · build 12';
+var APP_BUILD = '2026-08-13 · build 13';
 
 (function stampBuild(){
   var el = document.getElementById('buildStamp');
