@@ -281,6 +281,29 @@ main{max-width:960px; margin:0 auto; padding:20px 18px 40px;}
 .lw-note{font-size:10.8px; color:var(--ink-soft); opacity:.9; margin-top:2px; font-style:italic;}
 .conj-row.agente-row{background:var(--yellow-soft); border-radius:7px; padding-left:6px; padding-right:6px;}
 .conj-row .cr-hint{font-size:9.6px; color:var(--ink-soft); font-style:italic; margin-top:1px; line-height:1.2;}
+
+/* ---- Today's session ---- */
+.today-card{background:var(--card); border:2px solid var(--green); border-radius:18px; padding:20px 22px; margin-bottom:20px; box-shadow:var(--shadow);}
+.today-card.done{border-color:var(--border); background:var(--bg-alt);}
+.today-greet{font-size:20px; font-weight:800; margin-bottom:2px;}
+.today-greet .greet-pt{color:var(--green);}
+.today-sub{font-size:13px; color:var(--ink-soft); margin-bottom:14px;}
+.today-shape{font-size:11.5px; font-weight:700; text-transform:uppercase; letter-spacing:.04em; color:var(--ink-soft); margin-bottom:9px;}
+.step{display:flex; align-items:flex-start; gap:11px; padding:11px 12px; border:1px solid var(--border); border-radius:11px; margin-bottom:8px; background:var(--bg-alt); cursor:pointer; text-align:left; width:100%; color:var(--ink);}
+.step:hover{border-color:var(--green);}
+.step.done{opacity:.6; background:var(--green-soft); border-color:var(--green); cursor:default;}
+.step .step-num{flex:0 0 24px; height:24px; border-radius:50%; background:var(--card); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; font-size:11.5px; font-weight:800;}
+.step.done .step-num{background:var(--green); color:#fff; border-color:var(--green);}
+.step .step-body{flex:1; min-width:0;}
+.step .step-title{font-size:14px; font-weight:700;}
+.step .step-desc{font-size:12.2px; color:var(--ink-soft); margin-top:2px;}
+.step .step-time{font-size:10.5px; color:var(--ink-soft); font-weight:700; white-space:nowrap; opacity:.8;}
+.today-actions{display:flex; gap:8px; flex-wrap:wrap; margin-top:12px; align-items:center;}
+.tiny-btn{border:1px solid var(--border); background:var(--card); color:var(--ink-soft); border-radius:9px; padding:8px 12px; font-size:12.2px; font-weight:700; cursor:pointer;}
+.tiny-btn:hover{border-color:var(--green); color:var(--ink);}
+.today-done-msg{font-size:14px; font-weight:700; color:var(--green); margin-bottom:4px;}
+.name-row{display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-bottom:12px;}
+.name-row input{flex:1 1 160px; max-width:220px;}
 .rem-times{display:flex; gap:12px; flex-wrap:wrap;}
 .rem-lbl{font-size:12.5px; color:var(--ink-soft); display:flex; flex-direction:column; gap:4px; font-weight:600;}
 .rem-in{max-width:150px;}
@@ -677,6 +700,8 @@ footer{max-width:960px; margin:10px auto 0; padding:0 18px 30px; font-size:12px;
 
 <!-- OVERVIEW -->
 <section class="panel active" id="panel-overview">
+  <div id="todayCard"></div>
+
   <div class="hero">
     <h2 class="display">Go from "I hope they speak English…" to "I can handle this."</h2>
     <p class="tagline">You don't need to be fluent — you just need the right Portuguese. This isn't about perfection, it's about confidence.</p>
@@ -1278,7 +1303,9 @@ var game = Object.assign({
   sentenceLevelsPassed: [],
   xpSentenceBuilds: [],
   classQuizPassed: [],
-  startDate: null
+  startDate: null,
+  name: '',
+  session: null
 }, JSON.parse(localStorage.getItem(GKEY) || '{}'));
 
 function saveGame(){ localStorage.setItem(GKEY, JSON.stringify(game)); }
@@ -1421,7 +1448,7 @@ function closeQuiz(){ quizOverlay.classList.remove('open'); }
 function openQuiz(title, questions, onFinish, opts){
   opts = opts || {};
   quizTitle.textContent = title;
-  var idx = 0, score = 0;
+  var idx = 0, score = 0, missedThisRun = [];
 
   function renderQuestion(){
     var q = questions[idx];
@@ -1447,6 +1474,7 @@ function openQuiz(title, questions, onFinish, opts){
           b.classList.add('wrong');
           buttons.forEach(function(bb){ if(bb.textContent === q.answer) bb.classList.add('correct'); });
           if(opts.track !== false) recordMissed(q, title);
+          if(missedThisRun.indexOf(q) === -1) missedThisRun.push(q);
         }
         var nextBtn = document.createElement('button');
         nextBtn.className = 'quiz-next';
@@ -1463,14 +1491,29 @@ function openQuiz(title, questions, onFinish, opts){
 
   function renderResult(){
     var pct = Math.round((score / questions.length) * 100);
+    var perfect = score === questions.length;
+    var n = missedThisRun.length;
     quizBody.innerHTML =
       '<div class="quiz-result">' +
-        '<div>' + (pct === 100 ? '🏆 Perfect!' : pct >= 70 ? '🎉 Nice work!' : '💪 Keep practicing!') + '</div>' +
+        '<div>' + (perfect ? '🏆 Perfect!' : (n === 1 ? 'One away.' : 'Close — ' + n + ' to fix.')) + '</div>' +
         '<div class="score">' + score + ' / ' + questions.length + '</div>' +
-        '<div class="msg">' + pct + '% correct</div>' +
-        '<button class="quiz-next" id="quizDoneBtn">Done</button>' +
+        '<div class="msg">' + pct + '% correct' +
+          (perfect ? '' : ' · they are saved to your review deck either way') + '</div>' +
+        (perfect ? '' :
+          '<button class="quiz-next" id="quizRetryBtn">Redo just the ' + n + ' I missed →</button><br>') +
+        '<button class="' + (perfect ? 'quiz-next' : 'tiny-btn') + '" id="quizDoneBtn" ' +
+          (perfect ? '' : 'style="margin-top:10px;"') + '>Done</button>' +
       '</div>';
     document.getElementById('quizDoneBtn').addEventListener('click', closeQuiz);
+    var retry = document.getElementById('quizRetryBtn');
+    if(retry) retry.addEventListener('click', function(){
+      var again = missedThisRun.slice();
+      closeQuiz();
+      setTimeout(function(){
+        openQuiz(title + ' — retry', again, function(){ /* practice only; the real attempt already counted */ },
+                 {review:true, track:false});
+      }, 180);
+    });
     if(onFinish) onFinish(score, questions.length);
   }
 
@@ -4328,8 +4371,175 @@ function renderNudge(){
 }
 renderNudge();
 
+
+/* ================= Today's session =================
+   One bounded task with a stated shape and a real end, instead of an
+   open-ended "go explore 9 tabs". Steps are fixed and in the same order
+   every day, so there is nothing to decide on opening the app. */
+
+function todayKey(){ return new Date().toISOString().slice(0,10); }
+
+function getSession(){
+  var k = todayKey();
+  if(!game.session || game.session.date !== k){
+    game.session = {date:k, steps:[false,false,false]};
+    saveGame();
+  }
+  return game.session;
+}
+
+function ptGreeting(){
+  var h = new Date().getHours();
+  if(h < 12)  return {pt:'Bom dia',   en:'Good morning'};
+  if(h < 18)  return {pt:'Boa tarde', en:'Good afternoon'};
+  return {pt:'Boa noite', en:'Good evening'};
+}
+
+function markStep(i){
+  var ses = getSession();
+  if(ses.steps[i]) return;
+  ses.steps[i] = true;
+  saveGame();
+  addXP(5, 'session step ' + (i+1));
+  if(ses.steps.every(Boolean)){
+    showToast('✓ Done for today', 'That is the whole session. Nothing else is owed.', true);
+  }
+  renderTodaySession();
+}
+
+function renderTodaySession(){
+  var el = document.getElementById('todayCard');
+  if(!el) return;
+  var ses = getSession();
+  var g = ptGreeting();
+  var done = ses.steps.every(Boolean);
+  var next = PATHWAY.find(function(x){ return !x.isDone(); });
+  var reviewCount = (game.missed || []).length;
+
+  var nameBlock = game.name
+    ? '<div class="today-greet"><span class="greet-pt">' + g.pt + '</span>, ' + trEscape(game.name) +
+      ' <button type="button" class="speak-btn" id="greetSpeak" style="width:26px;height:26px;font-size:11px;vertical-align:middle;"' +
+      (ttsSupported ? '' : ' disabled') + '>🔊</button></div>' +
+      '<div class="today-sub">' + g.en + ' · ' + g.pt.toLowerCase() + '</div>'
+    : '<div class="name-row"><input class="search" id="nameInput" placeholder="What should I call you?" maxlength="24">' +
+      '<button type="button" class="tiny-btn" id="nameSave">Save</button></div>';
+
+  var html = nameBlock;
+
+  if(done){
+    el.className = 'today-card done';
+    html +=
+      '<div class="today-done-msg">✓ Session complete.</div>' +
+      '<div class="today-sub">You did the three things. That is the whole ask for today — you are not behind on anything. ' +
+      'Anything else you open now is a bonus, not a debt.</div>' +
+      '<div class="today-actions">' +
+        '<button type="button" class="tiny-btn" id="todayExtra">Do a bonus round anyway</button>' +
+      '</div>';
+  } else {
+    el.className = 'today-card';
+    var steps = [
+      {t:'Hear it',  d:'Open any list and tap the 🔊 on 5 words. Say each one out loud after it.', time:'~5 min', tab:'cheatsheet'},
+      {t:'Use it',   d: next ? next.label : 'Pick anything from Sentence Builder.', time:'~8 min', tab: next ? next.tab : 'sentences'},
+      {t:'Live it',  d:'Say one sentence to a real person or out loud to yourself. Then tap this.', time:'~2 min', tab:null}
+    ];
+    html +=
+      '<div class="today-shape">Today · 3 things · about 15 minutes</div>' +
+      steps.map(function(st, i){
+        return '<button type="button" class="step' + (ses.steps[i] ? ' done' : '') + '" data-step="' + i + '">' +
+          '<span class="step-num">' + (ses.steps[i] ? '✓' : (i+1)) + '</span>' +
+          '<span class="step-body"><span class="step-title">' + st.t + '</span>' +
+          '<span class="step-desc">' + trEscape(st.d) + '</span></span>' +
+          '<span class="step-time">' + st.time + '</span>' +
+        '</button>';
+      }).join('') +
+      '<div class="today-actions">' +
+        '<button type="button" class="tiny-btn" id="today2min">⚡ I\'ve only got 2 minutes</button>' +
+        (reviewCount ? '<button type="button" class="tiny-btn" id="todayReview">🔁 Review ' + reviewCount + ' missed</button>' : '') +
+      '</div>';
+  }
+  el.innerHTML = html;
+
+  // wire up
+  var ns = document.getElementById('nameSave');
+  if(ns) ns.addEventListener('click', function(){
+    var v = (document.getElementById('nameInput').value || '').trim();
+    if(!v) return;
+    game.name = v; saveGame(); renderTodaySession();
+    showToast('Oi, ' + v + '!', 'Nice to meet you. Muito prazer.');
+  });
+  var ni = document.getElementById('nameInput');
+  if(ni) ni.addEventListener('keydown', function(e){ if(e.key === 'Enter'){ e.preventDefault(); ns.click(); } });
+
+  var gs = document.getElementById('greetSpeak');
+  if(gs) gs.addEventListener('click', function(){ speakPT(g.pt + ', ' + game.name, gs); });
+
+  el.querySelectorAll('.step[data-step]').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var i = parseInt(btn.dataset.step, 10);
+      if(getSession().steps[i]) return;
+      var stepDefs = [
+        {tab:'cheatsheet'},
+        {tab: next ? next.tab : 'sentences'},
+        {tab:null}
+      ];
+      var target = stepDefs[i].tab;
+      if(target){
+        markStep(i);
+        showTab(target);
+      } else {
+        markStep(i);
+      }
+    });
+  });
+
+  var t2 = document.getElementById('today2min');
+  if(t2) t2.addEventListener('click', twoMinuteRound);
+  var tr = document.getElementById('todayReview');
+  if(tr) tr.addEventListener('click', function(){
+    var btn = document.getElementById('reviewBtn');
+    if(btn){ btn.click(); } else { showTab('overview'); }
+  });
+  var tx = document.getElementById('todayExtra');
+  if(tx) tx.addEventListener('click', twoMinuteRound);
+}
+
+/* A deliberately tiny option for when starting the full thing is the problem. */
+function twoMinuteRound(){
+  var pool = [];
+  try {
+    PHRASES.forEach(function(p){ pool.push({pt:p.pt, pron:p.pron, en:p.en}); });
+    CLASS_LESSONS.forEach(function(l){ (l.vocab||[]).forEach(function(v){ pool.push({pt:v.pt, pron:v.pron, en:v.en}); }); });
+  } catch(e){}
+  if(!pool.length) return;
+  var picks = shuffle(pool).slice(0, 5);
+  var body = document.getElementById('quizBody');
+  document.getElementById('quizTitle').textContent = '⚡ 2-minute round';
+  body.innerHTML =
+    '<div class="quiz-progress">Five words. Tap 🔊, say each one out loud. That is the whole thing.</div>' +
+    '<div class="ref-grid">' + picks.map(function(w){
+      return '<div class="ref-chip"><div class="info"><div class="pt">' + trEscape(w.pt) + '</div>' +
+        '<div class="pron">' + trEscape(w.pron || '') + '</div>' +
+        '<div class="en">' + trEscape(w.en || '') + '</div></div>' +
+        '<button type="button" class="speak-btn" data-say="' + trEscape(w.pt).replace(/"/g,'&quot;') + '"' +
+        (ttsSupported ? '' : ' disabled') + '>🔊</button></div>';
+    }).join('') + '</div>' +
+    '<button class="quiz-next" id="twoMinDone">Done — that counts ✓</button>';
+  body.querySelectorAll('.speak-btn[data-say]').forEach(function(b){
+    b.addEventListener('click', function(){ speakPT(b.getAttribute('data-say'), b); });
+  });
+  document.getElementById('twoMinDone').addEventListener('click', function(){
+    addXP(5, '2-minute round');
+    var ses = getSession();
+    if(!ses.steps[0]) markStep(0);
+    closeQuiz();
+  });
+  quizOverlay.classList.add('open');
+}
+
+renderTodaySession();
+
 /* ================= Offline install (PWA) + self-update ================= */
-var APP_BUILD = '2026-08-13 · build 14';
+var APP_BUILD = '2026-08-13 · build 15';
 
 (function stampBuild(){
   var el = document.getElementById('buildStamp');
