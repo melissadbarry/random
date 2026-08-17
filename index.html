@@ -304,6 +304,13 @@ main{max-width:960px; margin:0 auto; padding:20px 18px 40px;}
 .today-done-msg{font-size:14px; font-weight:700; color:var(--green); margin-bottom:4px;}
 .name-row{display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-bottom:12px;}
 .name-row input{flex:1 1 160px; max-width:220px;}
+.step-prog{font-size:10.5px; font-weight:800; color:var(--green); background:var(--green-soft); border-radius:8px; padding:1px 6px; margin-left:5px;}
+.step-modal-head{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:10px;}
+.step-count{font-size:12px; font-weight:800; color:var(--green);}
+.ref-chip.heard{background:var(--green-soft); border-color:var(--green);}
+.hear-tick{padding:5px 9px; font-size:10.5px; flex:0 0 auto;}
+.link-btn{background:none; border:none; color:var(--ink-soft); text-decoration:underline; font-size:11.5px; cursor:pointer; padding:0 0 0 6px;}
+.link-btn:hover{color:var(--green);}
 .rem-times{display:flex; gap:12px; flex-wrap:wrap;}
 .rem-lbl{font-size:12.5px; color:var(--ink-soft); display:flex; flex-direction:column; gap:4px; font-weight:600;}
 .rem-in{max-width:150px;}
@@ -1505,6 +1512,7 @@ function openQuiz(title, questions, onFinish, opts){
           (perfect ? '' : 'style="margin-top:10px;"') + '>Done</button>' +
       '</div>';
     document.getElementById('quizDoneBtn').addEventListener('click', closeQuiz);
+    if(opts.track !== false && typeof logPractice === 'function') logPractice(1);
     var retry = document.getElementById('quizRetryBtn');
     if(retry) retry.addEventListener('click', function(){
       var again = missedThisRun.slice();
@@ -1733,6 +1741,7 @@ function renderPhrases(){
             game.xpPhrases = Array.from(xpPhraseSet);
             saveGame();
             addXP(5, p.pt);
+            if(typeof logPractice === 'function') logPractice(1);
             unlockBadge('first-step');
             if(doneSet.size === PHRASES.length) unlockBadge('cheat-master');
           }
@@ -1996,6 +2005,7 @@ function renderDays(){
       } else {
         doneSet.add(doneKey);
         addXP(30, 'Day ' + d.n + ' complete');
+        if(typeof logPractice === 'function') logPractice(1);
         if(DAYS.every(function(x){ return doneSet.has('day-' + x.n); })) unlockBadge('week-warrior');
       }
       saveDone();
@@ -2461,6 +2471,7 @@ function renderSentenceLevels(){
           game.xpSentenceBuilds = xpSentenceSet;
           saveGame();
           addXP(2, 'built a sentence');
+          if(typeof logPractice === 'function') logPractice(1);
         }
       });
     });
@@ -4382,29 +4393,128 @@ function todayKey(){ return new Date().toISOString().slice(0,10); }
 function getSession(){
   var k = todayKey();
   if(!game.session || game.session.date !== k){
-    game.session = {date:k, steps:[false,false,false]};
+    game.session = {date:k, steps:[false,false,false], heard:0, acts:0};
     saveGame();
   }
+  if(game.session.heard === undefined) game.session.heard = 0;
+  if(game.session.acts  === undefined) game.session.acts  = 0;
   return game.session;
+}
+
+var HEAR_TARGET = 10;   // words to listen to
+var USE_TARGET  = 3;    // real practice actions
+
+/* Called from anywhere real practice happens, so step 2 can only be earned. */
+function logPractice(n){
+  var ses = getSession();
+  ses.acts += (n || 1);
+  if(ses.acts >= USE_TARGET && !ses.steps[1]) completeStep(1);
+  else { saveGame(); renderTodaySession(); }
 }
 
 function ptGreeting(){
   var h = new Date().getHours();
-  if(h < 12)  return {pt:'Bom dia',   en:'Good morning'};
-  if(h < 18)  return {pt:'Boa tarde', en:'Good afternoon'};
+  if(h < 12) return {pt:'Bom dia',   en:'Good morning'};
+  if(h < 18) return {pt:'Boa tarde', en:'Good afternoon'};
   return {pt:'Boa noite', en:'Good evening'};
 }
 
-function markStep(i){
+function completeStep(i){
   var ses = getSession();
   if(ses.steps[i]) return;
   ses.steps[i] = true;
   saveGame();
   addXP(5, 'session step ' + (i+1));
-  if(ses.steps.every(Boolean)){
-    showToast('✓ Done for today', 'That is the whole session. Nothing else is owed.', true);
-  }
+  if(ses.steps.every(Boolean)) showToast('✓ Done for today', 'That is the whole session. Nothing else is owed.', true);
   renderTodaySession();
+}
+
+function resetSession(){
+  game.session = {date:todayKey(), steps:[false,false,false], heard:0, acts:0};
+  saveGame();
+  renderTodaySession();
+  showToast('Session reset', 'Back to three things.');
+}
+
+function modalShell(title, inner, onBack){
+  document.getElementById('quizTitle').textContent = title;
+  var body = document.getElementById('quizBody');
+  body.innerHTML = inner;
+  quizOverlay.classList.add('open');
+  return body;
+}
+
+/* ---------- Step 1: Hear it — bounded, self-contained, must actually play ---------- */
+function hearItRound(){
+  var ses = getSession();
+  var pool = [];
+  try {
+    PHRASES.forEach(function(p){ pool.push({pt:p.pt, pron:p.pron, en:p.en}); });
+    CLASS_LESSONS.forEach(function(l){ (l.vocab||[]).forEach(function(v){ pool.push({pt:v.pt, pron:v.pron, en:v.en}); }); });
+  } catch(e){}
+  var picks = shuffle(pool).slice(0, HEAR_TARGET);
+  var played = {};
+
+  function draw(){
+    var n = Object.keys(played).length;
+    var body = modalShell('🔊 Hear it · ' + HEAR_TARGET + ' words',
+      '<div class="step-modal-head"><button type="button" class="tiny-btn" id="stepBack">← Back</button>' +
+        '<span class="step-count">' + n + ' / ' + HEAR_TARGET + '</span></div>' +
+      '<div class="quiz-progress">Tap 🔊 on each one and say it out loud after it. Tick it off when you have said it.</div>' +
+      '<div class="ref-grid">' + picks.map(function(w,i){
+        return '<div class="ref-chip' + (played[i] ? ' heard' : '') + '"><div class="info">' +
+          '<div class="pt">' + trEscape(w.pt) + '</div>' +
+          '<div class="pron">' + trEscape(w.pron||'') + '</div>' +
+          '<div class="en">' + trEscape(w.en||'') + '</div></div>' +
+          '<button type="button" class="speak-btn" data-i="' + i + '">🔊</button>' +
+          '<button type="button" class="tiny-btn hear-tick" data-i="' + i + '">' + (played[i] ? '✓' : 'said it') + '</button>' +
+        '</div>';
+      }).join('') + '</div>' +
+      (n >= HEAR_TARGET
+        ? '<button class="quiz-next" id="hearDone">Done — that is step 1 ✓</button>'
+        : '<div class="place-foot">Say all ' + HEAR_TARGET + ' to finish this step. ' + (HEAR_TARGET - n) + ' to go.</div>'));
+
+    body.querySelectorAll('.speak-btn[data-i]').forEach(function(b){
+      b.addEventListener('click', function(){ speakPT(picks[+b.dataset.i].pt, b); });
+    });
+    body.querySelectorAll('.hear-tick').forEach(function(b){
+      b.addEventListener('click', function(){ played[+b.dataset.i] = true; draw(); });
+    });
+    document.getElementById('stepBack').addEventListener('click', closeQuiz);
+    var hd = document.getElementById('hearDone');
+    if(hd) hd.addEventListener('click', function(){
+      ses.heard = HEAR_TARGET; completeStep(0); closeQuiz();
+    });
+  }
+  draw();
+}
+
+/* ---------- Step 3: Live it — say it to someone, explained plainly ---------- */
+function liveItRound(){
+  var pool = [];
+  try {
+    GRAMMAR_LEVELS.forEach(function(l){ (l.sentences||[]).forEach(function(x){ pool.push(x); }); });
+    CLASS_LESSONS.forEach(function(l){ (l.sentences||[]).forEach(function(x){ pool.push(x); }); });
+  } catch(e){}
+  var picks = shuffle(pool).slice(0,3);
+  var body = modalShell('🗣️ Live it · say one out loud',
+    '<div class="step-modal-head"><button type="button" class="tiny-btn" id="stepBack">← Back</button></div>' +
+    '<div class="quiz-progress"><strong>What this means:</strong> actually say one of these sentences out loud — to a person if there is one ' +
+    '(an Uber driver, someone at the store, a friend), or just to yourself in the room. Out loud, not in your head. ' +
+    'That is the whole step. It is the only part of the day that is real practice rather than study.</div>' +
+    '<div class="ref-grid">' + picks.map(function(x){
+      return '<div class="ref-chip"><div class="info"><div class="pt">' + trEscape(x.pt) + '</div>' +
+        '<div class="pron">' + trEscape(x.pron||'') + '</div>' +
+        '<div class="en">' + trEscape(x.en||'') + '</div></div>' +
+        '<button type="button" class="speak-btn" data-say="' + trEscape(x.pt).replace(/"/g,'&quot;') + '">🔊</button></div>';
+    }).join('') + '</div>' +
+    '<button class="quiz-next" id="liveDone">I said one out loud ✓</button>' +
+    '<div class="place-foot">Honour system — but you are the only one it matters to.</div>');
+  body.querySelectorAll('.speak-btn[data-say]').forEach(function(b){
+    b.addEventListener('click', function(){ speakPT(b.getAttribute('data-say'), b); });
+  });
+  document.getElementById('stepBack').addEventListener('click', closeQuiz);
+  document.getElementById('liveDone').addEventListener('click', function(){ completeStep(2); closeQuiz(); });
 }
 
 function renderTodaySession(){
@@ -4415,16 +4525,14 @@ function renderTodaySession(){
   var done = ses.steps.every(Boolean);
   var next = PATHWAY.find(function(x){ return !x.isDone(); });
   var reviewCount = (game.missed || []).length;
+  var name = game.name || 'Melissa';
 
-  var nameBlock = game.name
-    ? '<div class="today-greet"><span class="greet-pt">' + g.pt + '</span>, ' + trEscape(game.name) +
+  var html =
+    '<div class="today-greet"><span class="greet-pt">' + g.pt + '</span>, ' + trEscape(name) +
       ' <button type="button" class="speak-btn" id="greetSpeak" style="width:26px;height:26px;font-size:11px;vertical-align:middle;"' +
       (ttsSupported ? '' : ' disabled') + '>🔊</button></div>' +
-      '<div class="today-sub">' + g.en + ' · ' + g.pt.toLowerCase() + '</div>'
-    : '<div class="name-row"><input class="search" id="nameInput" placeholder="What should I call you?" maxlength="24">' +
-      '<button type="button" class="tiny-btn" id="nameSave">Save</button></div>';
-
-  var html = nameBlock;
+    '<div class="today-sub">' + g.en + ' · ' + g.pt.toLowerCase() +
+      ' <button type="button" class="link-btn" id="nameEdit">not ' + trEscape(name) + '?</button></div>';
 
   if(done){
     el.className = 'today-card done';
@@ -4433,21 +4541,25 @@ function renderTodaySession(){
       '<div class="today-sub">You did the three things. That is the whole ask for today — you are not behind on anything. ' +
       'Anything else you open now is a bonus, not a debt.</div>' +
       '<div class="today-actions">' +
-        '<button type="button" class="tiny-btn" id="todayExtra">Do a bonus round anyway</button>' +
+        '<button type="button" class="tiny-btn" id="todayExtra">Do a bonus round</button>' +
+        '<button type="button" class="tiny-btn" id="todayReset">↺ Redo today\'s session</button>' +
       '</div>';
   } else {
     el.className = 'today-card';
     var steps = [
-      {t:'Hear it',  d:'Open any list and tap the 🔊 on 5 words. Say each one out loud after it.', time:'~5 min', tab:'cheatsheet'},
-      {t:'Use it',   d: next ? next.label : 'Pick anything from Sentence Builder.', time:'~8 min', tab: next ? next.tab : 'sentences'},
-      {t:'Live it',  d:'Say one sentence to a real person or out loud to yourself. Then tap this.', time:'~2 min', tab:null}
+      {t:'Hear it', d:'Listen to ' + HEAR_TARGET + ' words and say each one out loud.', time:'~5 min',
+       prog: ses.steps[0] ? HEAR_TARGET + '/' + HEAR_TARGET : '0/' + HEAR_TARGET},
+      {t:'Use it',  d: next ? next.label : 'Anything in Sentence Builder.', time:'~8 min',
+       prog: Math.min(ses.acts, USE_TARGET) + '/' + USE_TARGET},
+      {t:'Live it', d:'Say one sentence out loud, to someone or to yourself.', time:'~2 min', prog:''}
     ];
     html +=
       '<div class="today-shape">Today · 3 things · about 15 minutes</div>' +
       steps.map(function(st, i){
         return '<button type="button" class="step' + (ses.steps[i] ? ' done' : '') + '" data-step="' + i + '">' +
           '<span class="step-num">' + (ses.steps[i] ? '✓' : (i+1)) + '</span>' +
-          '<span class="step-body"><span class="step-title">' + st.t + '</span>' +
+          '<span class="step-body"><span class="step-title">' + st.t +
+            (st.prog && !ses.steps[i] ? ' <span class="step-prog">' + st.prog + '</span>' : '') + '</span>' +
           '<span class="step-desc">' + trEscape(st.d) + '</span></span>' +
           '<span class="step-time">' + st.time + '</span>' +
         '</button>';
@@ -4455,39 +4567,30 @@ function renderTodaySession(){
       '<div class="today-actions">' +
         '<button type="button" class="tiny-btn" id="today2min">⚡ I\'ve only got 2 minutes</button>' +
         (reviewCount ? '<button type="button" class="tiny-btn" id="todayReview">🔁 Review ' + reviewCount + ' missed</button>' : '') +
+        (ses.steps.some(Boolean) ? '<button type="button" class="tiny-btn" id="todayReset">↺ Start over</button>' : '') +
       '</div>';
   }
   el.innerHTML = html;
 
-  // wire up
-  var ns = document.getElementById('nameSave');
-  if(ns) ns.addEventListener('click', function(){
-    var v = (document.getElementById('nameInput').value || '').trim();
-    if(!v) return;
-    game.name = v; saveGame(); renderTodaySession();
-    showToast('Oi, ' + v + '!', 'Nice to meet you. Muito prazer.');
-  });
-  var ni = document.getElementById('nameInput');
-  if(ni) ni.addEventListener('keydown', function(e){ if(e.key === 'Enter'){ e.preventDefault(); ns.click(); } });
-
   var gs = document.getElementById('greetSpeak');
-  if(gs) gs.addEventListener('click', function(){ speakPT(g.pt + ', ' + game.name, gs); });
+  if(gs) gs.addEventListener('click', function(){ speakPT(g.pt + ', ' + name, gs); });
+
+  var ne = document.getElementById('nameEdit');
+  if(ne) ne.addEventListener('click', function(){
+    var v = window.prompt('What should I call you?', name);
+    if(v && v.trim()){ game.name = v.trim(); saveGame(); renderTodaySession(); }
+  });
 
   el.querySelectorAll('.step[data-step]').forEach(function(btn){
     btn.addEventListener('click', function(){
       var i = parseInt(btn.dataset.step, 10);
       if(getSession().steps[i]) return;
-      var stepDefs = [
-        {tab:'cheatsheet'},
-        {tab: next ? next.tab : 'sentences'},
-        {tab:null}
-      ];
-      var target = stepDefs[i].tab;
-      if(target){
-        markStep(i);
-        showTab(target);
-      } else {
-        markStep(i);
+      if(i === 0) hearItRound();
+      else if(i === 2) liveItRound();
+      else {
+        // step 2 is earned by real practice, never by arriving on a page
+        showTab(next ? next.tab : 'sentences');
+        showToast('Step 2', 'Do ' + (USE_TARGET - getSession().acts) + ' more exercises and this ticks itself.');
       }
     });
   });
@@ -4496,11 +4599,12 @@ function renderTodaySession(){
   if(t2) t2.addEventListener('click', twoMinuteRound);
   var tr = document.getElementById('todayReview');
   if(tr) tr.addEventListener('click', function(){
-    var btn = document.getElementById('reviewBtn');
-    if(btn){ btn.click(); } else { showTab('overview'); }
+    var btn = document.getElementById('reviewBtn'); if(btn) btn.click();
   });
   var tx = document.getElementById('todayExtra');
   if(tx) tx.addEventListener('click', twoMinuteRound);
+  var rs = document.getElementById('todayReset');
+  if(rs) rs.addEventListener('click', resetSession);
 }
 
 /* A deliberately tiny option for when starting the full thing is the problem. */
@@ -4512,34 +4616,29 @@ function twoMinuteRound(){
   } catch(e){}
   if(!pool.length) return;
   var picks = shuffle(pool).slice(0, 5);
-  var body = document.getElementById('quizBody');
-  document.getElementById('quizTitle').textContent = '⚡ 2-minute round';
-  body.innerHTML =
-    '<div class="quiz-progress">Five words. Tap 🔊, say each one out loud. That is the whole thing.</div>' +
+  var body = modalShell('⚡ 2-minute round',
+    '<div class="step-modal-head"><button type="button" class="tiny-btn" id="stepBack">← Back</button></div>' +
+    '<div class="quiz-progress">Five words. Tap 🔊, say each out loud. That is the whole thing.</div>' +
     '<div class="ref-grid">' + picks.map(function(w){
       return '<div class="ref-chip"><div class="info"><div class="pt">' + trEscape(w.pt) + '</div>' +
-        '<div class="pron">' + trEscape(w.pron || '') + '</div>' +
-        '<div class="en">' + trEscape(w.en || '') + '</div></div>' +
-        '<button type="button" class="speak-btn" data-say="' + trEscape(w.pt).replace(/"/g,'&quot;') + '"' +
-        (ttsSupported ? '' : ' disabled') + '>🔊</button></div>';
+        '<div class="pron">' + trEscape(w.pron||'') + '</div>' +
+        '<div class="en">' + trEscape(w.en||'') + '</div></div>' +
+        '<button type="button" class="speak-btn" data-say="' + trEscape(w.pt).replace(/"/g,'&quot;') + '">🔊</button></div>';
     }).join('') + '</div>' +
-    '<button class="quiz-next" id="twoMinDone">Done — that counts ✓</button>';
+    '<button class="quiz-next" id="twoMinDone">Done ✓</button>');
   body.querySelectorAll('.speak-btn[data-say]').forEach(function(b){
     b.addEventListener('click', function(){ speakPT(b.getAttribute('data-say'), b); });
   });
+  document.getElementById('stepBack').addEventListener('click', closeQuiz);
   document.getElementById('twoMinDone').addEventListener('click', function(){
-    addXP(5, '2-minute round');
-    var ses = getSession();
-    if(!ses.steps[0]) markStep(0);
-    closeQuiz();
+    addXP(5, '2-minute round'); logPractice(1); closeQuiz();
   });
-  quizOverlay.classList.add('open');
 }
 
 renderTodaySession();
 
 /* ================= Offline install (PWA) + self-update ================= */
-var APP_BUILD = '2026-08-13 · build 15';
+var APP_BUILD = '2026-08-13 · build 16';
 
 (function stampBuild(){
   var el = document.getElementById('buildStamp');
