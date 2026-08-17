@@ -294,9 +294,10 @@ main{max-width:960px; margin:0 auto; padding:20px 18px 40px;}
 .step.done{opacity:.6; background:var(--green-soft); border-color:var(--green); cursor:default;}
 .step .step-num{flex:0 0 24px; height:24px; border-radius:50%; background:var(--card); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; font-size:11.5px; font-weight:800;}
 .step.done .step-num{background:var(--green); color:#fff; border-color:var(--green);}
-.step .step-body{flex:1; min-width:0;}
-.step .step-title{font-size:14px; font-weight:700;}
-.step .step-desc{font-size:12.2px; color:var(--ink-soft); margin-top:2px;}
+.step .step-body{flex:1; min-width:0; display:block;}
+.step .step-title{font-size:14px; font-weight:700; display:block;}
+.step .step-desc{font-size:12.2px; color:var(--ink-soft); margin-top:3px; display:block; line-height:1.35;}
+.step .step-src{font-size:10.4px; color:var(--ink-soft); opacity:.85; margin-top:3px; display:block; font-style:italic;}
 .step .step-time{font-size:10.5px; color:var(--ink-soft); font-weight:700; white-space:nowrap; opacity:.8;}
 .today-actions{display:flex; gap:8px; flex-wrap:wrap; margin-top:12px; align-items:center;}
 .tiny-btn{border:1px solid var(--border); background:var(--card); color:var(--ink-soft); border-radius:9px; padding:8px 12px; font-size:12.2px; font-weight:700; cursor:pointer;}
@@ -311,6 +312,16 @@ main{max-width:960px; margin:0 auto; padding:20px 18px 40px;}
 .hear-tick{padding:5px 9px; font-size:10.5px; flex:0 0 auto;}
 .link-btn{background:none; border:none; color:var(--ink-soft); text-decoration:underline; font-size:11.5px; cursor:pointer; padding:0 0 0 6px;}
 .link-btn:hover{color:var(--green);}
+.how-fits{background:var(--card); border:1px solid var(--border); border-radius:14px; margin-bottom:20px; box-shadow:var(--shadow); overflow:hidden;}
+.how-fits summary{cursor:pointer; padding:13px 16px; font-size:13.6px; font-weight:700; list-style:none;}
+.how-fits summary::-webkit-details-marker{display:none;}
+.how-fits summary:hover{background:var(--bg-alt);}
+.how-fits[open] summary{border-bottom:1px solid var(--border);}
+.how-body{padding:12px 16px 14px; font-size:13.2px; color:var(--ink-soft); line-height:1.5;}
+.how-body ul{margin:8px 0; padding-left:18px;}
+.how-body li{margin-bottom:7px;}
+.how-body strong{color:var(--ink);}
+.how-tldr{background:var(--green-soft); border-radius:9px; padding:10px 12px; margin-top:10px; color:var(--ink);}
 .rem-times{display:flex; gap:12px; flex-wrap:wrap;}
 .rem-lbl{font-size:12.5px; color:var(--ink-soft); display:flex; flex-direction:column; gap:4px; font-weight:600;}
 .rem-in{max-width:150px;}
@@ -708,6 +719,20 @@ footer{max-width:960px; margin:10px auto 0; padding:0 18px 30px; font-size:12px;
 <!-- OVERVIEW -->
 <section class="panel active" id="panel-overview">
   <div id="todayCard"></div>
+  <details class="how-fits">
+    <summary>❓ How do all these pieces fit together?</summary>
+    <div class="how-body">
+      <p><strong>They're three layers of one thing, not three competing plans.</strong></p>
+      <ul>
+        <li><strong>Today (15 min)</strong> — your daily ritual. <em>How</em> you practise. Do this and nothing else is owed.</li>
+        <li><strong>6-Week Fast Track</strong> — the running order. <em>What</em> you practise, and when. You never have to consult it: <strong>step 2 of today's session pulls the next item from it automatically</strong>, which is why it names where you are.</li>
+        <li><strong>7-Day Jumpstart · Sentence Builder · Class Notes · Phrases</strong> — the actual material. These are what the plan walks you through, and where levels and badges come from.</li>
+        <li><strong>Translator · SP Guide · Hangouts · Speaking</strong> — tools, not curriculum. Open them when you need them; they're not part of the daily count.</li>
+      </ul>
+      <p class="how-tldr">So: <strong>just do the 15 minutes.</strong> That <em>is</em> the 6-week plan — it walks you through the crash course, the levels and your class notes in the right order. The Fast Track section is only there for when you want to see the whole map.</p>
+    </div>
+  </details>
+
 
   <div class="hero">
     <h2 class="display">Go from "I hope they speak English…" to "I can handle this."</h2>
@@ -741,7 +766,7 @@ footer{max-width:960px; margin:10px auto 0; padding:0 18px 30px; font-size:12px;
   </div>
 
   <div class="ft-view" id="ftViewPlan">
-    <p style="color:var(--ink-soft); font-size:14px;">Class moves slowly because a group has to move slowly. This doesn't. 15 focused minutes a day, on top of your two classes (not instead of them), is enough to actually move — daily reps beat weekly ones every time. A simple loop for each day:</p>
+    <p style="color:var(--ink-soft); font-size:14px;">This is the running order behind <strong>step 2 of your daily session</strong> — you don't have to follow it manually, the Today card already picks the next item for you. It's here so you can see the whole map. 15 focused minutes a day, on top of your two classes (not instead of them), beats weekly cramming every time.</p>
     <div class="card" style="margin-bottom:16px;">
       <ul class="win">
         <li><strong>~5 min — Hear it:</strong> Cheat Sheet, Class Notes, or a Sentence Builder reference grid. Tap every 🔊, say it back out loud.</li>
@@ -4445,14 +4470,49 @@ function modalShell(title, inner, onBack){
 }
 
 /* ---------- Step 1: Hear it — bounded, self-contained, must actually play ---------- */
+/* Deliberately blended: class vocabulary matters, but most of what she needs
+   day to day in São Paulo was never covered in class. Drawn in fixed
+   proportions so a round is always a mix rather than whatever shuffled first. */
+function hearItPool(){
+  var buckets = {daily:[], street:[], klass:[], grammar:[]};
+  try {
+    PHRASES.forEach(function(p){
+      buckets.daily.push({pt:p.pt, pron:p.pron, en:p.en, src:'everyday phrase'});
+    });
+    SLANG.forEach(function(x){
+      buckets.street.push({pt:x.word, pron:x.pron, en:x.en, src:'SP slang'});
+    });
+    CLASS_LESSONS.forEach(function(l){
+      (l.vocab||[]).forEach(function(v){
+        buckets.klass.push({pt:v.pt, pron:v.pron, en:v.en, src:'from ' + l.title.split(' — ')[0]});
+      });
+    });
+    GRAMMAR_LEVELS.forEach(function(l){
+      if(l.reference)  (l.reference.items||[]).forEach(function(r){ buckets.grammar.push({pt:r.pt, pron:r.pron, en:r.en, src:'Level ' + l.n}); });
+      if(l.reference2) (l.reference2.items||[]).forEach(function(r){ buckets.grammar.push({pt:r.pt, pron:r.pron, en:r.en, src:'Level ' + l.n}); });
+    });
+    PLACE_CATEGORIES.forEach(function(c){
+      buckets.daily.push({pt:c.phrase.pt, pron:c.phrase.pron, en:c.phrase.en, src:'out and about'});
+    });
+  } catch(e){}
+  // 4 everyday · 3 class · 2 grammar · 1 slang
+  var out = shuffle(buckets.daily).slice(0,4)
+    .concat(shuffle(buckets.klass).slice(0,3))
+    .concat(shuffle(buckets.grammar).slice(0,2))
+    .concat(shuffle(buckets.street).slice(0,1));
+  // top up if any bucket was thin
+  if(out.length < HEAR_TARGET){
+    var all = buckets.daily.concat(buckets.klass, buckets.grammar, buckets.street);
+    shuffle(all).forEach(function(w){
+      if(out.length < HEAR_TARGET && !out.some(function(o){ return o.pt === w.pt; })) out.push(w);
+    });
+  }
+  return shuffle(out).slice(0, HEAR_TARGET);
+}
+
 function hearItRound(){
   var ses = getSession();
-  var pool = [];
-  try {
-    PHRASES.forEach(function(p){ pool.push({pt:p.pt, pron:p.pron, en:p.en}); });
-    CLASS_LESSONS.forEach(function(l){ (l.vocab||[]).forEach(function(v){ pool.push({pt:v.pt, pron:v.pron, en:v.en}); }); });
-  } catch(e){}
-  var picks = shuffle(pool).slice(0, HEAR_TARGET);
+  var picks = hearItPool();
   var played = {};
 
   function draw(){
@@ -4465,7 +4525,8 @@ function hearItRound(){
         return '<div class="ref-chip' + (played[i] ? ' heard' : '') + '"><div class="info">' +
           '<div class="pt">' + trEscape(w.pt) + '</div>' +
           '<div class="pron">' + trEscape(w.pron||'') + '</div>' +
-          '<div class="en">' + trEscape(w.en||'') + '</div></div>' +
+          '<div class="en">' + trEscape(w.en||'') + '</div>' +
+          (w.src ? '<div class="lw-note">' + trEscape(w.src) + '</div>' : '') + '</div>' +
           '<button type="button" class="speak-btn" data-i="' + i + '">🔊</button>' +
           '<button type="button" class="tiny-btn hear-tick" data-i="' + i + '">' + (played[i] ? '✓' : 'said it') + '</button>' +
         '</div>';
@@ -4547,10 +4608,11 @@ function renderTodaySession(){
   } else {
     el.className = 'today-card';
     var steps = [
-      {t:'Hear it', d:'Listen to ' + HEAR_TARGET + ' words and say each one out loud.', time:'~5 min',
+      {t:'Hear it', d:'Listen to ' + HEAR_TARGET + ' words and say each out loud — a mix of everyday phrases, your class notes, grammar and slang.', time:'~5 min',
        prog: ses.steps[0] ? HEAR_TARGET + '/' + HEAR_TARGET : '0/' + HEAR_TARGET},
       {t:'Use it',  d: next ? next.label : 'Anything in Sentence Builder.', time:'~8 min',
-       prog: Math.min(ses.acts, USE_TARGET) + '/' + USE_TARGET},
+       prog: Math.min(ses.acts, USE_TARGET) + '/' + USE_TARGET,
+       src: next ? ('6-Week Fast Track · step ' + (PATHWAY.indexOf(next)+1) + ' of ' + PATHWAY.length) : 'pathway finished'},
       {t:'Live it', d:'Say one sentence out loud, to someone or to yourself.', time:'~2 min', prog:''}
     ];
     html +=
@@ -4560,7 +4622,8 @@ function renderTodaySession(){
           '<span class="step-num">' + (ses.steps[i] ? '✓' : (i+1)) + '</span>' +
           '<span class="step-body"><span class="step-title">' + st.t +
             (st.prog && !ses.steps[i] ? ' <span class="step-prog">' + st.prog + '</span>' : '') + '</span>' +
-          '<span class="step-desc">' + trEscape(st.d) + '</span></span>' +
+          '<span class="step-desc">' + trEscape(st.d) + '</span>' +
+          (st.src ? '<span class="step-src">' + trEscape(st.src) + '</span>' : '') + '</span>' +
           '<span class="step-time">' + st.time + '</span>' +
         '</button>';
       }).join('') +
@@ -4609,13 +4672,8 @@ function renderTodaySession(){
 
 /* A deliberately tiny option for when starting the full thing is the problem. */
 function twoMinuteRound(){
-  var pool = [];
-  try {
-    PHRASES.forEach(function(p){ pool.push({pt:p.pt, pron:p.pron, en:p.en}); });
-    CLASS_LESSONS.forEach(function(l){ (l.vocab||[]).forEach(function(v){ pool.push({pt:v.pt, pron:v.pron, en:v.en}); }); });
-  } catch(e){}
-  if(!pool.length) return;
-  var picks = shuffle(pool).slice(0, 5);
+  var picks = hearItPool().slice(0, 5);
+  if(!picks.length) return;
   var body = modalShell('⚡ 2-minute round',
     '<div class="step-modal-head"><button type="button" class="tiny-btn" id="stepBack">← Back</button></div>' +
     '<div class="quiz-progress">Five words. Tap 🔊, say each out loud. That is the whole thing.</div>' +
@@ -4638,7 +4696,7 @@ function twoMinuteRound(){
 renderTodaySession();
 
 /* ================= Offline install (PWA) + self-update ================= */
-var APP_BUILD = '2026-08-13 · build 16';
+var APP_BUILD = '2026-08-13 · build 17';
 
 (function stampBuild(){
   var el = document.getElementById('buildStamp');
