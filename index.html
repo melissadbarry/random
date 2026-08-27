@@ -825,6 +825,21 @@ footer{max-width:960px; margin:10px auto 0; padding:0 18px 30px; font-size:12px;
     </ul>
   </div>
 
+  <details class="how-fits" style="margin-bottom:14px;">
+    <summary>🔑 Conjugating a verb that isn't in this list</summary>
+    <div class="how-body">
+      <p>Every Portuguese verb ends in <strong>-AR</strong>, <strong>-ER</strong> or <strong>-IR</strong>. Chop that off and add these — it works for almost any regular verb you meet in the wild.</p>
+      <table class="subj-table">
+        <tr><th></th><th>-AR<br><span>falar</span></th><th>-ER<br><span>comer</span></th><th>-IR<br><span>abrir</span></th></tr>
+        <tr><td>eu</td><td>-o</td><td>-o</td><td>-o</td></tr>
+        <tr><td>você / ele / ela / a gente</td><td>-a</td><td>-e</td><td>-e</td></tr>
+        <tr><td>nós</td><td>-amos</td><td>-emos</td><td>-imos</td></tr>
+        <tr><td>vocês / eles / elas</td><td>-am</td><td>-em</td><td>-em</td></tr>
+      </table>
+      <p class="how-tldr"><strong>eu</strong> is always <strong>-o</strong>, whichever family. And <strong>-ER and -IR are identical except for nós</strong> (-emos vs -imos) — so there are really only two and a half patterns to hold, not three.</p>
+    </div>
+  </details>
+
   <div class="chip-row" id="verbChips" style="margin-bottom:14px;"></div>
   <div id="verbList"></div>
 
@@ -1114,7 +1129,7 @@ footer{max-width:960px; margin:10px auto 0; padding:0 18px 30px; font-size:12px;
 
   <div class="progress-wrap">
     <div class="progress-bar"><div class="progress-fill" id="lessonProgress"></div></div>
-    <div class="progress-label" id="lessonProgressLabel">0 / 8 lesson quizzes passed</div>
+    <div class="progress-label" id="lessonProgressLabel">0 / 9 lesson quizzes passed</div>
   </div>
 
   <div class="card myw-card">
@@ -2304,6 +2319,25 @@ var GRAMMAR_LEVELS = [
       {pt:"Vamos nos ver", pron:"VAH-mooz nooz vehr", en:"+ [day/time]? = Shall we meet ___?"},
       {pt:"na / no", pron:"nah / noo", en:"+ [day] = on Monday / on Tuesday / on Saturday (e.g. na segunda, no sábado)"}
     ],
+    reference2:{
+      label:"📆 Months of the Year",
+      items:[
+        {pt:"janeiro", pron:"zhah-NAY-roo", en:"January"},
+        {pt:"fevereiro", pron:"feh-veh-RAY-roo", en:"February"},
+        {pt:"março", pron:"MAR-soo", en:"March"},
+        {pt:"abril", pron:"ah-BREEW", en:"April"},
+        {pt:"maio", pron:"MY-oo", en:"May"},
+        {pt:"junho", pron:"ZHOO-nyoo", en:"June"},
+        {pt:"julho", pron:"ZHOO-lyoo", en:"July"},
+        {pt:"agosto", pron:"ah-GOS-too", en:"August"},
+        {pt:"setembro", pron:"seh-TEM-broo", en:"September"},
+        {pt:"outubro", pron:"oh-TOO-broo", en:"October"},
+        {pt:"novembro", pron:"noh-VEM-broo", en:"November"},
+        {pt:"dezembro", pron:"deh-ZEM-broo", en:"December"},
+        {pt:"em março", pron:"eng MAR-soo", en:"in March — months take em, lowercase"},
+        {pt:"estação do ano", pron:"es-tah-SOWNG doo AH-noo", en:"season of the year"}
+      ]
+    },
     reference:{
       label:"🗓️ Days of the Week",
       items:[
@@ -2322,13 +2356,15 @@ var GRAMMAR_LEVELS = [
       {pt:"São três horas da tarde.", pron:"sowng tress OH-rahz dah TAR-jee", en:"It's three in the afternoon."},
       {pt:"A reunião é às dez horas.", pron:"ah heh-oo-nee-OWNG eh ahz dez OH-rahz", en:"The meeting is at ten o'clock."},
       {pt:"Vamos nos ver na sexta-feira?", pron:"VAH-mooz noos vehr nah SES-tah FAY-rah", en:"Shall we meet on Friday?"},
-      {pt:"Nos vemos às sete da noite.", pron:"nooz VEH-mooz ahz SEH-chee dah NOY-chee", en:"See you at seven at night."}
+      {pt:"Nos vemos às sete da noite.", pron:"nooz VEH-mooz ahz SEH-chee dah NOY-chee", en:"See you at seven at night."},
+      {pt:"Meu aniversário é em março.", pron:"meh-oo ah-nee-ver-SAH-ree-oo eh eng MAR-soo", en:"My birthday is in March."}
     ],
     quiz:[
       {q:"Which day comes right after segunda-feira?", options:["terça-feira","quarta-feira","domingo","sábado"], answer:"terça-feira"},
       {q:"How do you say \"It's three o'clock\"?", options:["São três horas.","É três hora.","Três horas são.","Estou três horas."], answer:"São três horas."},
       {q:"A reunião é ___ dez horas. (at)", options:["às","no","da","em"], answer:"às"},
-      {q:"How would you ask \"Shall we meet on Friday?\"", options:["Vamos nos ver na sexta-feira?","Eu vou na sexta-feira.","Onde fica sexta-feira?","Que dia é sexta-feira?"], answer:"Vamos nos ver na sexta-feira?"}
+      {q:"How would you ask \"Shall we meet on Friday?\"", options:["Vamos nos ver na sexta-feira?","Eu vou na sexta-feira.","Onde fica sexta-feira?","Que dia é sexta-feira?"], answer:"Vamos nos ver na sexta-feira?"},
+      {q:"Meu aniversário é ___ março.", options:["em","no","na","de"], answer:"em"}
     ]
   }
 ];
@@ -2835,6 +2871,56 @@ var CLASS_LESSONS = [
       {q:"Talvez ele ___ amanhã. (vir)", options:["venha","vem","veio","vir"], answer:"venha"},
       {q:"Use the subjunctive when:", options:["it's a possibility or a doubt","it's a fact you're sure of","it happened in the past","you're giving your address"], answer:"it's a possibility or a doubt"},
       {q:"Portuguese for \"to ask a question\" is:", options:["perguntar","preguntar","pedir","procurar"], answer:"perguntar"}
+    ]
+  },
+  {
+    id:9, date:"Sep 1, 2026 · Aula #7", title:"Presente do Indicativo, Estações & Meses",
+    vocab:[
+      {pt:"desempregado / desempregada", pron:"deh-zem-preh-GAH-doo / dah", en:"Unemployed", fr:"Au chômage"},
+      {pt:"trocar", pron:"troh-KAR", en:"To change / swap", fr:"Changer"},
+      {pt:"sair", pron:"sah-EER", en:"To go out / leave", fr:"Sortir"},
+      {pt:"rezar", pron:"heh-ZAR", en:"To pray", fr:"Prier"},
+      {pt:"acordar", pron:"ah-kor-DAR", en:"To wake up", fr:"Se réveiller"},
+      {pt:"relaxar", pron:"heh-lah-SHAR", en:"To relax (eu relaxo)", fr:"Se relaxer"},
+      {pt:"descontrair", pron:"des-kohn-trah-EER", en:"To unwind (eu descontraio)", fr:"Se décontracter"},
+      {pt:"distrair", pron:"jees-trah-EER", en:"To distract / take your mind off (eu distraio)", fr:"Distraire"},
+      {pt:"estação do ano", pron:"es-tah-SOWNG doo AH-noo", en:"Season of the year", fr:"Saison de l'année"},
+      {pt:"primavera", pron:"pree-mah-VEH-rah", en:"Spring", fr:"Printemps"},
+      {pt:"verão", pron:"veh-ROWNG", en:"Summer", fr:"Été"},
+      {pt:"outono", pron:"oh-TOH-noo", en:"Autumn", fr:"Automne"},
+      {pt:"inverno", pron:"een-VER-noo", en:"Winter", fr:"Hiver"},
+      {pt:"janeiro", pron:"zhah-NAY-roo", en:"January", fr:"Janvier"},
+      {pt:"fevereiro", pron:"feh-veh-RAY-roo", en:"February", fr:"Février"},
+      {pt:"março", pron:"MAR-soo", en:"March", fr:"Mars"},
+      {pt:"abril", pron:"ah-BREEW", en:"April", fr:"Avril"},
+      {pt:"maio", pron:"MY-oo", en:"May", fr:"Mai"},
+      {pt:"junho", pron:"ZHOO-nyoo", en:"June", fr:"Juin"},
+      {pt:"julho", pron:"ZHOO-lyoo", en:"July", fr:"Juillet"},
+      {pt:"agosto", pron:"ah-GOS-too", en:"August", fr:"Août"},
+      {pt:"setembro", pron:"seh-TEM-broo", en:"September", fr:"Septembre"},
+      {pt:"outubro", pron:"oh-TOO-broo", en:"October", fr:"Octobre"},
+      {pt:"novembro", pron:"noh-VEM-broo", en:"November", fr:"Novembre"},
+      {pt:"dezembro", pron:"deh-ZEM-broo", en:"December", fr:"Décembre"},
+      {pt:"vejo / vê / vemos / veem", pron:"VEH-zhoo / veh / VEH-mooz / VEH-eng", en:"I see / you see / we see / they see", fr:"Je vois / tu vois / nous voyons / ils voient"}
+    ],
+    sentences:[
+      {pt:"Eu acordo às sete horas.", pron:"eh-oo ah-KOR-doo ahz SEH-chee OH-rahz", en:"I wake up at seven.", fr:"Je me réveille à sept heures."},
+      {pt:"Eu vou sair hoje à noite.", pron:"eh-oo voh sah-EER OH-zhee ah NOY-chee", en:"I'm going out tonight.", fr:"Je sors ce soir."},
+      {pt:"Preciso trocar de roupa.", pron:"preh-SEE-zoo troh-KAR jee HOH-pah", en:"I need to change clothes.", fr:"Je dois me changer."},
+      {pt:"No verão faz muito calor.", pron:"noo veh-ROWNG fahz MOO-een-too kah-LOR", en:"In summer it's very hot.", fr:"En été il fait très chaud."},
+      {pt:"Eu vejo você amanhã.", pron:"eh-oo VEH-zhoo vo-SEH ah-mah-NYAH", en:"I'll see you tomorrow.", fr:"Je te vois demain."},
+      {pt:"Meu aniversário é em março.", pron:"meh-oo ah-nee-ver-SAH-ree-oo eh eng MAR-soo", en:"My birthday is in March.", fr:"Mon anniversaire est en mars."},
+      {pt:"Eu relaxo no fim de semana.", pron:"eh-oo heh-LAH-shoo noo feeng jee seh-MAH-nah", en:"I relax at the weekend.", fr:"Je me relaxe le week-end."}
+    ],
+    tip:"💡 <strong>This is the master pattern — learn this one table and you can conjugate almost any regular verb you meet.</strong> Every Portuguese verb ends in <strong>-AR</strong>, <strong>-ER</strong> or <strong>-IR</strong>. Chop that off and add:<table class=\"subj-table\"><tr><th></th><th>-AR<br><span>falar</span></th><th>-ER<br><span>comer</span></th><th>-IR<br><span>abrir</span></th></tr><tr><td>eu</td><td>-o</td><td>-o</td><td>-o</td></tr><tr><td>você / ele / ela / a gente</td><td>-a</td><td>-e</td><td>-e</td></tr><tr><td>nós</td><td>-amos</td><td>-emos</td><td>-imos</td></tr><tr><td>vocês / eles / elas</td><td>-am</td><td>-em</td><td>-em</td></tr></table><span style=\"font-size:11.5px;opacity:.9\">Two shortcuts hiding in there: <strong>eu is always -o</strong>, whichever family. And <strong>-ER and -IR are identical except for nós</strong> (-emos vs -imos) — so really there are only two and a half patterns, not three.<br><br>⚠️ Careful with <em>ver</em> (to see) and <em>vir</em> (to come): they collide. <em>Eles <strong>veem</strong></em> = they see. <em>Ele <strong>vem</strong></em> = he comes. <em>Eles <strong>vêm</strong></em> = they come.</span>",
+    quiz:[
+      {q:"Regular -ER verb, nós form ends in:", options:["-emos","-imos","-amos","-em"], answer:"-emos"},
+      {q:"Regular -IR verb, nós form ends in:", options:["-imos","-emos","-amos","-om"], answer:"-imos"},
+      {q:"For eu, every regular verb ends in:", options:["-o","-a","-e","-am"], answer:"-o"},
+      {q:"\"Acordar\" means:", options:["to wake up","to go out","to change","to pray"], answer:"to wake up"},
+      {q:"Which season is \"outono\"?", options:["Autumn","Spring","Summer","Winter"], answer:"Autumn"},
+      {q:"Eu ___ você amanhã. (ver)", options:["vejo","vê","vemos","vem"], answer:"vejo"},
+      {q:"Which month is \"março\"?", options:["March","May","March is not a month","August"], answer:"March"}
     ]
   }
 ];
@@ -4780,7 +4866,7 @@ function twoMinuteRound(){
 renderTodaySession();
 
 /* ================= Offline install (PWA) + self-update ================= */
-var APP_BUILD = '2026-08-25 · build 18';
+var APP_BUILD = '2026-09-01 · build 19';
 
 (function stampBuild(){
   var el = document.getElementById('buildStamp');
