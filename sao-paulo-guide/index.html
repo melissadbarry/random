@@ -131,6 +131,25 @@
   .chip { border: 2px solid var(--line); background: var(--surface); padding: 8px 14px; border-radius: 999px; font-weight: 600; cursor: pointer; min-height: 44px; }
   .chip[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
 
+  /* Emergency */
+  .sos { display: flex; align-items: center; gap: 14px; width: 100%; text-align: left; cursor: pointer; border: 0; border-radius: var(--radius); padding: 16px; margin: 0 0 14px; background: #d93025; color: #fff; box-shadow: var(--shadow); }
+  .sos:hover { filter: brightness(1.08); }
+  .sos .big { font-size: 34px; line-height: 1; }
+  .sos .t { font-weight: 800; font-size: 19px; line-height: 1.2; }
+  .sos .s { font-size: 14px; opacity: .95; }
+  .sos-main { display: grid; gap: 12px; margin-bottom: 22px; }
+  .sos-card { display: grid; grid-template-columns: auto 1fr; gap: 6px 16px; align-items: center; padding: 16px; border-radius: var(--radius); background: var(--c); color: #fff; text-decoration: none; box-shadow: var(--shadow); }
+  .sos-card .n { font-size: 52px; font-weight: 900; line-height: 1; letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
+  .sos-card .w { font-weight: 800; font-size: 19px; line-height: 1.2; }
+  .sos-card .u { grid-column: 1 / -1; font-size: 15px; opacity: .95; }
+  h2.sec { font-size: 20px; margin: 22px 0 10px; }
+  .num-list { display: grid; gap: 10px; padding: 0; margin: 0; list-style: none; }
+  .num-list li { display: grid; grid-template-columns: 76px 1fr; gap: 12px; align-items: center; padding: 12px 14px; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; }
+  .num-list .n { font-size: 28px; font-weight: 900; color: var(--blue); font-variant-numeric: tabular-nums; }
+  .num-list .w { font-weight: 700; }
+  .num-list .u { color: var(--muted); font-size: 15px; }
+  .contact-line { font-variant-numeric: tabular-nums; }
+
   .foot { margin-top: 36px; color: var(--muted); font-size: 14px; text-align: center; }
   .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
   @media (prefers-reduced-motion: reduce) { .tile { transition: none; } }
@@ -168,7 +187,7 @@ const CATEGORIES = [
       { id: "womens",    name: "Women's health",   emoji: "🌸" },
       { id: "mental",    name: "Mental health",    emoji: "🧠" },
       { id: "labs",      name: "Labs & pharmacy",  emoji: "🧪" },
-      { id: "emergency", name: "Emergency",        emoji: "🚑" }
+      { id: "emergency", name: "Hospitals & ER",   emoji: "🏥" }
     ] },
   { id: "admin", name: "Administrative", emoji: "📄", tint: "#002776", on: "#ffffff",
     blurb: "Papers, permits and paperwork.",
@@ -191,23 +210,45 @@ const CATEGORIES = [
     ] }
 ];
 
+/* Emergency numbers: free, work from any phone, no area code needed. */
+const EMERGENCY = {
+  main: [
+    { num: "192", name: "Ambulance (SAMU)", use: "Medical emergency: collapse, accident, heavy bleeding, chest pain.", emoji: "🚑", color: "#d93025" },
+    { num: "190", name: "Police (Polícia Militar)", use: "Crime in progress, danger, theft, violence.", emoji: "🚓", color: "#002776" },
+    { num: "193", name: "Fire brigade (Bombeiros)", use: "Fire, rescue, gas leak, drowning, trapped in a lift.", emoji: "🚒", color: "#c2410c" }
+  ],
+  more: [
+    { num: "180", name: "Women's helpline", use: "Violence against women. Free, confidential, 24/7." },
+    { num: "188", name: "Emotional support (CVV)", use: "Anxiety, crisis, suicidal thoughts. Free, confidential, 24/7." },
+    { num: "197", name: "Civil Police (report by phone)", use: "Report a crime or get information on police reports." },
+    { num: "153", name: "Municipal guard (Guarda Civil)", use: "City guard, public spaces and municipal property." },
+    { num: "199", name: "Civil Defence (Defesa Civil)", use: "Floods, landslides, storm damage." },
+    { num: "100", name: "Human rights helpline", use: "Report rights violations, abuse, discrimination." },
+    { num: "191", name: "Federal highway police", use: "Accidents on federal highways." },
+    { num: "194", name: "Federal Police", use: "Federal crimes, immigration and border matters." },
+    { num: "136", name: "Health ministry (Disque Saúde)", use: "Health information and guidance." }
+  ],
+  tip: "Say “Preciso de ajuda” (I need help) and the street address. Save these numbers in your phone."
+};
+
 const PLACES = [
   {
     id: "ahf-brasil",
     name: "AHF Brasil",
     cat: "medical", sub: "sexual",
-    kind: "Private sexual health clinic",
+    kind: "Community sexual health clinic",
     logo: "",
-    address: "",                         // TODO: add exact address
-    area: "Next to República metro station, Centro",
-    hours: "",                           // TODO: add opening hours
+    address: "Rua Pedro Américo, 52, República, São Paulo, 01045-010",
+    area: "Right next to República metro station",
+    hours: "Monday to Friday, 11:30 to 18:30 (closed on holidays)",
     price: { type: "free", detail: "Everything is free: STI testing, counselling and doctor consults." },
     walkIn: true,
-    tags: ["STI testing", "counselling", "doctor", "LGBTQ+ friendly", "free", "no appointment", "sexual health", "HIV"],
+    tags: ["STI testing", "counselling", "doctor", "LGBTQ+ friendly", "free", "no appointment", "sexual health", "HIV", "syphilis", "hepatitis", "teste"],
     pride: true,
     instagram: "https://www.instagram.com/ahf.brasil",
-    website: "",
-    phone: "",
+    website: "https://ahfbrasil.com.br",
+    phone: "+55 11 3352-7760",
+    whatsapp: "+55 11 91371-6729",
     maps: "",
     note: "No appointment needed, just show up. LGBTQ+ friendly and respectful, and the staff are LGBTQ+ themselves. Great for STI testing, counselling or seeing a doctor specialised in sexual diseases."
   }
@@ -271,6 +312,7 @@ function card(p) {
         <div><dt aria-hidden="true">📍</dt><dd><span class="sr">Address: </span>${field(p.address)}${p.area ? `<br><small>${esc(p.area)}</small>` : ""}</dd></div>
         <div><dt aria-hidden="true">🕒</dt><dd><span class="sr">Opening hours: </span>${field(p.hours)}</dd></div>
         <div><dt aria-hidden="true">💶</dt><dd><span class="sr">Cost: </span>${p.price?.detail ? esc(p.price.detail) : `<span class="todo">Not added yet</span>`}</dd></div>
+        ${p.phone || p.whatsapp ? `<div><dt aria-hidden="true">📞</dt><dd class="contact-line">${p.phone ? `Phone ${esc(p.phone)}` : ""}${p.phone && p.whatsapp ? "<br>" : ""}${p.whatsapp ? `WhatsApp ${esc(p.whatsapp)}` : ""}</dd></div>` : ""}
       </dl>
       ${p.note ? `<p class="note">${esc(p.note)}</p>` : ""}
       <div class="actions">${links}</div>
@@ -295,6 +337,10 @@ function searchBox(value = "") {
 function viewHome() {
   $app.innerHTML = `
     ${searchBox()}
+    <button class="sos" onclick="go('/emergency')">
+      <span class="big" aria-hidden="true">🆘</span>
+      <span><span class="t">Emergency numbers</span><br><span class="s">Ambulance 192 · Police 190 · Fire 193</span></span>
+    </button>
     <h1>Olá! What do you need?</h1>
     <p class="lead">Tap a topic. Two taps and you have your answer.</p>
     <div class="grid">
@@ -307,6 +353,24 @@ function viewHome() {
     </div>
     <p class="foot">Built little by little ✨ · ${plural(PLACES.length)} saved</p>`;
   bindSearch();
+}
+
+function viewEmergency() {
+  $app.innerHTML = `
+    ${crumbs([{ label: "Home", to: "/" }, { label: "Emergency numbers" }])}
+    <h1>🆘 Emergency numbers</h1>
+    <p class="lead">All free, 24/7, from any phone, even without credit. No area code needed.</p>
+    <div class="sos-main">
+      ${EMERGENCY.main.map(e => `<a class="sos-card" style="--c:${e.color}" href="tel:${e.num}" aria-label="${esc(e.name)}, ${e.num}">
+        <span class="n">${e.num}</span><span class="w">${e.emoji} ${esc(e.name)}</span>
+        <span class="u">${esc(e.use)}</span></a>`).join("")}
+    </div>
+    <p class="note">${esc(EMERGENCY.tip)}</p>
+    <h2 class="sec">Other useful numbers</h2>
+    <ul class="num-list">
+      ${EMERGENCY.more.map(e => `<li><span class="n">${e.num}</span><span><span class="w">${esc(e.name)}</span><br><span class="u">${esc(e.use)}</span></span></li>`).join("")}
+    </ul>
+    <p class="foot">Always double check with official sources if something feels off.</p>`;
 }
 
 function viewCategory(c) {
@@ -371,7 +435,8 @@ window.go = go;
 function route() {
   const [, cId, sId] = (location.hash.slice(1) || "/").split("/");
   const c = cat(cId), s = sub(c, sId);
-  if (c && s) viewSub(c, s);
+  if (cId === "emergency") viewEmergency();
+  else if (c && s) viewSub(c, s);
   else if (c) viewCategory(c);
   else viewHome();
   if (!document.activeElement || document.activeElement === document.body) window.scrollTo({ top: 0 });
