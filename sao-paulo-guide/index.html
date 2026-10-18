@@ -2,168 +2,178 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>São Paulo Guide</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
+  /* Layout: calm, scannable single column with a wide editorial hero. Rows for fast scanning, one strong wine accent.
+     Palette: mist (Virgo order), aubergine ink + wine (Venus in Scorpio), jungle green + sun yellow (Brazil, used sparingly). */
   :root {
-    --green: #009c3b;
-    --green-deep: #006b29;
-    --yellow: #ffdf00;
-    --blue: #002776;
-    --coral: #ff5a4f;
-    --bg: #fffaf0;
+    --bg: #fcfaf7;
     --surface: #ffffff;
-    --ink: #14213d;
-    --muted: #5b6475;
-    --line: #e8e0cc;
-    --shadow: 0 2px 0 rgba(20,33,61,.08), 0 8px 24px rgba(20,33,61,.08);
-    --radius: 18px;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
-      --bg: #0b1226; --surface: #131c38; --ink: #f4f1e6; --muted: #a6b0c8; --line: #25305a;
-      --green: #2fd36b; --green-deep: #2fd36b; --blue: #7aa2ff;
-      --shadow: 0 2px 0 rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
-    }
-  }
-  :root[data-theme="dark"] {
-    --bg: #0b1226; --surface: #131c38; --ink: #f4f1e6; --muted: #a6b0c8; --line: #25305a;
-    --green: #2fd36b; --green-deep: #2fd36b; --blue: #7aa2ff;
-    --shadow: 0 2px 0 rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
+    --raise: #ffffff;
+    --ink: #2a2230;
+    --muted: #6f6676;
+    --line: #eee9e2;
+    --wine: #a8305a;
+    --wine-soft: #fbeaf1;
+    --on-wine: #ffffff;
+    --green: #17795a;
+    --green-soft: #e3f4ec;
+    --sun: #f6c90e;
+    --sun-soft: #fef5d2;
+    --sos: #a8305a;
+    --on-sos: #ffffff;
+    --font-display: "Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+    --font-body: "Figtree", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+    --radius: 24px;
   }
   * { box-sizing: border-box; }
-  html { -webkit-text-size-adjust: 100%; }
   body {
-    margin: 0; background: var(--bg); color: var(--ink);
-    font: 17px/1.5 "Avenir Next", "Segoe UI", system-ui, -apple-system, Roboto, sans-serif;
+    margin: 0; line-height: 1.6; background: var(--bg); color: var(--ink);
+    font: 17px/1.55 var(--font-body); -webkit-font-smoothing: antialiased;
   }
   button, input { font: inherit; color: inherit; }
   a { color: inherit; }
-  :focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; border-radius: 8px; }
-  .wrap { max-width: 760px; margin: 0 auto; padding: 0 16px 80px; }
+  svg.i { width: 1.25em; height: 1.25em; flex: none; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+  :focus-visible { outline: 3px solid var(--wine); outline-offset: 3px; border-radius: 10px; }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .wrap { max-width: 820px; margin: 0 auto; padding-inline: max(16px, env(safe-area-inset-left, 0px)) max(16px, env(safe-area-inset-right, 0px)); }
 
-  /* Header */
-  header.top {
-    background: var(--green); color: #fff; position: sticky; top: 0; z-index: 10;
-    border-bottom: 5px solid var(--yellow);
-  }
-  header.top .wrap { padding-top: 12px; padding-bottom: 12px; display: flex; align-items: center; gap: 12px; }
-  .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: #fff; font-weight: 800; font-size: 20px; letter-spacing: -.01em; }
-  .brand .dot { width: 34px; height: 34px; border-radius: 50%; background: var(--yellow); display: grid; place-items: center; }
-  .brand .dot::after { content: ""; width: 18px; height: 18px; background: var(--blue); border-radius: 50%; }
-  .spacer { flex: 1; }
-  .icon-btn { background: rgba(255,255,255,.18); border: 0; color: #fff; width: 44px; height: 44px; border-radius: 12px; cursor: pointer; font-size: 18px; }
-  .icon-btn:hover { background: rgba(255,255,255,.3); }
+  /* Top bar */
+  .bar { display: flex; align-items: center; gap: 10px; padding-block: 18px 6px; }
+  .mark { display: flex; align-items: baseline; gap: 8px; text-decoration: none; font-family: var(--font-display); font-weight: 800; font-size: 22px; letter-spacing: -.02em; }
+  .mark i { width: 9px; height: 9px; border-radius: 50%; background: var(--sun); display: inline-block; transform: translateY(-1px); }
+  .mark span { font-weight: 500; color: var(--muted); font-size: 15px; letter-spacing: 0; }
+  .grow { flex: 1; }
+  .pill { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 16px; border-radius: 999px; border: 0; cursor: pointer; text-decoration: none; font-weight: 700; font-size: 15px; background: var(--sos); color: var(--on-sos); }
+  .pill:hover { opacity: .88; }
+  .pill small { font-weight: 600; opacity: .8; font-size: 13px; }
+  @media (max-width: 440px) { .pill small { display: none; } .mark span { display: none; } }
+  .ghost { width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--line); background: var(--surface); cursor: pointer; display: grid; place-items: center; }
+  .ghost:hover { border-color: var(--ink); }
 
-  /* Search */
-  .search { position: relative; margin: 18px 0 8px; }
-  .search input {
-    width: 100%; padding: 16px 16px 16px 48px; border-radius: 16px; border: 2px solid var(--line);
-    background: var(--surface); font-size: 17px; box-shadow: var(--shadow);
-  }
-  .search input:focus { border-color: var(--blue); outline: none; }
-  .search svg { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); width: 20px; height: 20px; color: var(--muted); }
+  /* Hero + search */
+  .kicker { font-size: 13px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--wine); margin: 34px 0 10px; }
+  h1 { font-family: var(--font-display); font-weight: 700; letter-spacing: -.03em; line-height: 1.06; font-size: clamp(36px, 8vw, 60px); margin: 0 0 14px; text-wrap: balance; }
+  h1 em { font-style: normal; background: linear-gradient(transparent 62%, var(--sun) 62% 92%, transparent 92%); }
+  .lead { color: var(--muted); max-width: 52ch; margin: 0 0 28px; font-size: 18px; }
+  .search { position: relative; margin-bottom: 26px; }
+  .search input { width: 100%; height: 62px; box-shadow: 0 6px 22px rgba(120,60,90,.07); padding: 0 18px 0 54px; border-radius: 18px; border: 1.5px solid var(--line); background: var(--raise); font-size: 18px; }
+  .search input::placeholder { color: var(--muted); }
+  .search input:focus { outline: none; border-color: var(--wine); box-shadow: 0 0 0 4px var(--wine-soft); }
+  .search svg { position: absolute; left: 19px; top: 50%; transform: translateY(-50%); color: var(--muted); width: 22px; height: 22px; }
 
-  /* Breadcrumb / back */
-  .crumbs { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; margin: 18px 0 6px; color: var(--muted); font-size: 15px; }
-  .crumbs button { background: none; border: 0; padding: 8px 4px; cursor: pointer; color: var(--blue); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; min-height: 44px; }
-  .crumbs .here { color: var(--ink); font-weight: 700; }
+  /* Home panels */
+  .panels { display: grid; gap: 20px; }
+  .panel { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 26px; display: grid; gap: 20px; }
+  .panel-head { display: flex; align-items: center; gap: 14px; width: 100%; text-align: left; background: none; border: 0; padding: 0; cursor: pointer; }
+  .badge-ico { width: 52px; height: 52px; border-radius: 16px; display: grid; place-items: center; background: var(--c-soft); color: var(--c); flex: none; }
+  .badge-ico svg { width: 26px; height: 26px; }
+  .panel-head .t { font-family: var(--font-display); font-weight: 700; font-size: 24px; letter-spacing: -.02em; line-height: 1.1; display: block; }
+  .panel-head .s { color: var(--muted); font-size: 15px; display: block; }
+  .panel-head .go { margin-left: auto; color: var(--muted); }
+  .panel-head:hover .go { color: var(--ink); transform: translateX(3px); }
+  .go { transition: transform .15s; }
+  .quick { display: flex; flex-wrap: wrap; gap: 8px; }
+  .qk { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 14px; border-radius: 999px; border: 1px solid var(--line); background: var(--raise); cursor: pointer; font-weight: 600; font-size: 15px; }
+  .qk svg { color: var(--c); width: 1.1em; height: 1.1em; }
+  .qk:hover { border-color: var(--c); background: var(--c-soft); }
+  .qk b { font-weight: 700; color: var(--muted); font-size: 13px; }
+  .c-medical { --c: var(--wine); --c-soft: var(--wine-soft); }
+  .c-admin { --c: var(--green); --c-soft: var(--green-soft); }
+  .c-goto { --c: #8a6a00; --c-soft: var(--sun-soft); }
 
-  h1 { font-size: 28px; line-height: 1.15; margin: 14px 0 4px; letter-spacing: -.02em; }
-  .lead { color: var(--muted); margin: 0 0 18px; }
+  /* Back + titles */
+  .back { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; margin-top: 22px; padding: 0 14px 0 8px; border: 0; background: none; cursor: pointer; font-weight: 700; color: var(--wine); font-size: 16px; border-radius: 999px; }
+  .back:hover { background: var(--wine-soft); }
+  .page-title { display: flex; align-items: center; gap: 14px; margin: 8px 0 6px; }
+  .page-title h1 { font-size: clamp(32px, 7vw, 46px); margin: 0; }
+  .page-title .badge-ico { width: 58px; height: 58px; }
 
-  /* Tiles */
-  .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
-  @media (min-width: 600px) { .grid { grid-template-columns: repeat(3, 1fr); } }
-  .tile {
-    text-align: left; cursor: pointer; border: 0; border-radius: var(--radius); padding: 16px;
-    min-height: 124px; display: flex; flex-direction: column; justify-content: space-between; gap: 10px;
-    background: var(--tint, var(--green)); color: var(--on, #fff); box-shadow: var(--shadow);
-    transition: transform .12s ease;
-  }
-  .tile:hover { transform: translateY(-3px); }
-  .tile:active { transform: translateY(0) scale(.98); }
-  .tile .emoji { font-size: 30px; line-height: 1; }
-  .tile .name { font-weight: 800; font-size: 18px; line-height: 1.15; }
-  .tile .count { font-size: 13px; opacity: .9; font-weight: 600; }
-  .tile.empty { opacity: .72; }
+  /* Sub rows */
+  .rows { display: grid; gap: 12px; margin-top: 24px; }
+  .row { display: flex; align-items: center; gap: 14px; width: 100%; text-align: left; padding: 14px 16px; min-height: 68px; border-radius: 18px; border: 1px solid var(--line); background: var(--surface); cursor: pointer; }
+  .row:hover { border-color: var(--c); background: var(--raise); }
+  .row .badge-ico { width: 42px; height: 42px; border-radius: 13px; }
+  .row .badge-ico svg { width: 22px; height: 22px; }
+  .row .n { font-weight: 700; font-size: 18px; }
+  .row .ct { margin-left: auto; color: var(--muted); font-size: 14px; font-weight: 600; }
+  .row.none { opacity: .62; }
 
   /* Place cards */
-  .list { display: grid; gap: 14px; }
-  .card { background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid var(--line); overflow: hidden; }
-  .card .stripe { height: 6px; background: linear-gradient(90deg, var(--green) 0 50%, var(--yellow) 50% 75%, var(--blue) 75%); }
-  .card .body { padding: 16px; }
-  .card .head { display: flex; gap: 14px; align-items: center; }
-  .logo { flex: none; width: 60px; height: 60px; border-radius: 14px; background: var(--blue); color: #fff; display: grid; place-items: center; font-weight: 800; font-size: 22px; overflow: hidden; border: 1px solid var(--line); }
+  .list { display: grid; gap: 22px; margin-top: 24px; }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 28px; box-shadow: 0 10px 30px rgba(120,60,90,.06); }
+  .card-top { display: flex; align-items: center; gap: 14px; }
+  .logo { flex: none; width: 58px; height: 58px; border-radius: 16px; background: var(--wine); color: var(--on-wine); display: grid; place-items: center; font-family: var(--font-display); font-weight: 800; font-size: 26px; overflow: hidden; }
   .logo img { width: 100%; height: 100%; object-fit: contain; background: #fff; }
-  .card h2 { margin: 0; font-size: 21px; line-height: 1.2; letter-spacing: -.01em; }
-  .card .kind { color: var(--muted); font-size: 14px; }
-  .badges { display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0 4px; }
-  .badge { font-size: 13px; font-weight: 700; padding: 5px 10px; border-radius: 999px; background: #eef2f7; color: var(--ink); }
-  .badge.free { background: var(--green); color: #fff; }
-  .badge.paid { background: var(--yellow); color: #3a3000; }
-  .badge.walk { background: #dfe9ff; color: var(--blue); }
-  .badge.pride { background: linear-gradient(90deg,#ff5a4f,#ffb000,#2fb36b,#3a7bff,#9b5bff); color: #fff; }
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) .badge { background: #25305a; }
-    :root:not([data-theme="light"]) .badge.walk { background: #25305a; color: #a9c1ff; }
-  }
-  dl.facts { margin: 12px 0 0; display: grid; gap: 10px; }
-  dl.facts div { display: grid; grid-template-columns: 28px 1fr; gap: 8px; align-items: start; }
-  dl.facts dt { font-size: 18px; }
-  dl.facts dt span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
-  dl.facts dd { margin: 0; }
+  .card h2 { font-family: var(--font-display); font-weight: 700; font-size: 26px; letter-spacing: -.02em; line-height: 1.1; margin: 0; }
+  .kind { color: var(--muted); font-size: 15px; }
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0 6px; }
+  .tag { font-size: 13px; font-weight: 700; padding: 5px 11px; border-radius: 999px; background: var(--line); color: var(--ink); }
+  .tag.free { background: var(--green); color: #fff; }
+  .tag.paid { background: var(--sun); color: #2b2200; }
+  .tag.soft { background: var(--wine-soft); color: var(--wine); }
+  dl.facts { display: grid; gap: 0; margin: 14px 0 0; }
+  dl.facts > div { display: grid; grid-template-columns: 92px 1fr; gap: 12px; padding: 16px 0; border-top: 1px solid var(--line); }
+  dl.facts dt { font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); padding-top: 3px; }
+  dl.facts dd { margin: 0; min-width: 0; overflow-wrap: anywhere; }
+  dd small { color: var(--muted); font-size: 15px; }
   .todo { color: var(--muted); font-style: italic; }
-  .note { margin: 12px 0 0; padding: 12px 14px; background: color-mix(in srgb, var(--yellow) 22%, var(--surface)); border-radius: 12px; font-size: 16px; }
-  .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
-  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 16px; min-height: 48px; border-radius: 14px; font-weight: 700; text-decoration: none; border: 2px solid var(--line); background: var(--surface); }
-  .btn:hover { border-color: var(--blue); }
-  .btn.primary { background: var(--blue); color: #fff; border-color: var(--blue); flex: 1 1 100%; justify-content: center; font-size: 17px; }
-  @media (min-width: 520px) { .btn.primary { flex: 0 0 auto; } }
-  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .btn.primary { background: var(--yellow); color: #1a1a00; border-color: var(--yellow); } }
-  :root[data-theme="dark"] .btn.primary { background: var(--yellow); color: #1a1a00; border-color: var(--yellow); }
+  .num { font-variant-numeric: tabular-nums; }
+  .note { margin: 14px 0 0; padding: 14px 16px; border-radius: 14px; background: var(--sun-soft); font-size: 16px; }
+  .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; padding: 0 16px; border-radius: 14px; font-weight: 700; font-size: 16px; text-decoration: none; border: 1.5px solid var(--line); background: var(--raise); }
+  .btn:hover { border-color: var(--ink); }
+  .btn.primary { flex: 1 1 100%; background: var(--wine); color: var(--on-wine); border-color: var(--wine); font-size: 17px; min-height: 52px; }
+  .btn.primary:hover { opacity: .9; }
+  .empty-state { padding: 34px 22px; text-align: center; border: 1.5px dashed var(--line); border-radius: var(--radius); color: var(--muted); }
+  .empty-state strong { display: block; color: var(--ink); font-family: var(--font-display); font-size: 20px; margin-bottom: 4px; }
 
-  .empty-state { text-align: center; padding: 36px 20px; background: var(--surface); border: 2px dashed var(--line); border-radius: var(--radius); color: var(--muted); }
-  .empty-state strong { display: block; color: var(--ink); font-size: 18px; margin-bottom: 4px; }
-
-  /* Filter chips */
-  .chips { display: flex; gap: 8px; flex-wrap: wrap; margin: 4px 0 16px; }
-  .chip { border: 2px solid var(--line); background: var(--surface); padding: 8px 14px; border-radius: 999px; font-weight: 600; cursor: pointer; min-height: 44px; }
+  .chips { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+  .chip { min-height: 44px; padding: 0 16px; border-radius: 999px; border: 1.5px solid var(--line); background: var(--surface); cursor: pointer; font-weight: 600; }
   .chip[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
 
   /* Emergency */
-  .sos { display: flex; align-items: center; gap: 14px; width: 100%; text-align: left; cursor: pointer; border: 0; border-radius: var(--radius); padding: 16px; margin: 0 0 14px; background: #d93025; color: #fff; box-shadow: var(--shadow); }
-  .sos:hover { filter: brightness(1.08); }
-  .sos .big { font-size: 34px; line-height: 1; }
-  .sos .t { font-weight: 800; font-size: 19px; line-height: 1.2; }
-  .sos .s { font-size: 14px; opacity: .95; }
-  .sos-main { display: grid; gap: 12px; margin-bottom: 22px; }
-  .sos-card { display: grid; grid-template-columns: auto 1fr; gap: 6px 16px; align-items: center; padding: 16px; border-radius: var(--radius); background: var(--c); color: #fff; text-decoration: none; box-shadow: var(--shadow); }
-  .sos-card .n { font-size: 52px; font-weight: 900; line-height: 1; letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
-  .sos-card .w { font-weight: 800; font-size: 19px; line-height: 1.2; }
-  .sos-card .u { grid-column: 1 / -1; font-size: 15px; opacity: .95; }
-  h2.sec { font-size: 20px; margin: 22px 0 10px; }
-  .num-list { display: grid; gap: 10px; padding: 0; margin: 0; list-style: none; }
-  .num-list li { display: grid; grid-template-columns: 76px 1fr; gap: 12px; align-items: center; padding: 12px 14px; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; }
-  .num-list .n { font-size: 28px; font-weight: 900; color: var(--blue); font-variant-numeric: tabular-nums; }
+  .sos-main { display: grid; gap: 12px; margin: 20px 0; }
+  .sos-card { display: grid; grid-template-columns: auto 1fr; gap: 4px 20px; align-items: center; padding: 20px; border-radius: var(--radius); background: var(--c); color: #fff; text-decoration: none; }
+  .sos-card .n { font-family: var(--font-display); font-size: 68px; font-weight: 800; line-height: 1; letter-spacing: -.04em; font-variant-numeric: tabular-nums; grid-row: span 2; }
+  .sos-card .w { font-weight: 800; font-size: 20px; line-height: 1.2; align-self: end; }
+  .sos-card .u { font-size: 15px; opacity: .92; align-self: start; }
+  h2.sec { font-family: var(--font-display); font-weight: 800; font-size: 24px; letter-spacing: -.02em; margin: 34px 0 12px; }
+  .num-list { display: grid; gap: 0; padding: 0; margin: 0; list-style: none; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+  .num-list li { display: grid; grid-template-columns: 74px 1fr; gap: 14px; align-items: center; padding: 14px 18px; border-top: 1px solid var(--line); }
+  .num-list li:first-child { border-top: 0; }
+  .num-list .n { font-family: var(--font-display); font-size: 30px; font-weight: 800; color: var(--wine); font-variant-numeric: tabular-nums; }
   .num-list .w { font-weight: 700; }
   .num-list .u { color: var(--muted); font-size: 15px; }
-  .contact-line { font-variant-numeric: tabular-nums; }
 
-  .foot { margin-top: 36px; color: var(--muted); font-size: 14px; text-align: center; }
-  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
-  @media (prefers-reduced-motion: reduce) { .tile { transition: none; } }
+  .foot { margin: 40px 0 0; color: var(--muted); font-size: 14px; }
+  main.wrap { padding-bottom: 96px; }
+  @media (min-width: 700px) {
+    .panels { grid-template-columns: 1fr 1fr; }
+    .panel.wide { grid-column: 1 / -1; }
+    .sos-main { grid-template-columns: repeat(3, 1fr); }
+    .sos-card { grid-template-columns: 1fr; }
+    .sos-card .n { grid-row: auto; font-size: 76px; }
+    .actions .btn.primary { flex: 0 0 auto; }
+  }
+  @media (max-width: 420px) { dl.facts > div { grid-template-columns: 1fr; gap: 2px; } }
+  @media (prefers-reduced-motion: reduce) { .go { transition: none; } }
 </style>
 </head>
 <body>
 
-<header class="top">
-  <div class="wrap">
-    <a class="brand" href="#/" aria-label="São Paulo Guide, home"><span class="dot" aria-hidden="true"></span>São Paulo Guide</a>
-    <span class="spacer"></span>
-    <button class="icon-btn" id="theme" aria-label="Toggle dark mode" title="Light / dark">◐</button>
-  </div>
-</header>
+<div class="wrap">
+  <header class="bar">
+    <a class="mark" href="#/" aria-label="São Paulo Guide, home"><i></i>São Paulo <span>day to day</span></a>
+    <span class="grow"></span>
+    <a class="pill" href="#/emergency" aria-label="Emergency numbers"><svg class="i" viewBox="0 0 24 24"><path d="M7 18v-6a5 5 0 0 1 10 0v6M4 18h16M12 3v2M4.5 6.5 6 8M19.5 6.5 18 8"/></svg>SOS <small>192 · 190 · 193</small></a>
+  </header>
+</div>
 
 <main class="wrap" id="app" aria-live="polite"></main>
 
@@ -171,51 +181,83 @@
 /* ==========================================================================
    YOUR DATA. To add a place, copy one entry in PLACES and fill it in.
    cat / sub must match ids in CATEGORIES below.
-   price.type: "free" | "paid" | "varies"   (price.detail = "R$ 150 to 300", etc.)
+   price.type: "free" | "paid" | "varies"   (price.amount = "R$ 150 to 300")
    Leave a field out (or "") and the card shows "Not added yet".
    logo: URL or path of an image. If empty, a colored initial is shown.
    maps: optional exact Google Maps link. If empty, one is built from name + address.
    ========================================================================== */
+const ICONS = {
+  search: '<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>',
+  medical: '<rect x="3" y="3" width="18" height="18" rx="5"/><path d="M12 8v8M8 12h8"/>',
+  admin: '<path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5M10 13h6M10 17h6"/>',
+  star: '<path d="m12 3 2.7 5.6 6.1.8-4.5 4.2 1.1 6.1L12 16.8 6.6 19.7l1.1-6.1L3.2 9.4l6.1-.8z"/>',
+  general: '<path d="M6 3v6a4 4 0 0 0 8 0V3M10 13v3a4 4 0 0 0 8 0v-2"/><circle cx="18" cy="12" r="2"/>',
+  eye: '<path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
+  tooth: '<path d="M8 3C5.5 3 4 5 4 7.5c0 2 1 3 1.5 5S6 21 8 21s1.5-5 4-5 2 5 4 5 1.5-6.5 2.5-8.5S20 9.5 20 7.5C20 5 18.5 3 16 3c-2 0-2.5 1-4 1S10 3 8 3z"/>',
+  heart: '<path d="M12 21s-8-5.2-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 5.8-8 11-8 11z"/>',
+  flower: '<circle cx="12" cy="12" r="3"/><circle cx="12" cy="5.5" r="2.5"/><circle cx="12" cy="18.5" r="2.5"/><circle cx="5.5" cy="12" r="2.5"/><circle cx="18.5" cy="12" r="2.5"/>',
+  mind: '<path d="M9 4a3 3 0 0 0-3 3 3 3 0 0 0-2 5 3 3 0 0 0 2 5 3 3 0 0 0 6 1V5a2 2 0 0 0-3-1z"/><path d="M15 4a3 3 0 0 1 3 3 3 3 0 0 1 2 5 3 3 0 0 1-2 5 3 3 0 0 1-6 1"/>',
+  flask: '<path d="M9 3h6M10 3v6L4.5 19a1.5 1.5 0 0 0 1.3 2h12.4a1.5 1.5 0 0 0 1.3-2L14 9V3"/>',
+  hospital: '<path d="M4 21V5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v16M2 21h20M12 8v6M9 11h6"/>',
+  id: '<rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M6 16c.5-2 5.5-2 6 0M15 10h3M15 14h3"/>',
+  globe: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/>',
+  receipt: '<path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6"/>',
+  bank: '<path d="m3 10 9-6 9 6M5 10v8M9 10v8M15 10v8M19 10v8M3 20h18"/>',
+  phone: '<rect x="7" y="2" width="10" height="20" rx="2.5"/><path d="M11 18h2"/>',
+  train: '<rect x="5" y="3" width="14" height="14" rx="3"/><path d="M5 11h14M9 21l2-4M15 21l-2-4"/>',
+  coffee: '<path d="M4 8h13v6a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5zM17 10h2a2 2 0 0 1 0 4h-2M7 3v2M11 3v2M14 3v2"/>',
+  cart: '<path d="M3 4h2l2.5 11h10l2-8H6"/><circle cx="9" cy="20" r="1.2"/><circle cx="17" cy="20" r="1.2"/>',
+  move: '<circle cx="12" cy="5" r="2"/><path d="M12 8v6M6 11l6 1 6-1M9 21l3-7 3 7"/>',
+  laptop: '<rect x="4" y="5" width="16" height="11" rx="1.5"/><path d="M2 20h20"/>',
+  glass: '<path d="M5 3h14l-7 9zM12 12v9M8 21h8"/>',
+  pin: '<path d="M12 21s7-6.2 7-12a7 7 0 0 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="9" r="2.5"/>',
+  chat: '<path d="M4 5h16v11H9l-5 4z"/>',
+  insta: '<rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17" cy="7" r=".6"/>',
+  call: '<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a1 1 0 0 1-1 1A15 15 0 0 1 4 5a1 1 0 0 1 1-1z"/>',
+  back: '<path d="M15 5 8 12l7 7"/>',
+  next: '<path d="m9 5 7 7-7 7"/>',
+  siren: '<path d="M7 18v-6a5 5 0 0 1 10 0v6M4 18h16M12 3v2M4.5 6.5 6 8M19.5 6.5 18 8"/>'
+};
 const CATEGORIES = [
-  { id: "medical", name: "Medical", emoji: "🩺", tint: "#009c3b", on: "#ffffff",
-    blurb: "What do you need to get checked?",
+  { id: "medical", name: "Medical", icon: "medical", cls: "c-medical",
+    blurb: "What do you need checked?",
     subs: [
-      { id: "general",   name: "General consult",  emoji: "👩‍⚕️" },
-      { id: "eyes",      name: "Eyes",             emoji: "👁️" },
-      { id: "teeth",     name: "Teeth",            emoji: "🦷" },
-      { id: "sexual",    name: "Sexual health",    emoji: "🌈" },
-      { id: "womens",    name: "Women's health",   emoji: "🌸" },
-      { id: "mental",    name: "Mental health",    emoji: "🧠" },
-      { id: "labs",      name: "Labs & pharmacy",  emoji: "🧪" },
-      { id: "emergency", name: "Hospitals & ER",   emoji: "🏥" }
+      { id: "general",   name: "General consult",  icon: "general" },
+      { id: "eyes",      name: "Eyes",             icon: "eye" },
+      { id: "teeth",     name: "Teeth",            icon: "tooth" },
+      { id: "sexual",    name: "Sexual health",    icon: "heart" },
+      { id: "womens",    name: "Women's health",   icon: "flower" },
+      { id: "mental",    name: "Mental health",    icon: "mind" },
+      { id: "labs",      name: "Labs & pharmacy",  icon: "flask" },
+      { id: "emergency", name: "Hospitals & ER",   icon: "hospital" }
     ] },
-  { id: "admin", name: "Administrative", emoji: "📄", tint: "#002776", on: "#ffffff",
+  { id: "admin", name: "Administrative", icon: "admin", cls: "c-admin",
     blurb: "Papers, permits and paperwork.",
     subs: [
-      { id: "ids",     name: "IDs & documents",     emoji: "🪪" },
-      { id: "visa",    name: "Visa & immigration",  emoji: "🛂" },
-      { id: "tax",     name: "Taxes & CPF",         emoji: "🧾" },
-      { id: "bank",    name: "Banking & money",     emoji: "🏦" },
-      { id: "phone",   name: "SIM, phone & internet", emoji: "📱" },
-      { id: "transport", name: "Transport card",    emoji: "🚇" }
+      { id: "ids",       name: "IDs & documents",       icon: "id" },
+      { id: "visa",      name: "Visa & immigration",    icon: "globe" },
+      { id: "tax",       name: "Taxes & CPF",           icon: "receipt" },
+      { id: "bank",      name: "Banking & money",       icon: "bank" },
+      { id: "phone",     name: "SIM, phone & internet", icon: "phone" },
+      { id: "transport", name: "Transport card",        icon: "train" }
     ] },
-  { id: "go-to", name: "My go-to places", emoji: "⭐", tint: "#ffdf00", on: "#2b2500",
+  { id: "go-to", name: "My go-to places", icon: "star", cls: "c-goto",
     blurb: "The spots I always come back to.",
     subs: [
-      { id: "food",     name: "Food & coffee",     emoji: "☕" },
-      { id: "groceries", name: "Groceries",        emoji: "🛒" },
-      { id: "movement", name: "Movement & wellness", emoji: "🧘" },
-      { id: "work",     name: "Work spots",        emoji: "💻" },
-      { id: "social",   name: "Going out",         emoji: "💃" }
+      { id: "food",      name: "Food & coffee",       icon: "coffee" },
+      { id: "groceries", name: "Groceries",           icon: "cart" },
+      { id: "movement",  name: "Movement & wellness", icon: "move" },
+      { id: "work",      name: "Work spots",          icon: "laptop" },
+      { id: "social",    name: "Going out",           icon: "glass" }
     ] }
 ];
 
 /* Emergency numbers: free, work from any phone, no area code needed. */
 const EMERGENCY = {
   main: [
-    { num: "192", name: "Ambulance (SAMU)", use: "Medical emergency: collapse, accident, heavy bleeding, chest pain.", emoji: "🚑", color: "#d93025" },
-    { num: "190", name: "Police (Polícia Militar)", use: "Crime in progress, danger, theft, violence.", emoji: "🚓", color: "#002776" },
-    { num: "193", name: "Fire brigade (Bombeiros)", use: "Fire, rescue, gas leak, drowning, trapped in a lift.", emoji: "🚒", color: "#c2410c" }
+    { num: "192", name: "Ambulance (SAMU)", use: "Medical emergency: collapse, accident, heavy bleeding, chest pain.", color: "#c8323c" },
+    { num: "190", name: "Police (Polícia Militar)", use: "Crime in progress, danger, theft, violence.", color: "#2b5bb8" },
+    { num: "193", name: "Fire brigade (Bombeiros)", use: "Fire, rescue, gas leak, drowning, trapped in a lift.", color: "#bd5a0d" }
   ],
   more: [
     { num: "180", name: "Women's helpline", use: "Violence against women. Free, confidential, 24/7." },
@@ -259,132 +301,117 @@ const PLACES = [
    ========================================================================== */
 const $app = document.getElementById("app");
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
+const ico = n => `<svg class="i" viewBox="0 0 24 24" aria-hidden="true">${ICONS[n] || ""}</svg>`;
 const cat = id => CATEGORIES.find(c => c.id === id);
 const sub = (c, id) => c && c.subs.find(s => s.id === id);
 const placesIn = (c, s) => PLACES.filter(p => p.cat === c && (!s || p.sub === s));
-const plural = n => n === 1 ? "1 place" : n + " places";
+const count = n => n === 1 ? "1 place" : n + " places";
 
 function mapsUrl(p) {
   if (p.maps) return p.maps;
   const q = [p.name, p.address || p.area, "São Paulo"].filter(Boolean).join(", ");
   return "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(q);
 }
-const field = (v, fallback = "Not added yet") => v ? esc(v) : `<span class="todo">${fallback}</span>`;
+const field = (v) => v ? esc(v) : `<span class="todo">Not added yet</span>`;
 
-function priceBadge(p) {
+function priceTag(p) {
   const t = p.price?.type;
-  if (t === "free") return `<span class="badge free">Free</span>`;
-  if (t === "paid") return `<span class="badge paid">${esc(p.price.amount || "Paid")}</span>`;
-  if (t === "varies") return `<span class="badge paid">Price varies</span>`;
-  return `<span class="badge">Price unknown</span>`;
+  if (t === "free") return `<span class="tag free">Free</span>`;
+  if (t === "paid") return `<span class="tag paid">${esc(p.price.amount || "Paid")}</span>`;
+  if (t === "varies") return `<span class="tag paid">Price varies</span>`;
+  return `<span class="tag">Price unknown</span>`;
 }
 
 function card(p) {
-  const c = cat(p.cat), s = sub(c, p.sub);
   const initial = esc((p.name || "?").trim()[0].toUpperCase());
-  const logo = p.logo
-    ? `<img src="${esc(p.logo)}" alt="" loading="lazy" onerror="this.parentNode.textContent='${initial}'">`
-    : initial;
-  const links = [
-    `<a class="btn primary" href="${esc(mapsUrl(p))}" target="_blank" rel="noopener">📍 Directions in Google Maps</a>`,
-    p.phone ? `<a class="btn" href="tel:${esc(p.phone.replace(/[^\d+]/g, ""))}">📞 Call</a>` : "",
-    p.whatsapp ? `<a class="btn" href="https://wa.me/${esc(p.whatsapp.replace(/\D/g, ""))}" target="_blank" rel="noopener">💬 WhatsApp</a>` : "",
-    p.instagram ? `<a class="btn" href="${esc(p.instagram)}" target="_blank" rel="noopener">📷 Instagram</a>` : "",
-    p.website ? `<a class="btn" href="${esc(p.website)}" target="_blank" rel="noopener">🌐 Website</a>` : ""
-  ].join("");
+  const logo = p.logo ? `<img src="${esc(p.logo)}" alt="" loading="lazy" onerror="this.parentNode.textContent='${initial}'">` : initial;
+  const btn = (href, icon, label) => `<a class="btn" href="${esc(href)}" target="_blank" rel="noopener">${ico(icon)}${label}</a>`;
   return `
   <article class="card">
-    <div class="stripe"></div>
-    <div class="body">
-      <div class="head">
-        <div class="logo">${logo}</div>
-        <div>
-          <h2>${esc(p.name)}</h2>
-          <div class="kind">${esc(p.kind || (s ? s.name : ""))}</div>
-        </div>
-      </div>
-      <div class="badges">
-        ${priceBadge(p)}
-        ${p.walkIn ? `<span class="badge walk">Walk-in, no booking</span>` : ""}
-        ${p.pride ? `<span class="badge pride">LGBTQ+ friendly</span>` : ""}
-      </div>
-      <dl class="facts">
-        <div><dt aria-hidden="true">📍</dt><dd><span class="sr">Address: </span>${field(p.address)}${p.area ? `<br><small>${esc(p.area)}</small>` : ""}</dd></div>
-        <div><dt aria-hidden="true">🕒</dt><dd><span class="sr">Opening hours: </span>${field(p.hours)}</dd></div>
-        <div><dt aria-hidden="true">💶</dt><dd><span class="sr">Cost: </span>${p.price?.detail ? esc(p.price.detail) : `<span class="todo">Not added yet</span>`}</dd></div>
-        ${p.phone || p.whatsapp ? `<div><dt aria-hidden="true">📞</dt><dd class="contact-line">${p.phone ? `Phone ${esc(p.phone)}` : ""}${p.phone && p.whatsapp ? "<br>" : ""}${p.whatsapp ? `WhatsApp ${esc(p.whatsapp)}` : ""}</dd></div>` : ""}
-      </dl>
-      ${p.note ? `<p class="note">${esc(p.note)}</p>` : ""}
-      <div class="actions">${links}</div>
+    <div class="card-top">
+      <div class="logo">${logo}</div>
+      <div><h2>${esc(p.name)}</h2><div class="kind">${esc(p.kind || "")}</div></div>
+    </div>
+    <div class="tags">
+      ${priceTag(p)}
+      ${p.walkIn ? `<span class="tag soft">Walk-in, no booking</span>` : ""}
+      ${p.pride ? `<span class="tag soft">LGBTQ+ friendly</span>` : ""}
+    </div>
+    <dl class="facts">
+      <div><dt>Address</dt><dd>${field(p.address)}${p.area ? `<br><small>${esc(p.area)}</small>` : ""}</dd></div>
+      <div><dt>Hours</dt><dd>${field(p.hours)}</dd></div>
+      <div><dt>Cost</dt><dd>${field(p.price?.detail)}</dd></div>
+      ${p.phone || p.whatsapp ? `<div><dt>Contact</dt><dd class="num">${p.phone ? `Phone ${esc(p.phone)}` : ""}${p.phone && p.whatsapp ? "<br>" : ""}${p.whatsapp ? `WhatsApp ${esc(p.whatsapp)}` : ""}</dd></div>` : ""}
+    </dl>
+    ${p.note ? `<p class="note">${esc(p.note)}</p>` : ""}
+    <div class="actions">
+      <a class="btn primary" href="${esc(mapsUrl(p))}" target="_blank" rel="noopener">${ico("pin")}Get directions</a>
+      ${p.whatsapp ? btn("https://wa.me/" + p.whatsapp.replace(/\D/g, ""), "chat", "WhatsApp") : ""}
+      ${p.phone ? `<a class="btn" href="tel:${esc(p.phone.replace(/[^\d+]/g, ""))}">${ico("call")}Call</a>` : ""}
+      ${p.instagram ? btn(p.instagram, "insta", "Instagram") : ""}
+      ${p.website ? btn(p.website, "globe", "Website") : ""}
     </div>
   </article>`;
 }
 
-function crumbs(parts) {
-  return `<nav class="crumbs" aria-label="Breadcrumb">` + parts.map((x, i) =>
-    i === parts.length - 1 ? `<span class="here" aria-current="page">${esc(x.label)}</span>`
-    : `<button onclick="go('${x.to}')">${esc(x.label)}</button><span aria-hidden="true">›</span>`).join("") + `</nav>`;
-}
+const back = (label, to) => `<button class="back" onclick="go('${to}')">${ico("back")}${esc(label)}</button>`;
 
 function searchBox(value = "") {
-  return `<div class="search" role="search">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+  return `<div class="search" role="search">${ico("search")}
     <label class="sr" for="q">Search the guide</label>
-    <input id="q" type="search" placeholder="Search anything: dentist, visa, STI test…" value="${esc(value)}" autocomplete="off">
-  </div>`;
+    <input id="q" type="search" placeholder="Try “dentist”, “visa” or “STI test”" value="${esc(value)}" autocomplete="off"></div>`;
 }
 
 function viewHome() {
   $app.innerHTML = `
+    <p class="kicker">Sampa, sorted</p>
+    <h1>Whatever you need, <em>two taps</em> away.</h1>
+    <p class="lead">Your day-to-day city guide. Pick a topic, or jump straight to what you need.</p>
     ${searchBox()}
-    <button class="sos" onclick="go('/emergency')">
-      <span class="big" aria-hidden="true">🆘</span>
-      <span><span class="t">Emergency numbers</span><br><span class="s">Ambulance 192 · Police 190 · Fire 193</span></span>
-    </button>
-    <h1>Olá! What do you need?</h1>
-    <p class="lead">Tap a topic. Two taps and you have your answer.</p>
-    <div class="grid">
-      ${CATEGORIES.map(c => {
+    <div class="panels">
+      ${CATEGORIES.map((c, i) => {
         const n = placesIn(c.id).length;
-        return `<button class="tile ${n ? "" : "empty"}" style="--tint:${c.tint};--on:${c.on}" onclick="go('/${c.id}')">
-          <span class="emoji" aria-hidden="true">${c.emoji}</span>
-          <span><span class="name">${esc(c.name)}</span><br><span class="count">${n ? plural(n) : "Nothing yet"}</span></span>
-        </button>`; }).join("")}
+        return `<section class="panel ${c.cls} ${i === 0 ? "wide" : ""}">
+          <button class="panel-head" onclick="go('/${c.id}')" aria-label="Open ${esc(c.name)}">
+            <span class="badge-ico">${ico(c.icon)}</span>
+            <span><span class="t">${esc(c.name)}</span><span class="s">${esc(c.blurb)}${n ? " · " + count(n) : ""}</span></span>
+            <span class="go">${ico("next")}</span>
+          </button>
+          <div class="quick">${c.subs.map(s => `<button class="qk" onclick="go('/${c.id}/${s.id}')">${ico(s.icon)}${esc(s.name)}</button>`).join("")}</div>
+        </section>`; }).join("")}
     </div>
-    <p class="foot">Built little by little ✨ · ${plural(PLACES.length)} saved</p>`;
+    <p class="foot">${count(PLACES.length)} saved so far. More coming.</p>`;
   bindSearch();
 }
 
 function viewEmergency() {
   $app.innerHTML = `
-    ${crumbs([{ label: "Home", to: "/" }, { label: "Emergency numbers" }])}
-    <h1>🆘 Emergency numbers</h1>
+    ${back("Home", "/")}
+    <div class="page-title"><h1>Emergency numbers</h1></div>
     <p class="lead">All free, 24/7, from any phone, even without credit. No area code needed.</p>
     <div class="sos-main">
       ${EMERGENCY.main.map(e => `<a class="sos-card" style="--c:${e.color}" href="tel:${e.num}" aria-label="${esc(e.name)}, ${e.num}">
-        <span class="n">${e.num}</span><span class="w">${e.emoji} ${esc(e.name)}</span>
-        <span class="u">${esc(e.use)}</span></a>`).join("")}
+        <span class="n">${e.num}</span><span class="w">${esc(e.name)}</span><span class="u">${esc(e.use)}</span></a>`).join("")}
     </div>
     <p class="note">${esc(EMERGENCY.tip)}</p>
     <h2 class="sec">Other useful numbers</h2>
     <ul class="num-list">
       ${EMERGENCY.more.map(e => `<li><span class="n">${e.num}</span><span><span class="w">${esc(e.name)}</span><br><span class="u">${esc(e.use)}</span></span></li>`).join("")}
     </ul>
-    <p class="foot">Always double check with official sources if something feels off.</p>`;
+    <p class="foot">Double check with official sources if something feels off.</p>`;
 }
 
 function viewCategory(c) {
   $app.innerHTML = `
-    ${crumbs([{ label: "Home", to: "/" }, { label: c.name }])}
-    <h1>${c.emoji} ${esc(c.name)}</h1>
+    ${back("Home", "/")}
+    <div class="page-title ${c.cls}"><span class="badge-ico">${ico(c.icon)}</span><h1>${esc(c.name)}</h1></div>
     <p class="lead">${esc(c.blurb)}</p>
-    <div class="grid">
+    <div class="rows ${c.cls}">
       ${c.subs.map(s => {
         const n = placesIn(c.id, s.id).length;
-        return `<button class="tile ${n ? "" : "empty"}" style="--tint:${c.tint};--on:${c.on}" onclick="go('/${c.id}/${s.id}')">
-          <span class="emoji" aria-hidden="true">${s.emoji}</span>
-          <span><span class="name">${esc(s.name)}</span><br><span class="count">${n ? plural(n) : "Nothing yet"}</span></span>
-        </button>`; }).join("")}
+        return `<button class="row ${n ? "" : "none"}" onclick="go('/${c.id}/${s.id}')">
+          <span class="badge-ico">${ico(s.icon)}</span><span class="n">${esc(s.name)}</span>
+          <span class="ct">${n ? count(n) : "Nothing yet"}</span>${ico("next")}</button>`; }).join("")}
     </div>`;
 }
 
@@ -393,13 +420,12 @@ function viewSub(c, s) {
   const all = placesIn(c.id, s.id);
   const shown = all.filter(p => priceFilter === "all" || p.price?.type === priceFilter);
   $app.innerHTML = `
-    ${crumbs([{ label: "Home", to: "/" }, { label: c.name, to: "/" + c.id }, { label: s.name }])}
-    <h1>${s.emoji} ${esc(s.name)}</h1>
+    ${back(c.name, "/" + c.id)}
+    <div class="page-title ${c.cls}"><span class="badge-ico">${ico(s.icon)}</span><h1>${esc(s.name)}</h1></div>
     ${all.length > 1 ? `<div class="chips" role="group" aria-label="Filter by price">
-      ${["all","free","paid"].map(f => `<button class="chip" aria-pressed="${priceFilter === f}" onclick="setPrice('${f}')">${{all:"All",free:"Free only",paid:"Paid"}[f]}</button>`).join("")}
-    </div>` : `<p class="lead">${all.length ? "" : "Tell me a place and I will add it here."}</p>`}
+      ${["all","free","paid"].map(f => `<button class="chip" aria-pressed="${priceFilter === f}" onclick="setPrice('${f}')">${{all:"All",free:"Free only",paid:"Paid"}[f]}</button>`).join("")}</div>` : ""}
     <div class="list">
-      ${shown.length ? shown.map(card).join("") : `<div class="empty-state"><strong>Nothing here yet</strong>Send me a place for ${esc(s.name)} and it will show up here.</div>`}
+      ${shown.length ? shown.map(card).join("") : `<div class="empty-state"><strong>Nothing here yet</strong>Send me a place for ${esc(s.name)} and it shows up here.</div>`}
     </div>`;
 }
 window.setPrice = f => { priceFilter = f; route(); };
@@ -410,22 +436,20 @@ function viewSearch(q) {
     const c = cat(p.cat), s = sub(c, p.sub);
     return [p.name, p.kind, p.address, p.area, p.note, c?.name, s?.name, ...(p.tags || [])].join(" ").toLowerCase().includes(t);
   });
-  const catHits = CATEGORIES.flatMap(c => c.subs.filter(s => (s.name + " " + c.name).toLowerCase().includes(t)).map(s => ({ c, s })));
+  const jumps = CATEGORIES.flatMap(c => c.subs.filter(s => (s.name + " " + c.name).toLowerCase().includes(t)).map(s => ({ c, s })));
   $app.innerHTML = `
+    <div style="height:22px"></div>
     ${searchBox(q)}
-    ${catHits.length ? `<h1>Jump to</h1><div class="chips">${catHits.map(({c,s}) => `<button class="chip" onclick="go('/${c.id}/${s.id}')">${s.emoji} ${esc(s.name)}</button>`).join("")}</div>` : ""}
-    <h1>${hits.length ? plural(hits.length) : "No results"}</h1>
-    <div class="list">${hits.map(card).join("") || `<div class="empty-state"><strong>Nothing found for “${esc(q)}”</strong>Try another word, or send me the place to add.</div>`}</div>`;
+    ${jumps.length ? `<div class="quick" style="margin-bottom:22px">${jumps.map(({c,s}) => `<button class="qk ${c.cls}" onclick="go('/${c.id}/${s.id}')">${ico(s.icon)}${esc(s.name)}</button>`).join("")}</div>` : ""}
+    <h2 class="sec" style="margin-top:0">${hits.length ? count(hits.length) : "No results"}</h2>
+    <div class="list" style="margin-top:0">${hits.map(card).join("") || `<div class="empty-state"><strong>Nothing found for “${esc(q)}”</strong>Try another word, or send me the place to add.</div>`}</div>`;
   bindSearch(true);
 }
 
 function bindSearch(keepFocus) {
   const el = document.getElementById("q");
   if (!el) return;
-  el.addEventListener("input", () => {
-    const v = el.value;
-    if (v.trim()) { viewSearch(v); } else { viewHome(); }
-  });
+  el.addEventListener("input", () => { const v = el.value; v.trim() ? viewSearch(v) : viewHome(); });
   if (keepFocus) { el.focus(); el.setSelectionRange(el.value.length, el.value.length); }
 }
 
@@ -439,19 +463,10 @@ function route() {
   else if (c && s) viewSub(c, s);
   else if (c) viewCategory(c);
   else viewHome();
-  if (!document.activeElement || document.activeElement === document.body) window.scrollTo({ top: 0 });
 }
 window.addEventListener("hashchange", () => { priceFilter = "all"; route(); window.scrollTo({ top: 0 }); });
 route();
 
-/* Theme toggle (remembered if the browser allows it) */
-const root = document.documentElement;
-try { const t = localStorage.getItem("sp-theme"); if (t) root.dataset.theme = t; } catch (e) {}
-document.getElementById("theme").addEventListener("click", () => {
-  const dark = root.dataset.theme ? root.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
-  root.dataset.theme = dark ? "light" : "dark";
-  try { localStorage.setItem("sp-theme", root.dataset.theme); } catch (e) {}
-});
 </script>
 </body>
 </html>
