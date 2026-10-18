@@ -25,6 +25,9 @@
     --green-soft: #e3f4ec;
     --sun: #f6c90e;
     --sun-soft: #fef5d2;
+    --br-green: #0b7a47;
+    --br-yellow: #ffdf00;
+    --br-blue: #1d4fa3;
     --sos: #a8305a;
     --on-sos: #ffffff;
     --font-display: "Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
@@ -117,6 +120,10 @@
   .tag.free { background: var(--green); color: #fff; }
   .tag.paid { background: var(--sun); color: #2b2200; }
   .tag.soft { background: var(--wine-soft); color: var(--wine); }
+  .tag.free { background: var(--br-green); color: #fff; }
+  .tag.walk { background: var(--br-yellow); color: #2b2500; }
+  .tag.pride { background: var(--br-blue); color: #fff; }
+  .flag { height: 6px; background: linear-gradient(90deg, var(--br-green) 0 34%, var(--br-yellow) 34% 67%, var(--br-blue) 67%); }
   dl.facts { display: grid; gap: 0; margin: 14px 0 0; }
   dl.facts > div { display: grid; grid-template-columns: 92px 1fr; gap: 12px; padding: 16px 0; border-top: 1px solid var(--line); }
   dl.facts dt { font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); padding-top: 3px; }
@@ -128,7 +135,7 @@
   .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
   .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; padding: 0 16px; border-radius: 14px; font-weight: 700; font-size: 16px; text-decoration: none; border: 1.5px solid var(--line); background: var(--raise); }
   .btn:hover { border-color: var(--ink); }
-  .btn.primary { flex: 1 1 100%; background: var(--wine); color: var(--on-wine); border-color: var(--wine); font-size: 17px; min-height: 52px; }
+  .btn.primary { flex: 1 1 100%; background: var(--br-green); color: #fff; border-color: var(--br-green); font-size: 17px; min-height: 52px; }
   .btn.primary:hover { opacity: .9; }
   .empty-state { padding: 34px 22px; text-align: center; border: 1.5px dashed var(--line); border-radius: var(--radius); color: var(--muted); }
   .empty-state strong { display: block; color: var(--ink); font-family: var(--font-display); font-size: 20px; margin-bottom: 4px; }
@@ -151,6 +158,41 @@
   .num-list .w { font-weight: 700; }
   .num-list .u { color: var(--muted); font-size: 15px; }
 
+  /* Step-by-step guides */
+  h2.sec { }
+  .guide { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 28px; box-shadow: 0 10px 30px rgba(120,60,90,.06); }
+  .guide h2 { font-family: var(--font-display); font-weight: 700; font-size: clamp(26px, 5vw, 32px); letter-spacing: -.02em; line-height: 1.12; margin: 12px 0 8px; text-wrap: balance; }
+  .guide .intro { color: var(--muted); margin: 0 0 14px; }
+  .g-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+  .prog { display: flex; align-items: center; gap: 12px; margin-bottom: 22px; font-size: 14px; font-weight: 600; color: var(--muted); }
+  .prog .bar { flex: 1; height: 8px; border-radius: 99px; background: var(--line); overflow: hidden; }
+  .prog .bar i { display: block; height: 100%; background: var(--br-green); border-radius: 99px; transition: width .25s; }
+  ol.steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; }
+  .step { position: relative; display: grid; grid-template-columns: 44px 1fr; gap: 16px; padding-bottom: 28px; }
+  .step:last-child { padding-bottom: 0; }
+  .step::before { content: ""; position: absolute; left: 21px; top: 46px; bottom: 2px; width: 2px; background: var(--line); }
+  .step:last-child::before { display: none; }
+  .numbtn { width: 44px; height: 44px; border-radius: 50%; border: 2px solid var(--wine); background: var(--surface); color: var(--wine); font-family: var(--font-display); font-weight: 700; font-size: 18px; cursor: pointer; display: grid; place-items: center; position: relative; }
+  .numbtn svg { position: absolute; width: 22px; height: 22px; opacity: 0; stroke-width: 2.4; }
+  .numbtn:hover { background: var(--wine-soft); }
+  .step.done .numbtn { background: var(--br-green); border-color: var(--br-green); color: #fff; }
+  .step.done .numbtn .n { opacity: 0; }
+  .step.done .numbtn svg { opacity: 1; }
+  .step.done h3 { color: var(--muted); }
+  .s-body { min-width: 0; }
+  .s-body h3 { font-family: var(--font-display); font-weight: 700; font-size: 21px; letter-spacing: -.015em; line-height: 1.25; margin: 8px 0 6px; }
+  .s-body p { margin: 0 0 12px; }
+  .lbl { font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin: 14px 0 8px !important; }
+  ul.docs { list-style: none; margin: 0 0 12px; padding: 0; display: grid; gap: 4px; }
+  ul.docs label { display: grid; grid-template-columns: 26px 1fr; gap: 10px; align-items: start; padding: 8px 10px; border-radius: 12px; cursor: pointer; }
+  ul.docs label:hover { background: var(--wine-soft); }
+  ul.docs input { width: 20px; height: 20px; margin: 2px 0 0; accent-color: var(--br-green); }
+  ul.docs li.done span { color: var(--muted); text-decoration: line-through; }
+  .warn { padding: 12px 14px; border-radius: 14px; background: var(--sun-soft); font-size: 15px; }
+  .g-foot { margin: 26px 0 0; padding-top: 18px; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; }
+  .g-foot a { color: var(--wine); }
+  .btn.sm { min-height: 44px; font-size: 15px; }
+  .sec-lbl { font-size: 13px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--wine); margin: 30px 0 0; }
   .foot { margin: 40px 0 0; color: var(--muted); font-size: 14px; }
   main.wrap { padding-bottom: 96px; }
   @media (min-width: 700px) {
@@ -167,6 +209,7 @@
 </head>
 <body>
 
+<div class="flag" aria-hidden="true"></div>
 <div class="wrap">
   <header class="bar">
     <a class="mark" href="#/" aria-label="São Paulo Guide, home"><i></i>São Paulo <span>day to day</span></a>
@@ -216,6 +259,8 @@ const ICONS = {
   call: '<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a1 1 0 0 1-1 1A15 15 0 0 1 4 5a1 1 0 0 1 1-1z"/>',
   back: '<path d="M15 5 8 12l7 7"/>',
   next: '<path d="m9 5 7 7-7 7"/>',
+  check: '<path d="m5 12.5 4.5 4.5L19 7.5"/>',
+  ext: '<path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/>',
   siren: '<path d="M7 18v-6a5 5 0 0 1 10 0v6M4 18h16M12 3v2M4.5 6.5 6 8M19.5 6.5 18 8"/>'
 };
 const CATEGORIES = [
@@ -234,9 +279,10 @@ const CATEGORIES = [
   { id: "admin", name: "Administrative", icon: "admin", cls: "c-admin",
     blurb: "Papers, permits and paperwork.",
     subs: [
-      { id: "ids",       name: "IDs & documents",       icon: "id" },
+      { id: "ids",       name: "IDs & documents",       icon: "admin" },
       { id: "visa",      name: "Visa & immigration",    icon: "globe" },
-      { id: "tax",       name: "Taxes & CPF",           icon: "receipt" },
+      { id: "cpf",       name: "CPF",                   icon: "id" },
+      { id: "tax",       name: "Taxes",                 icon: "receipt" },
       { id: "bank",      name: "Banking & money",       icon: "bank" },
       { id: "phone",     name: "SIM, phone & internet", icon: "phone" },
       { id: "transport", name: "Transport card",        icon: "train" }
@@ -273,7 +319,111 @@ const EMERGENCY = {
   tip: "Say “Preciso de ajuda” (I need help) and the street address. Save these numbers in your phone."
 };
 
+/* Step-by-step guides. Each step can have: body, docs (checklist), warn, links [{label, url}].
+   Ticks are remembered in this browser only. */
+const GUIDES = [
+  {
+    id: "nomad-residence",
+    cat: "admin", sub: "visa",
+    title: "Digital nomad residency, start to finish",
+    intro: "Residence authorization for remote workers (CNIg Normative Resolution 45/2021). It is for people who work remotely for companies or clients outside Brazil, not for a Brazilian employer.",
+    chips: ["Valid for 1 year, renewable once", "Government fees apply"],
+    steps: [
+      { title: "Check that you qualify",
+        body: "You work remotely for a company or clients outside Brazil. You can show either about US$1,500 a month of foreign income, or about US$18,000 in a bank account. One consulate page mentions euros, so confirm the currency and amount on the official portal before you start.",
+        links: [{ label: "Portal de Imigração Laboral", url: "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/migracoes/portal-de-imigracao-laboral/portal-de-imigracao-laboral" }] },
+      { title: "Gather your documents",
+        docs: ["Valid passport (one source says at least 6 months of validity)", "Proof that you work remotely: contract with your company or clients, or a signed declaration", "Proof of income: bank statements for the last 6 months, or proof of your savings balance", "Health insurance valid in Brazil", "Criminal record certificate from your country (it may need an apostille and a translation)", "Your CPF (see the CPF guide)"],
+        warn: "Documents issued abroad often need an apostille and a translation. Check which ones apply to you before you pay for them." },
+      { title: "Log in to your gov.br account",
+        body: "You use your gov.br account to log in to the government systems. Create it now if you do not have one.",
+        links: [{ label: "gov.br", url: "https://www.gov.br" }] },
+      { title: "Submit the request on MigranteWeb",
+        body: "Open the Portal de Imigração Laboral, go to MigranteWeb and file the residence authorization for remote work. Upload your documents.",
+        warn: "Sources disagree on whether a first request can be filed from inside Brazil or must start at a consulate (visa VITEM XIV). The Ministry of Justice guidance says visitors already in Brazil can file here. Confirm on the portal.",
+        links: [{ label: "Portal de Imigração Laboral", url: "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/migracoes/portal-de-imigracao-laboral/portal-de-imigracao-laboral" }] },
+      { title: "Pay the government fees",
+        body: "Fees are paid with a payment slip (GRU) generated during the process. Check the current amounts on the portal, I have not verified them." },
+      { title: "Wait for approval",
+        body: "Follow your case on the portal's tracking page (Acompanhamento Processual). Your approval is published officially." },
+      { title: "Book your Polícia Federal appointment",
+        body: "After approval you register with the Federal Police to get your CRNM, the residence card. Official guidance says to ask for this within 30 days of the approval being published. On Agenda Web choose the migration service, then enter your request number and date of birth. New slots tend to appear at the start of the month and go fast.",
+        warn: "Pick the unit with care. See Where to go below: the Lapa office is reported as overloaded, and the Guarulhos post inside Shopping Maia was recommended to me. Check that your chosen unit offers your type of appointment.",
+        links: [{ label: "Agenda Web (Polícia Federal)", url: "https://servicos.pf.gov.br/agenda-web/" }] },
+      { title: "Go to your appointment",
+        docs: ["Passport", "Your request number and the approval", "Proof of payment of the CRNM fee", "Printed or saved appointment confirmation", "Anything else your confirmation lists"] },
+      { title: "Collect your CRNM",
+        body: "Pick up your card when it is ready. The São Paulo office lists CRNM pickup from 09:00 to 17:00. Set a reminder to renew on MigranteWeb before it expires." }
+    ],
+    sources: [
+      { label: "Polícia Federal São Paulo", url: "https://www.gov.br/pf/pt-br/acesso-a-informacao/institucional/quem-e-quem/superintendencias-e-delegacias/sao-paulo/superintendencia-regional-em-sao-paulo" },
+      { label: "Itamaraty VITEM XIV", url: "https://www.gov.br/mre/pt-br/embaixada-berlim/consular/paginas/visa/vitem-xiv" },
+      { label: "Agenda Web", url: "https://servicos.pf.gov.br/agenda-web/" }
+    ],
+    checked: "18 Oct 2026"
+  },
+  {
+    id: "cpf",
+    cat: "admin", sub: "cpf",
+    title: "Get your CPF as a foreigner",
+    intro: "The CPF is your Brazilian tax number. You need it for a bank account, a phone plan, a rental and most online purchases.",
+    chips: ["Receita Federal", "Passport needed"],
+    steps: [
+      { title: "Choose your route",
+        body: "Already in Brazil: apply online, or in person at a Receita Federal office, a Banco do Brasil or Caixa branch, or the Correios. Outside Brazil: book an appointment at a Brazilian consulate through e-Consular.",
+        warn: "One guide says the online route only works if you have a Brazilian voter ID. Others do not mention it. If the website will not let you continue, go in person." },
+      { title: "Fill in the form",
+        body: "Complete the Ficha Cadastral de Pessoa Física (FCPF) on the Receita Federal website. Look for “Inscrição no CPF”. One guide says the form exists in Portuguese, English and Spanish.",
+        links: [{ label: "Receita Federal", url: "https://www.gov.br/receitafederal/pt-br" }] },
+      { title: "Gather your documents",
+        docs: ["Valid passport", "CRNM or RNE, if you already have one", "Proof of address: a utility bill or rental contract in your name", "If the proof of address is not in your name: a residence declaration signed by the account holder"] },
+      { title: "Submit your request",
+        body: "Online: upload scans of your documents with the form. In person: bring printed copies to the office you chose. Some outlets may charge a small fee, so confirm before you go." },
+      { title: "Check your status and save the proof",
+        body: "Once approved, look up your CPF in the Receita Federal's CPF status service and download the registration proof. Save a PDF on your phone, you will be asked for it often." }
+    ],
+    sources: [
+      { label: "Barbieri Advogados", url: "https://www.barbieriadvogados.com/en/?p=8773" },
+      { label: "Migalhas", url: "https://www.migalhas.com.br/depeso/442234/cpf-e-cnpj-para-estrangeiros-guia-para-residentes-e-nao-residentes" }
+    ],
+    checked: "18 Oct 2026"
+  }
+];
+
 const PLACES = [
+  {
+    id: "pf-lapa",
+    name: "Polícia Federal, Lapa (SR/PF/SP)",
+    cat: "admin", sub: "visa",
+    kind: "Main Federal Police office, migration (DELEMIG)",
+    logo: "",
+    address: "Rua Hugo D'Antola, 95, Lapa de Baixo, São Paulo, 05038-090",
+    area: "Lapa",
+    hours: "Monday to Friday, 08:30 to 17:30 (CRNM pickup 09:00 to 17:00). Closed on holidays.",
+    price: { type: "varies", detail: "Booking is free. Government fees for the residence card are paid by payment slip (GRU). Check current amounts on the PF site." },
+    walkIn: false,
+    tags: ["polícia federal", "CRNM", "residence", "visa", "immigration", "delemig", "lapa", "agenda web"],
+    website: "https://www.gov.br/pf",
+    phone: "+55 11 3538-5234",
+    maps: "",
+    note: "Booking is by appointment on Agenda Web. A contact advised skipping this one: reportedly very crowded and stretched thin. Slots are released online and go within minutes."
+  },
+  {
+    id: "pf-maia",
+    name: "Polícia Federal, Shopping Maia (Guarulhos)",
+    cat: "admin", sub: "visa",
+    kind: "Federal Police post, inside a mall",
+    logo: "",
+    address: "Shopping Maia, Piso P3, 4th floor, Av. Bartolomeu de Carlos, 230, Jardim Flor da Montanha, Guarulhos, 07097-420",
+    area: "Inside the mall, about an hour from central São Paulo",
+    hours: "Monday to Friday, 10:00 to 17:30, by appointment (the mall lists 10:00 to 18:00)",
+    price: { type: "varies", detail: "Booking is free. Government fees for the residence card are paid by payment slip (GRU). Check current amounts on the PF site." },
+    walkIn: false,
+    tags: ["polícia federal", "CRNM", "residence", "visa", "immigration", "guarulhos", "shopping maia", "agenda web"],
+    website: "https://www.gov.br/pf",
+    maps: "",
+    note: "Recommended by a contact as a calmer alternative to Lapa. The PF lists this post as a passport post, so check on Agenda Web that it offers your residence appointment before you travel."
+  },
   {
     id: "ahf-brasil",
     name: "AHF Brasil",
@@ -305,6 +455,14 @@ const ico = n => `<svg class="i" viewBox="0 0 24 24" aria-hidden="true">${ICONS[
 const cat = id => CATEGORIES.find(c => c.id === id);
 const sub = (c, id) => c && c.subs.find(s => s.id === id);
 const placesIn = (c, s) => PLACES.filter(p => p.cat === c && (!s || p.sub === s));
+const guidesIn = (c, s) => GUIDES.filter(g => g.cat === c && (!s || g.sub === s));
+const itemsLabel = (c, s) => {
+  const g = guidesIn(c, s).length, p = placesIn(c, s).length;
+  const parts = [];
+  if (g) parts.push(g === 1 ? "1 guide" : g + " guides");
+  if (p) parts.push(count(p));
+  return parts.join(" · ");
+};
 const count = n => n === 1 ? "1 place" : n + " places";
 
 function mapsUrl(p) {
@@ -334,8 +492,8 @@ function card(p) {
     </div>
     <div class="tags">
       ${priceTag(p)}
-      ${p.walkIn ? `<span class="tag soft">Walk-in, no booking</span>` : ""}
-      ${p.pride ? `<span class="tag soft">LGBTQ+ friendly</span>` : ""}
+      ${p.walkIn ? `<span class="tag walk">Walk-in, no booking</span>` : ""}
+      ${p.pride ? `<span class="tag pride">LGBTQ+ friendly</span>` : ""}
     </div>
     <dl class="facts">
       <div><dt>Address</dt><dd>${field(p.address)}${p.area ? `<br><small>${esc(p.area)}</small>` : ""}</dd></div>
@@ -362,6 +520,58 @@ function searchBox(value = "") {
     <input id="q" type="search" placeholder="Try “dentist”, “visa” or “STI test”" value="${esc(value)}" autocomplete="off"></div>`;
 }
 
+const gState = (() => { try { return JSON.parse(localStorage.getItem("sp-guides") || "{}"); } catch (e) { return {}; } })();
+function saveG() { try { localStorage.setItem("sp-guides", JSON.stringify(gState)); } catch (e) {} }
+const gDone = g => g.steps.filter((_, i) => gState[g.id + "|s" + i]).length;
+
+function guideCard(g) {
+  const done = gDone(g), total = g.steps.length;
+  const steps = g.steps.map((st, i) => {
+    const sk = g.id + "|s" + i, on = !!gState[sk];
+    const docs = (st.docs || []).map((d, j) => {
+      const dk = g.id + "|d" + i + "." + j, don = !!gState[dk];
+      return `<li class="${don ? "done" : ""}"><label><input type="checkbox" data-g="${g.id}" data-k="d${i}.${j}" ${don ? "checked" : ""} onchange="toggleG('${g.id}','d${i}.${j}')"><span>${esc(d)}</span></label></li>`;
+    }).join("");
+    const links = (st.links || []).map(l => `<a class="btn sm" href="${esc(l.url)}" target="_blank" rel="noopener">${ico("ext")}${esc(l.label)}</a>`).join("");
+    return `<li class="step ${on ? "done" : ""}" data-g="${g.id}" data-k="s${i}">
+      <button class="numbtn" aria-pressed="${on}" aria-label="Mark step ${i + 1} as done" onclick="toggleG('${g.id}','s${i}')"><span class="n">${i + 1}</span>${ico("check")}</button>
+      <div class="s-body">
+        <h3>${esc(st.title)}</h3>
+        ${st.body ? `<p>${esc(st.body)}</p>` : ""}
+        ${docs ? `<p class="lbl">Documents to gather</p><ul class="docs">${docs}</ul>` : ""}
+        ${st.warn ? `<p class="warn">${esc(st.warn)}</p>` : ""}
+        ${links ? `<div class="actions" style="margin-top:6px">${links}</div>` : ""}
+      </div></li>`;
+  }).join("");
+  return `<section class="guide" id="guide-${g.id}">
+    <span class="tag soft">Step by step</span>
+    <h2>${esc(g.title)}</h2>
+    <p class="intro">${esc(g.intro)}</p>
+    ${g.chips ? `<div class="g-meta">${g.chips.map(c => `<span class="tag">${esc(c)}</span>`).join("")}</div>` : ""}
+    <div class="prog" data-prog="${g.id}"><div class="bar"><i style="width:${Math.round(done / total * 100)}%"></i></div><span class="ptxt">${done} of ${total} steps done</span></div>
+    <ol class="steps">${steps}</ol>
+    <p class="g-foot">Compiled on ${esc(g.checked)} from public sources, so rules and fees can change. Check the official sites before paying. ${(g.sources || []).map(x => `<a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.label)}</a>`).join(", ")}.</p>
+  </section>`;
+}
+
+function toggleG(gid, key) {
+  const k = gid + "|" + key;
+  gState[k] = !gState[k];
+  saveG();
+  const g = GUIDES.find(x => x.id === gid);
+  document.querySelectorAll(`[data-g="${gid}"]`).forEach(el => {
+    const on = !!gState[gid + "|" + el.dataset.k];
+    if (el.matches("input")) { el.checked = on; el.closest("li").classList.toggle("done", on); }
+    else { el.classList.toggle("done", on); el.querySelector(".numbtn")?.setAttribute("aria-pressed", on); }
+  });
+  const done = gDone(g), total = g.steps.length;
+  document.querySelectorAll(`[data-prog="${gid}"]`).forEach(pr => {
+    pr.querySelector("i").style.width = Math.round(done / total * 100) + "%";
+    pr.querySelector(".ptxt").textContent = `${done} of ${total} steps done`;
+  });
+}
+window.toggleG = toggleG;
+
 function viewHome() {
   $app.innerHTML = `
     <p class="kicker">Sampa, sorted</p>
@@ -370,17 +580,17 @@ function viewHome() {
     ${searchBox()}
     <div class="panels">
       ${CATEGORIES.map((c, i) => {
-        const n = placesIn(c.id).length;
+        const n = placesIn(c.id).length + guidesIn(c.id).length;
         return `<section class="panel ${c.cls} ${i === 0 ? "wide" : ""}">
           <button class="panel-head" onclick="go('/${c.id}')" aria-label="Open ${esc(c.name)}">
             <span class="badge-ico">${ico(c.icon)}</span>
-            <span><span class="t">${esc(c.name)}</span><span class="s">${esc(c.blurb)}${n ? " · " + count(n) : ""}</span></span>
+            <span><span class="t">${esc(c.name)}</span><span class="s">${esc(c.blurb)}${n ? " · " + n + (n === 1 ? " item" : " items") : ""}</span></span>
             <span class="go">${ico("next")}</span>
           </button>
           <div class="quick">${c.subs.map(s => `<button class="qk" onclick="go('/${c.id}/${s.id}')">${ico(s.icon)}${esc(s.name)}</button>`).join("")}</div>
         </section>`; }).join("")}
     </div>
-    <p class="foot">${count(PLACES.length)} saved so far. More coming.</p>`;
+    <p class="foot">${count(PLACES.length)} and ${GUIDES.length === 1 ? "1 guide" : GUIDES.length + " guides"} saved so far. More coming.</p>`;
   bindSearch();
 }
 
@@ -408,24 +618,27 @@ function viewCategory(c) {
     <p class="lead">${esc(c.blurb)}</p>
     <div class="rows ${c.cls}">
       ${c.subs.map(s => {
-        const n = placesIn(c.id, s.id).length;
-        return `<button class="row ${n ? "" : "none"}" onclick="go('/${c.id}/${s.id}')">
+        const lbl = itemsLabel(c.id, s.id);
+        return `<button class="row ${lbl ? "" : "none"}" onclick="go('/${c.id}/${s.id}')">
           <span class="badge-ico">${ico(s.icon)}</span><span class="n">${esc(s.name)}</span>
-          <span class="ct">${n ? count(n) : "Nothing yet"}</span>${ico("next")}</button>`; }).join("")}
+          <span class="ct">${lbl || "Nothing yet"}</span>${ico("next")}</button>`; }).join("")}
     </div>`;
 }
 
 let priceFilter = "all";
 function viewSub(c, s) {
   const all = placesIn(c.id, s.id);
+  const guides = guidesIn(c.id, s.id);
   const shown = all.filter(p => priceFilter === "all" || p.price?.type === priceFilter);
   $app.innerHTML = `
     ${back(c.name, "/" + c.id)}
     <div class="page-title ${c.cls}"><span class="badge-ico">${ico(s.icon)}</span><h1>${esc(s.name)}</h1></div>
     ${all.length > 1 ? `<div class="chips" role="group" aria-label="Filter by price">
       ${["all","free","paid"].map(f => `<button class="chip" aria-pressed="${priceFilter === f}" onclick="setPrice('${f}')">${{all:"All",free:"Free only",paid:"Paid"}[f]}</button>`).join("")}</div>` : ""}
-    <div class="list">
-      ${shown.length ? shown.map(card).join("") : `<div class="empty-state"><strong>Nothing here yet</strong>Send me a place for ${esc(s.name)} and it shows up here.</div>`}
+    ${guides.length ? `<div class="list">${guides.map(guideCard).join("")}</div>` : ""}
+    ${guides.length && all.length ? `<p class="sec-lbl">Where to go</p>` : ""}
+    <div class="list" ${guides.length ? 'style="margin-top:14px"' : ""}>
+      ${shown.length ? shown.map(card).join("") : (guides.length ? "" : `<div class="empty-state"><strong>Nothing here yet</strong>Send me a place for ${esc(s.name)} and it shows up here.</div>`)}
     </div>`;
 }
 window.setPrice = f => { priceFilter = f; route(); };
@@ -436,13 +649,14 @@ function viewSearch(q) {
     const c = cat(p.cat), s = sub(c, p.sub);
     return [p.name, p.kind, p.address, p.area, p.note, c?.name, s?.name, ...(p.tags || [])].join(" ").toLowerCase().includes(t);
   });
+  const gHits = GUIDES.filter(g => [g.title, g.intro, ...g.steps.map(x => x.title + " " + x.body)].join(" ").toLowerCase().includes(t));
   const jumps = CATEGORIES.flatMap(c => c.subs.filter(s => (s.name + " " + c.name).toLowerCase().includes(t)).map(s => ({ c, s })));
   $app.innerHTML = `
     <div style="height:22px"></div>
     ${searchBox(q)}
     ${jumps.length ? `<div class="quick" style="margin-bottom:22px">${jumps.map(({c,s}) => `<button class="qk ${c.cls}" onclick="go('/${c.id}/${s.id}')">${ico(s.icon)}${esc(s.name)}</button>`).join("")}</div>` : ""}
-    <h2 class="sec" style="margin-top:0">${hits.length ? count(hits.length) : "No results"}</h2>
-    <div class="list" style="margin-top:0">${hits.map(card).join("") || `<div class="empty-state"><strong>Nothing found for “${esc(q)}”</strong>Try another word, or send me the place to add.</div>`}</div>`;
+    <h2 class="sec" style="margin-top:0">${hits.length + gHits.length ? "Results" : "No results"}</h2>
+    <div class="list" style="margin-top:0">${gHits.map(guideCard).join("")}${hits.map(card).join("") || (gHits.length ? "" : `<div class="empty-state"><strong>Nothing found for “${esc(q)}”</strong>Try another word, or send me the place to add.</div>`)}</div>`;
   bindSearch(true);
 }
 
