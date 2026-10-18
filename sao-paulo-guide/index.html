@@ -189,6 +189,10 @@
   ul.docs input { width: 20px; height: 20px; margin: 2px 0 0; accent-color: var(--br-green); }
   ul.docs li.done span { color: var(--muted); text-decoration: line-through; }
   .warn { padding: 12px 14px; border-radius: 14px; background: var(--sun-soft); font-size: 15px; }
+  .mail { margin: 14px 0; padding: 16px; border: 1px solid var(--line); border-radius: 16px; background: var(--bg); }
+  .mrow { margin: 0 0 6px !important; display: grid; grid-template-columns: 64px 1fr; gap: 8px; font-size: 15px; overflow-wrap: anywhere; }
+  .mrow b { color: var(--muted); font-size: 12px; letter-spacing: .1em; text-transform: uppercase; padding-top: 3px; }
+  .mail textarea { width: 100%; margin: 8px 0 12px; padding: 12px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); font: 15px/1.5 var(--font-body); color: var(--ink); resize: vertical; }
   .g-foot { margin: 26px 0 0; padding-top: 18px; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; }
   .g-foot a { color: var(--wine); }
   .btn.sm { min-height: 44px; font-size: 15px; }
@@ -203,7 +207,7 @@
     .sos-card .n { grid-row: auto; font-size: 76px; }
     .actions .btn.primary { flex: 0 0 auto; }
   }
-  @media (max-width: 420px) { dl.facts > div { grid-template-columns: 1fr; gap: 2px; } }
+  @media (max-width: 420px) { .mrow { grid-template-columns: 1fr; gap: 0; } dl.facts > div { grid-template-columns: 1fr; gap: 2px; } }
   @media (prefers-reduced-motion: reduce) { .go { transition: none; } }
 </style>
 </head>
@@ -348,7 +352,19 @@ const GUIDES = [
         body: "Follow your case on the portal's tracking page (Acompanhamento Processual). Your approval is published officially." },
       { title: "Book your Polícia Federal appointment",
         body: "After approval you register with the Federal Police to get your CRNM, the residence card. Official guidance says to ask for this within 30 days of the approval being published. On Agenda Web choose the migration service, then enter your request number and date of birth. New slots tend to appear at the start of the month and go fast.",
-        warn: "Pick the unit with care. See Where to go below: the Lapa office is reported as overloaded, and the Guarulhos post inside Shopping Maia was recommended to me. Check that your chosen unit offers your type of appointment.",
+        warn: "Two things to confirm before you book. First, the deadline: PF guidance says 30 days after approval is published, but some guides say 90 days after arrival for people who got their visa at a consulate abroad. A friend who applied from the EU may have had different rules than you. Second, the unit: the Lapa office is reported as overloaded, and the Santana Parque post inside a mall was recommended to me, but the PF lists it as a passport post. Email the PF to be sure (drafts below).",
+        emails: [
+          { lang: "English",
+            to: "nre.drex.srsp@pf.gov.br",
+            cc: "migracao.srsp@pf.gov.br",
+            subject: "Question: remote work residence authorization, registration at the Santana post",
+            body: "Dear Polícia Federal team,\n\nI am applying for (or have been granted) a residence authorization for remote work under CNIg Normative Resolution 45/2021, and I applied from inside Brazil. My request number is [NUMBER].\n\nCould you please confirm:\n\n1. Can the Polícia Federal post at Santana Parque Shopping (Rua Conselheiro Moreira de Barros, 2780) handle the registration and CRNM issuance for my type of residence authorization, or does it only handle passports? If not, which unit besides Lapa can I use?\n\n2. What is the deadline to book and attend the registration appointment after the approval is published? I understand it is 30 days for people who applied inside Brazil, and that people who obtained a visa at a consulate abroad may have a different deadline. Which one applies to me?\n\n3. Are the required documents or procedure different depending on whether the application was made in Brazil or from abroad?\n\nThank you very much.\n\n[NAME]\nPassport number: [NUMBER]\nPhone: [PHONE]" },
+          { lang: "Português",
+            to: "nre.drex.srsp@pf.gov.br",
+            cc: "migracao.srsp@pf.gov.br",
+            subject: "Dúvida: autorização de residência para trabalho remoto, registro no posto de Santana",
+            body: "Prezada equipe da Polícia Federal,\n\nSolicitei (ou obtive) autorização de residência para trabalho remoto, com base na Resolução Normativa CNIg nº 45/2021, e fiz o pedido de dentro do Brasil. Meu número de requerimento é [NÚMERO].\n\nPoderiam confirmar:\n\n1. O posto da Polícia Federal no Santana Parque Shopping (Rua Conselheiro Moreira de Barros, 2780) atende o registro e a emissão da CRNM para o meu tipo de autorização de residência, ou atende somente passaportes? Se não atender, qual outra unidade, além da Lapa, posso usar?\n\n2. Qual é o prazo para agendar e comparecer ao atendimento de registro após a publicação da autorização? Entendo que são 30 dias para quem solicitou dentro do Brasil, e que quem obteve o visto em um consulado no exterior pode ter outro prazo. Qual deles se aplica ao meu caso?\n\n3. Os documentos ou o procedimento mudam conforme o pedido tenha sido feito no Brasil ou no exterior?\n\nMuito obrigada.\n\n[NOME]\nPassaporte: [NÚMERO]\nTelefone: [TELEFONE]" }
+        ],
         links: [{ label: "Agenda Web (Polícia Federal)", url: "https://servicos.pf.gov.br/agenda-web/" }] },
       { title: "Go to your appointment",
         docs: ["Passport", "Your request number and the approval", "Proof of payment of the CRNM fee", "Printed or saved appointment confirmation", "Anything else your confirmation lists"] },
@@ -409,20 +425,20 @@ const PLACES = [
     note: "Booking is by appointment on Agenda Web. A contact advised skipping this one: reportedly very crowded and stretched thin. Slots are released online and go within minutes."
   },
   {
-    id: "pf-maia",
-    name: "Polícia Federal, Shopping Maia (Guarulhos)",
+    id: "pf-santana",
+    name: "Polícia Federal, Santana Parque Shopping",
     cat: "admin", sub: "visa",
     kind: "Federal Police post, inside a mall",
     logo: "",
-    address: "Shopping Maia, Piso P3, 4th floor, Av. Bartolomeu de Carlos, 230, Jardim Flor da Montanha, Guarulhos, 07097-420",
-    area: "Inside the mall, about an hour from central São Paulo",
-    hours: "Monday to Friday, 10:00 to 17:30, by appointment (the mall lists 10:00 to 18:00)",
+    address: "Santana Parque Shopping, Rua Conselheiro Moreira de Barros, 2780, Lauzane Paulista, São Paulo, 02430-001",
+    area: "Inside the mall, north zone",
+    hours: "Monday to Friday, 10:00 to 17:30, by appointment (hours as listed by the Polícia Federal)",
     price: { type: "varies", detail: "Booking is free. Government fees for the residence card are paid by payment slip (GRU). Check current amounts on the PF site." },
     walkIn: false,
-    tags: ["polícia federal", "CRNM", "residence", "visa", "immigration", "guarulhos", "shopping maia", "agenda web"],
+    tags: ["polícia federal", "CRNM", "residence", "visa", "immigration", "santana", "santana parque", "shopping", "agenda web"],
     website: "https://www.gov.br/pf",
     maps: "",
-    note: "Recommended by a contact as a calmer alternative to Lapa. The PF lists this post as a passport post, so check on Agenda Web that it offers your residence appointment before you travel."
+    note: "Recommended by a friend as a calmer option than Lapa. The Polícia Federal lists it as a passport post, so I could not confirm that it handles residence appointments. Email the PF to check before you book (draft emails are in the residency guide, step 7)."
   },
   {
     id: "ahf-brasil",
@@ -540,6 +556,7 @@ function guideCard(g) {
         ${st.body ? `<p>${esc(st.body)}</p>` : ""}
         ${docs ? `<p class="lbl">Documents to gather</p><ul class="docs">${docs}</ul>` : ""}
         ${st.warn ? `<p class="warn">${esc(st.warn)}</p>` : ""}
+        ${(st.emails || []).map((m, j) => emailBox(g.id + i + "-" + j, m)).join("")}
         ${links ? `<div class="actions" style="margin-top:6px">${links}</div>` : ""}
       </div></li>`;
   }).join("");
@@ -553,6 +570,24 @@ function guideCard(g) {
     <p class="g-foot">Compiled on ${esc(g.checked)} from public sources, so rules and fees can change. Check the official sites before paying. ${(g.sources || []).map(x => `<a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.label)}</a>`).join(", ")}.</p>
   </section>`;
 }
+
+function emailBox(id, m) {
+  return `<div class="mail">
+    <p class="lbl" style="margin-top:0 !important">Draft email, ${esc(m.lang)}</p>
+    <p class="mrow"><b>To</b> <span>${esc(m.to)}</span></p>
+    ${m.cc ? `<p class="mrow"><b>Cc</b> <span>${esc(m.cc)}</span></p>` : ""}
+    <p class="mrow"><b>Subject</b> <span>${esc(m.subject)}</span></p>
+    <label class="sr" for="m-${id}">Email text</label>
+    <textarea id="m-${id}" readonly rows="10">${esc(m.body)}</textarea>
+    <button class="btn sm" onclick="copyMail('m-${id}', this)">${ico("check")}Copy text</button>
+  </div>`;
+}
+window.copyMail = (id, btn) => {
+  const t = document.getElementById(id); t.select();
+  const done = () => { btn.lastChild.textContent = "Copied"; setTimeout(() => btn.lastChild.textContent = "Copy text", 1800); };
+  (navigator.clipboard?.writeText(t.value).then(done, () => { try { document.execCommand("copy"); done(); } catch (e) {} }))
+    || (() => { try { document.execCommand("copy"); done(); } catch (e) {} })();
+};
 
 function toggleG(gid, key) {
   const k = gid + "|" + key;
